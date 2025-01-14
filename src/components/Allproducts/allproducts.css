@@ -1,0 +1,13 @@
+.allProductsSection{
+    min-height: 100vh;
+}
+
+.allproductsheading{
+    text-align: center;
+    padding-top: 30px;
+    font-size: 2rem;
+}
+ 
+a:hover h5{
+    color: rgb(255, 160, 160);
+}
