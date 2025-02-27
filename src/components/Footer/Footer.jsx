@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="app-store-play">
-        <h1>GoFashion</h1>
+        <h1>Logo</h1>
         <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque, quia
           eius est sunt consectetur rem possimus officia minima reiciendis
@@ -50,20 +50,20 @@ const Footer = () => {
             Email :
             <a
               target="_blank"
-              href="mailto:arshadchowdhury46@gmail.com"
+              href="mailto:devfullmarcelo@gmail.com"
               className="icon-flex phone-icon"
             >
-              Atedimento@GoFashion.com
+              devfullmarcelo@gmail.com
             </a>
           </li>
           <li className="contact-info-flex">
             Phone :{" "}
             <a
               target="_blank"
-              href="https://api.whatsapp.com/send?phone=8801317089432"
+              href="https://wa.me/5585991908723?text=Ol%C3%A1%2C%20vi%20seu%20site%20e%20tenho%20interesse" target="_blank"
               className="icon-flex phone-icon"
             >
-              +(85) 9 9999-8888
+              (85) 9 9190 8723
             </a>
           </li>
         </ul>

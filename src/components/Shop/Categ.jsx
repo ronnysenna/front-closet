@@ -4,35 +4,35 @@ const Categ = () => {
   const data = [
     {
       cateImg: "./assets/brand/brand-1.png",
-      cateName: "Apple",
+      cateName: "Exp1",
     },
     {
       cateImg: "./assets/brand/brand-2.png",
-      cateName: "Samasung",
+      cateName: "Exp2",
     },
     {
       cateImg: "./assets/brand/brand-3.png",
-      cateName: "Oppo",
+      cateName: "Exp3",
     },
     {
       cateImg: "./assets/brand/brand-2.png",
-      cateName: "Vivo",
+      cateName: "Exp4",
     },
     {
       cateImg: "./assets/brand/brand-1.png",
-      cateName: "Redimi",
+      cateName: "Exp5",
     },
     {
       cateImg: "./assets/brand/brand-2.png",
-      cateName: "Sony",
+      cateName: "Exp6",
     },
   ];
   return (
     <>
       <div className="category">
         <div className="chead">
-          <h1>Brands</h1>
-          <h1>Shops</h1>
+          <h1>Moda 1</h1>
+          
         </div>
         {data.map((value, index) => {
           return (
@@ -47,7 +47,7 @@ const Categ = () => {
           );
         })}
         <div className="box box2">
-          <button>View All Brands</button>
+          <button>Ver todos</button>
         </div>
       </div>
     </>

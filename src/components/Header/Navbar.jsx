@@ -32,19 +32,9 @@ const Navbar = () => {
                 Todos os Produtos
               </Link>
             </li>
+           
             <li>
-              <Link aria-label="Login" className="link-hover" to="/login">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                aria-label="Registration"
-                className="link-hover"
-                to="/registration"
-              >
-                Registro
-              </Link>
+              
             </li>
             {/* <li>
               <Link to="/admin-dashboard">Admin Dashboard</Link>

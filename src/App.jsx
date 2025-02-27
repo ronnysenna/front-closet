@@ -5,6 +5,7 @@ import FlashDealsData from "./components/FlashDeals/flashDealsData";
 import ShopData from "./components/Shop/shopData";
 import AllProductsData from "./components/Allproducts/allProductsData";
 import toast, { Toaster } from "react-hot-toast";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./App.css";
 
 function App() {
