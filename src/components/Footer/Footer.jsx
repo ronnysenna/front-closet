@@ -60,7 +60,7 @@ const Footer = () => {
             Phone :{" "}
             <a
               target="_blank"
-              href="https://wa.me/5585991908723?text=Ol%C3%A1%2C%20vi%20seu%20site%20e%20tenho%20interesse" target="_blank"
+              href="https://wa.me/5585991908723?text=Ol%C3%A1%2C%20vi%20seu%20site%20e%20tenho%20interesse"
               className="icon-flex phone-icon"
             >
               (85) 9 9190 8723
