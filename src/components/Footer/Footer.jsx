@@ -5,12 +5,9 @@ const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="app-store-play">
-        <h1>Logo</h1>
+        <h1>GoFashion</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque, quia
-          eius est sunt consectetur rem possimus officia minima reiciendis
-          perspiciatis! Soluta corrupti nesciunt suscipit repellendus adipisci
-          reiciendis veritatis, accusantium saepe?
+          A GoFashion é uma loja de roupa feminina que une estilo, elegância e autenticidade. Com peças selecionadas para valorizar a beleza e a personalidade de cada mulher, a GoFashion oferece desde looks casuais até opções mais sofisticadas, sempre acompanhando as principais tendências da moda. Aqui, cada detalhe importa
         </p>
         <div className="icon-footer appstore">
           <div className="img d_flex logo-text">
@@ -50,24 +47,26 @@ const Footer = () => {
             Email :
             <a
               target="_blank"
-              href="mailto:devfullmarcelo@gmail.com"
+              href="mailto:Karlinha4647@gmail.com"
               className="icon-flex phone-icon"
             >
-              devfullmarcelo@gmail.com
+              Karlinha4647@gmail.com
             </a>
           </li>
           <li className="contact-info-flex">
             Phone :{" "}
             <a
               target="_blank"
-              href="https://wa.me/5585991908723?text=Ol%C3%A1%2C%20vi%20seu%20site%20e%20tenho%20interesse"
+              href="https://wa.me/5585982064398?text=Ol%C3%A1%2C%20vi%20seu%20site%20e%20tenho%20interesse"
               className="icon-flex phone-icon"
             >
-              (85) 9 9190 8723
+              (85) 9 8206 4398
             </a>
           </li>
         </ul>
       </div>
+      
+     
     </footer>
   );
 };
