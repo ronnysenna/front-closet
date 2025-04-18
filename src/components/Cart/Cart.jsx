@@ -20,7 +20,7 @@ const Cart = ({
       )
       .join("\n");
     const finalMessage = `Resumo do Pedido:\n${message}\n\nValor Total: $${totalPrice}.00`;
-    const whatsappURL = `https://wa.me/5585991908723?text=${encodeURIComponent(
+    const whatsappURL = `https://wa.me/558582064398?text=${encodeURIComponent(
       finalMessage
     )}`;
     window.open(whatsappURL, "_blank");
