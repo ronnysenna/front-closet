@@ -42,7 +42,17 @@ const Footer = () => {
       <div className="">
         <h2>Contato</h2>
         <ul>
-          <li>Endereço</li>
+          <li className="contact-info-flex">
+            {" "}
+            <a
+              target="_blank"
+              href="https://maps.app.goo.gl/Cp7o98Ze4eYBGh5L7?g_st=aw"
+              className="icon-flex phone-icon"
+            >
+              Rua Aspirante Mendes, Aerolandia, Fortaleza - CE, 60851-285
+            </a>
+          </li>
+
           <li className="contact-info-flex">
             Email :
             <a
@@ -65,8 +75,36 @@ const Footer = () => {
           </li>
         </ul>
       </div>
-      
-     
+      <div className="footer-bottom">
+        <div className="social-icons">
+          <a
+            href="https://github.com/LucasMarcelo85"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon github-icon"
+          >
+            <i className="fa-brands fa-github"></i>
+          </a>
+        </div>
+        <div className="social-icons-right">
+          <a
+            href="https://www.instagram.com/gofashion_brasil"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon instagram-icon"
+          >
+            <i className="fa-brands fa-instagram"></i>
+          </a>
+          <a
+            href="https://wa.me/5585982064398"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon whatsapp-icon"
+          >
+            <i className="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
     </footer>
   );
 };

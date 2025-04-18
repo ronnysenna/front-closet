@@ -54,9 +54,9 @@ const AllRoutes = ({
           element={<Registrationpage cartItems={cartItems} />}
         />
         <Route
-          path="/all-products"
+          path="/all-products/:id"
           element={
-            <Allproductspage
+            <Singleproductpage
               cartItems={cartItems}
               allProductsData={allProductsData}
               addToCart={addToCart}

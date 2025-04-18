@@ -11,19 +11,30 @@ const Cart = ({
     (price, item) => price + item.qty * item.price,
     0
   );
+
+  const handleCheckout = () => {
+    const message = cartItems
+      .map(
+        (item) =>
+          `Item: ${item.name}, Quantidade: ${item.qty}, Valor: $${item.price * item.qty}.00`
+      )
+      .join("\n");
+    const finalMessage = `Resumo do Pedido:\n${message}\n\nValor Total: $${totalPrice}.00`;
+    const whatsappURL = `https://wa.me/5585991908723?text=${encodeURIComponent(
+      finalMessage
+    )}`;
+    window.open(whatsappURL, "_blank");
+  };
+
   return (
     <>
       <section className="cart-items">
         <div className="container cart-flex">
           <div className="cart-details">
-            {/* Checking cartlength if it's 0 thn displaying No items are added in the cart */}
             {cartItems.length === 0 && (
-              <h1 className="no-items product">
-                Seu carrinho está vazio
-              </h1>
+              <h1 className="no-items product">Seu carrinho está vazio</h1>
             )}
             {cartItems.map((item) => {
-              // mapping through the array of data and using objects in the array to use in the page
               const productQty = item.price * item.qty;
               return (
                 <div
@@ -75,7 +86,7 @@ const Cart = ({
               <h4>Valor Total :</h4>
               <h3>${totalPrice}.00</h3>
             </div>
-            <button className="checkout" onClick={() => checkOut(cartItems)}>
+            <button className="checkout" onClick={handleCheckout}>
               Pagar
             </button>
           </div>
