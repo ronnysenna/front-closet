@@ -7,9 +7,10 @@ import Slider from "react-slick";
 const Slidecard = () => {
   const navigate = useNavigate();
 
+
+
   const handleButtonClick = () => {
-    // Redirect the user to the desired page
-    navigate("/all-products"); // Replace '/collections' with the actual path
+    navigate("/all-products"); // Certifique-se de que "/all-products" é a rota correta
   };
 
   const settings = {

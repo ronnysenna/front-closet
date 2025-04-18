@@ -29,27 +29,7 @@ const Categ = () => {
   ];
   return (
     <>
-      <div className="category">
-        <div className="chead">
-          <h1>Moda 1</h1>
-          
-        </div>
-        {data.map((value, index) => {
-          return (
-            <div
-              style={{ display: "flex", borderRadius: "10px" }}
-              className="box brand-box"
-              key={index}
-            >
-              <img src={value.cateImg} alt="" />
-              <span>{value.cateName}</span>
-            </div>
-          );
-        })}
-        <div className="box box2">
-          <button>Ver todos</button>
-        </div>
-      </div>
+     
     </>
   );
 };

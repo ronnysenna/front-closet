@@ -1,43 +1,54 @@
 const discountData = [
-    {
-      cover: "./assets/discount/discount-1.png",
-      name: "modelo0",
-      price: "$250",
-    },
-    {
-      cover: "./assets/discount/discount-2.png",
-      name: "modelo1",
-      price: "$450",
-    },
-    {
-      cover: "./assets/discount/discount-3.png",
-      name: "modelo2",
-      price: "$50",
-    },
-    {
-      cover: "./assets/discount/discount-4.png",
-      name: "modelo3",
-      price: "$100",
-    },
-    {
-      cover: "./assets/discount/discount-5.png",
-      name: "modelo4",
-      price: "$20",
-    },
-    {
-      cover: "./assets/discount/discount-6.png",
-      name: "modelo5",
-      price: "$200",
-    },
-    {
-      cover: "./assets/discount/discount-7.png",
-      name: "modelo6",
-      price: "$300",
-    },
-    {
-      cover: "./assets/discount/discount-8.png",
-      name: "modelo7",
-      price: "$30",
-    }
-  ]
-  export default discountData;
+  {
+    cover: "/assets/babydolllara/conjunto (4).jpg",
+    name: "Baby Doll Lara",
+    price: 35,
+  },
+  {
+    cover: "/assets/babydollplus rosa/conjunto (2).jpg",
+    name: "Baby Doll Plus",
+    price: 40,
+  },
+  {
+    cover: "/assets/estampadorosa/conjunto (3).jpg",
+    name: "Camisola Estampada",
+    price: 35,
+  },
+  {
+    cover: "/assets/camisolarosa/conjunto (2).jpg",
+    name: "Camisola Lisa",
+    price: 40,
+  },
+  {
+    cover: "/assets/estampadovermelho/conunto (3).jpg",
+    name: "Baby Doll Floral",
+    price: 35,
+  },
+  {
+    cover: "/assets/camisolarosa/conjunto (3).jpg",
+    name: "Camisola Longa",
+    price: 40,
+  },
+  {
+    cover: "/assets/babydollpreto/conjunto (3).jpg",
+    name: "Baby Doll Renda",
+    price: 35,
+  },
+  {
+    cover: "/assets/camisolavermelha/conjunto (3).jpg",
+    name: "Camisola Curta",
+    price: 40,
+  },
+  {
+    cover: "/assets/babydollpreto/conjunto (3).jpg",
+    name: "Baby Doll Elegance",
+    price: 35,
+  },
+  {
+    cover: "/assets/camisolavermelha/conjunto (3).jpg",
+    name: "Camisola Estampada Floral",
+    price: 40,
+  },
+];
+
+export default discountData;

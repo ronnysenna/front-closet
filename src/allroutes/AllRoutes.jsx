@@ -25,55 +25,54 @@ const AllRoutes = ({
     <>
       <ScrollToTop />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Homepage
-              productItems={productItems}
-              cartItems={cartItems}
-              addToCart={addToCart}
-              shopItems={shopItems}
-            />
-          }
+      <Route
+        path="/"
+        element={
+        <Homepage
+          productItems={productItems}
+          cartItems={cartItems}
+          addToCart={addToCart}
+          shopItems={shopItems}
         />
-        <Route
-          path="/cart"
-          element={
-            <Cartpage
-              cartItems={cartItems}
-              addToCart={addToCart}
-              deleteFromCart={deleteFromCart}
-              checkOut={checkOut}
-              removeFromCart={removeFromCart}
-            />
-          }
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+        <Cartpage
+          cartItems={cartItems}
+          addToCart={addToCart}
+          deleteFromCart={deleteFromCart}
+          checkOut={checkOut}
+          removeFromCart={removeFromCart}
         />
-        <Route path="/login" element={<Loginpage cartItems={cartItems} />} />
-        <Route
-          path="/registration"
-          element={<Registrationpage cartItems={cartItems} />}
+        }
+      />
+      <Route path="/login" element={<Loginpage cartItems={cartItems} />} />
+      <Route
+        path="/registration"
+        element={<Registrationpage cartItems={cartItems} />}
+      />
+      <Route
+        path="/all-products/:id"
+        element={
+        <Singleproductpage
+          cartItems={cartItems}
+          allProductsData={allProductsData}
+          addToCart={addToCart}
         />
-        <Route
-          path="/all-products/:id"
-          element={
-            <Singleproductpage
-              cartItems={cartItems}
-              allProductsData={allProductsData}
-              addToCart={addToCart}
-            />
-          }
+        }
+      />
+      <Route
+        path="/all-products/"
+        element={
+        <Allproductspage
+          allProductsData={allProductsData}
+          addToCart={addToCart}
         />
-        <Route
-          path="/all-products/:id"
-          element={
-            <Singleproductpage
-              cartItems={cartItems}
-              allProductsData={allProductsData}
-              addToCart={addToCart}
-            />
-          }
-        />
-        {/* Catch-all route for 404 errors */}
+        }
+      />
+      {/* Catch-all route for 404 errors */}
         <Route path="*" element={<ErrorNotFound cartItems={cartItems} />} />
       </Routes>
     </>
