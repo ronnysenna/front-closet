@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
+import "./FlashDeals.css"; // Import your CSS file for styling
 
 // setting up arrows to display next and previous arrows and make them work
 const NextArrow = (props) => {

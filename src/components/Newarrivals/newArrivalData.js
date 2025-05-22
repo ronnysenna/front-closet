@@ -1,19 +1,19 @@
 const newArrivalData = [
     {
-      cover: "./assets/new-arrivals/arrivals1.png",
-      name: "Camisola de seda",
-      price: "35",
-    },
+    cover: "/assets/camisolavermelha/conjunto (3).jpg",
+    name: "Samba Canção Adulto (G)",
+    price: 15,
+  },
     {
-      cover: "./assets/new-arrivals/arrivals2.png",
-      name: "Camisola de Estampa",
-      price: "40",
-    },
+    cover: "/assets/babydollpreto/conjunto (3).jpg",
+    name: "Samba Canção Infantil (M)",
+    price: 14,
+  },
     {
-      cover: "./assets/new-arrivals/arrivals5.png",
-      name: "Baby Doll",
-      price: "45",
-    }
+    cover: "/assets/babydollpreto/conjunto (3).jpg",
+    name: "Conjunto Tulipa (G)",
+    price: 19,
+  }
 
     
    

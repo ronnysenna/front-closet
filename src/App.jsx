@@ -30,10 +30,10 @@ function App() {
             : item
         )
       );
-      toast.success("Item quantity increased");
+      toast.success("Quantidade de itens aumentada");
     } else {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
-      toast.success("Item added to cart");
+      toast.success("Item adicionado ao carrinho");
     }
   };
   // This is a function to delete items from the cart, it takes the product and checks within the cart to see if it is already in cart
@@ -46,12 +46,12 @@ function App() {
     // }
     if (productExists.qty === 1) {
       const shouldRemove = window.confirm(
-        "Are you sure you want to remove this item from the cart?"
+        "Tem certeza de que deseja remover este item do carrinho?"
       );
 
       if (shouldRemove) {
         setCartItems(cartItems.filter((item) => item.id !== product.id));
-        toast.success("Item removed from cart");
+        toast.success("Item removido do carrinho");
       }
     } else {
       setCartItems(
@@ -61,7 +61,7 @@ function App() {
             : item
         )
       );
-      toast.success("Item quantity decreased");
+      toast.success("Quantidade de itens diminuída");
     }
   };
   // This function is used for the checkout button it takes cartItems as input and if the length of items in it is 0 it alerts add something to cart first
@@ -87,20 +87,20 @@ function App() {
 
     if (loggedIn) {
       if (cartItems.length <= 0) {
-        toast.error("Add an item in the cart to checkout");
+        toast.error("Adicione um item ao carrinho para finalizar a compra");
       } else {
         const confirmOrder = window.confirm(
-          "Are you sure you want to order all these products?"
+          "Tem certeza de que deseja pedir todos esses produtos?"
         );
 
         if (confirmOrder) {
           // Clear the cart by setting it to a new array or an empty array
           setCartItems([]);
-          toast.success("Order placed, Thanks!!");
+          toast.success("Pedido feito, obrigado!!");
         }
       }
     } else {
-      toast("You must login first!", {
+      toast("Você deve fazer login primeiro!", {
         icon: "🤯",
       });
       navigate("/login", { replace: true });
@@ -110,12 +110,12 @@ function App() {
   // This function removes an item from the cart entirely, filtering out the values which doesn't have the same id as those clicked
   const removeFromCart = (product) => {
     const shouldRemove = window.confirm(
-      "Are you sure you want to remove this item from the cart?"
+      "Tem certeza de que deseja remover este item do carrinho?"
     );
 
     if (shouldRemove) {
       setCartItems(cartItems.filter((item) => item.id !== product.id));
-      toast.success("Item removed from cart");
+      toast.success("Item removido do carrinho");
     }
   };
 
