@@ -1,6 +1,6 @@
 import React from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import "./head.css";
 
 
 export const Head = () => {

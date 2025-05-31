@@ -1,0 +1,128 @@
+/* Estilos para o componente Head */
+
+/* Seção Principal do Cabeçalho */
+.head {
+  background-color: #ffffff; /* Fundo branco para um visual limpo */
+  padding: 15px 0; /* Espaçamento vertical */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Sombra sutil para dar profundidade */
+  position: sticky; /* Faz o header ficar fixo no topo ao rolar a página */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Garante que o header fique acima de outros conteúdos */
+}
+
+/* Container para centralizar e limitar a largura do conteúdo */
+.head .container {
+  max-width: 1200px; /* Largura máxima do conteúdo */
+  margin: 0 auto; /* Centraliza o container */
+  padding: 0 15px; /* Espaçamento lateral para não colar nas bordas da tela */
+}
+
+/* Utilitário Flexbox */
+.head .d_flex {
+  display: flex;
+  justify-content: space-between; /* Nome da marca à esquerda, ícones à direita */
+  align-items: center; /* Alinha verticalmente os itens */
+}
+
+/* Linha da Esquerda (Nome da Marca) */
+.head .left-row {
+  /* Não precisa de muito estilo aqui, o .d_flex já cuida do posicionamento */
+}
+
+.head .brand-name {
+  font-size: 1.8rem; /* Tamanho da fonte para a marca */
+  font-weight: 700; /* Peso da fonte */
+  color: #333; /* Cor escura para o texto */
+  text-decoration: none; /* Remove sublinhado se for um link */
+  margin: 0; /* Remove margens padrão do h1 */
+}
+
+/* Linha da Direita (Ícones Sociais) */
+.head .right-row {
+  /* O .d_flex cuida do posicionamento */
+}
+
+.head .social-icons-right {
+  display: flex;
+  align-items: center;
+}
+
+.head .social-icon {
+  font-size: 1.5rem; /* Tamanho dos ícones */
+  margin-left: 18px; /* Espaçamento entre os ícones */
+  color: #555; /* Cor padrão dos ícones */
+  transition: color 0.3s ease, transform 0.3s ease; /* Transição suave */
+}
+
+.head .social-icon:hover {
+  transform: scale(1.15); /* Leve aumento no hover */
+}
+
+/* Cores específicas para cada ícone (opcional, mas recomendado) */
+.head .instagram-icon:hover {
+  color: #e4405f; /* Cor do Instagram */
+}
+
+.head .whatsapp-icon:hover {
+  color: #25d366; /* Cor do WhatsApp */
+}
+
+/* --- Media Queries para Responsividade --- */
+
+/* Telas menores (Mobile) - até 768px */
+@media (max-width: 768px) {
+  .head {
+    padding: 12px 0; /* Reduz o padding vertical no mobile */
+  }
+
+  .head .brand-name {
+    font-size: 1.5rem; /* Reduz um pouco o tamanho da fonte da marca */
+  }
+
+  .head .social-icon {
+    font-size: 1.3rem; /* Reduz o tamanho dos ícones */
+    margin-left: 15px; /* Reduz o espaçamento entre ícones */
+  }
+
+  /* Opcional: Se quiser que o nome da marca e os ícones fiquem mais próximos
+     ou se o nome da marca for muito grande, você pode ajustar o .d_flex */
+  .head .d_flex {
+    /* Exemplo: Se precisar quebrar em duas linhas ou centralizar tudo
+    flex-direction: column;
+    align-items: flex-start; /* Ou center */
+    /* gap: 10px; */
+  }
+
+  /* Se você usar flex-direction: column, ajuste .left-row e .right-row se necessário */
+  /*
+  .head .left-row,
+  .head .right-row {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza os ícones se eles ficarem abaixo do nome */
+  /* }
+  */
+}
+
+/* Telas muito pequenas - até 480px */
+@media (max-width: 480px) {
+  .head .container {
+    padding: 0 10px; /* Menor espaçamento lateral */
+  }
+
+  .head .brand-name {
+    font-size: 1.3rem; /* Ainda menor para telas bem pequenas */
+  }
+
+  .head .social-icon {
+    font-size: 1.2rem;
+    margin-left: 12px;
+  }
+
+  /* Para telas muito pequenas, pode ser interessante esconder o texto e mostrar só ícones,
+     ou garantir que não haja quebra de layout.
+     A configuração atual com space-between deve se adaptar bem, mas teste.
+  */
+}

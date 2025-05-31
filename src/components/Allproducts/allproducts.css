@@ -114,7 +114,7 @@ body {
 
 .product-details a h5 { /* Estilo para o link "verifique a descrição" */
   font-size: 0.9rem;
-  color: #3498db; /* Cor de link */
+  color: #c10388; /* Cor de link */
   text-decoration: none;
   margin-bottom: 10px;
   display: inline-block;
@@ -161,7 +161,7 @@ body {
 }
 
 .product-details .price button:hover {
-  background-color: #2980b9; /* Cor mais escura no hover */
+  background-color: #da0a72; /* Cor mais escura no hover */
 }
 
 .product-details .price button i {
