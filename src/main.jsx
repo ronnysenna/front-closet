@@ -1,15 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import "./index.css";
 
-// Here the App component is being rendered in the browser and we have most of the functionality in the App component
+// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { theme } from './theme'; // Importe seu tema customizado
+import { CartProvider } from './context/CartContext.jsx'; // Mantenha seu CartProvider
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+// Seu arquivo CSS global, se tiver (para estilos que não são do MUI)
+import './App.css'; 
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> {/* Normaliza estilos e aplica alguns padrões MUI */}
+      <CartProvider> {/* Envolve o App com o CartProvider */}
+        <App />
+      </CartProvider>
+    </ThemeProvider>
+  </React.StrictMode>,
 );
