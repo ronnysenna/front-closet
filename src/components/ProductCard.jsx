@@ -18,7 +18,6 @@ import {
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Ícone MUI
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ícone MUI
 import { useCart } from '../context/CartContext'; // Mantenha seu contexto
-import { Link as RouterLink } from 'react-router-dom'; // Importar Link para navegação
 import { formatCurrency } from '../utils/formatCurrency'; // Mantenha seu utilitário
 
 const ProductCard = ({ product }) => {
@@ -87,7 +86,7 @@ const ProductCard = ({ product }) => {
         </Box>
 
       </CardContent>
-      <CardActions sx={{ p: 2, pt: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <CardActions sx={{ p: 2, pt: 0, justifyContent: 'center' }}>
         <Button
           fullWidth
           variant="contained"
@@ -102,15 +101,6 @@ const ProductCard = ({ product }) => {
           }}
         >
           {added ? "Adicionado!" : "Adicionar ao Carrinho"}
-        </Button>
-        <Button
-          fullWidth
-          variant="outlined"
-          component={RouterLink}
-          to={`/product/${product.id}`} // Link para a página de detalhes
-          sx={{ fontWeight: 'bold' }}
-        >
-          Ver Mais Detalhes
         </Button>
       </CardActions>
     </Card>
