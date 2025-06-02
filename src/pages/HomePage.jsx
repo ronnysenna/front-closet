@@ -1,3 +1,4 @@
+
 // src/pages/HomePage.jsx
 import React from 'react';
 import ProductList from '../components/ProductList';
@@ -31,6 +32,6 @@ const HomePage = () => {
       <ProductList />
     </div>
   );
-};
+}
 
 export default HomePage;
