@@ -33,7 +33,7 @@ export const products = [
     "id": "1748810479345",
     "title": "Babydoll Virginia Full Baby ",
     "description": "Conjunto de babydoll delicado, com design juvenil e confortável, perfeito para quem gosta de um estilo mais romântico.",
-    "imageUrl": "../public/image/babydollvirginia.jpeg",
+    "imageUrl": "image/babydollvirginia.jpeg",
     "price": "15.00",
     "stock": 20,
     "sizes": [
