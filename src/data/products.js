@@ -5,7 +5,7 @@ export const products = [
     "id": "1748810288102",
     "title": "Camisola Suede",
     "description": "Camisola feminina feita em tecido suede, macio e confortável, ideal para noites aconchegantes.",
-    "imageUrl": "../public/image/camisolasuede.jpeg",
+    "imageUrl": "image/camisolasuede.jpeg",
     "price": "15.00",
     "stock": 20,
     "sizes": [
