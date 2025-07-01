@@ -85,6 +85,20 @@ export const products = [
       "unico"
     ]
   },
+    {
+    "id": "1748810456789",
+    "title": "Babydoll Estampado",
+    "description": "Babydoll estampado delicado, com confortável, perfeito para quem gosta de um estilo mais romântico.",
+    "imageUrl": "/image/estampado.jpg",
+    "price": "14.00",
+    "stock": 20,
+    "sizes": [
+      "Unico"
+    ],
+    "colors": [
+      "Estampado"
+    ]
+  },
   {
     "id": "1748810479345",
     "title": "Camisola Suede",
