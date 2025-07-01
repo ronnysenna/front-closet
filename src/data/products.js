@@ -3,7 +3,7 @@ export const products = [
   
   {
     "id": "1748810288102",
-    "title": "Camisola Suede",
+    "title": "Camisola plus size",
     "description": "Camisola feminina feita em tecido suede, macio e confortável, ideal para noites aconchegantes.",
     "imageUrl": "/image/camisolasuede.jpeg",
     "price": "15.00",
@@ -57,20 +57,20 @@ export const products = [
       "Preto"
     ]
   },
-  {
-    "id": "1748810372782",
-    "title": "Camisola Suede Plus ",
-    "description": "Versão plus size da camisola em suede, garantindo conforto e elegância para todos os corpos.",
-    "imageUrl": "/image/babydollplus.jpeg",
-    "price": "18.00",
-    "stock": 20,
-    "sizes": [
-      "Unico"
-    ],
-    "colors": [
-      "Estampado"
-    ]
-  },
+  // {
+  //   "id": "1748810372782",
+  //   "title": "Baby Doll Plus",
+  //   "description": "Versão plus size da camisola em liganete, garantindo conforto e elegância para todos os corpos.",
+  //   "imageUrl": "/image/babydollplus.jpeg",
+  //   "price": "18.00",
+  //   "stock": 20,
+  //   "sizes": [
+  //     "Unico"
+  //   ],
+  //   "colors": [
+  //     "Estampado"
+  //   ]
+  // },
    {
     "id": "1748810442982",
     "title": "KuLOLO",
@@ -101,13 +101,12 @@ export const products = [
   },
   {
     "id": "1748810595908",
-    "title": "Camisola Lisa ",
+    "title": "Camisola Liso ",
     "description": "Camisola feminina de modelo simples e sem estampas, ideal para quem prefere um visual minimalista e elegante.",
     "imageUrl": "/image/babydollliso.jpeg",
     "price": "14.00",
     "stock": 20,
     "sizes": [
-      "P",
       "M",
       "G",
       "GG"
@@ -131,7 +130,6 @@ export const products = [
     "price": "18.00",
     "stock": 20,
     "sizes": [
-      "P",
       "M",
       "G",
       "GG"
@@ -166,7 +164,6 @@ export const products = [
     "price": "13.00",
     "stock": 20,
     "sizes": [
-      "P",
       "M",
       "G",
       "GG"

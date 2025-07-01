@@ -76,16 +76,16 @@ const ProductCard = ({ product }) => {
           </Select>
         </FormControl>
         
-        {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
           <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
             {formatCurrency ? formatCurrency(parseFloat(product.price)) : `R$ ${product.price}`}
           </Typography>
-          {product.stock > 0 ? (
+          {/* {product.stock > 0 ? (
             <Chip label={`Em estoque: ${product.stock}`} color="success" size="small" variant="outlined" />
           ) : (
             <Chip label="Esgotado" color="error" size="small" variant="outlined" />
-          )}
-        </Box> */}
+          )} */}
+        </Box>
 
       </CardContent>
       <CardActions sx={{ p: 2, pt: 0, justifyContent: 'center' }}>
