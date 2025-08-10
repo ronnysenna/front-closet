@@ -21,26 +21,26 @@ const RotatingBanner = ({ images, whatsappLink }) => {
 
   return (
     <Box
-      component="section"
       sx={{
         position: 'relative',
-        width: '100%',
-        height: { xs: '256px', md: '320px' }, // Equivalente a h-64 e md:h-80
-        backgroundColor: 'grey.800', // Fallback se imagens não carregarem
-        my: 4, // Equivalente a my-8 (MUI spacing unit * 8px)
-        boxShadow: 3, // Equivalente a shadow-lg
+        height: { xs: '340px', sm: '420px', md: '520px', lg: '600px' }, // Banner mais alto e responsivo
+        my: { xs: 2, sm: 4, md: 6 }, // Mais espaçamento em telas maiores
+        boxShadow: 6, // Sombra mais forte para destaque visual
+        borderRadius: { xs: 2, md: 4 }, // Cantos mais arredondados em telas grandes
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
-        borderRadius: 1, // Opcional: para cantos levemente arredondados
       }}
     >
       {images.map((imageUrl, index) => (
         <Box
           key={index}
-          component="img" // Mantendo como img para objectFit, mas poderia ser um Box com backgroundImage
-          src={imageUrl} // src é para img, backgroundImage para Box
+          component="img"
+          src={imageUrl}
           alt={`Banner Promocional ${index + 1}`}
           onError={(e) => {
-            e.target.style.display = 'none'; // Esconde imagem se não carregar
+            e.target.style.display = 'none';
           }}
           sx={{
             position: 'absolute',
@@ -48,9 +48,10 @@ const RotatingBanner = ({ images, whatsappLink }) => {
             left: 0,
             width: '100%',
             height: '100%',
+            filter: 'brightness(0.95) saturate(1.2)',
             objectFit: 'cover',
             opacity: index === currentImageIndex ? 1 : 0,
-            zIndex: index === currentImageIndex ? 1 : 0, // Imagem ativa na frente
+            zIndex: index === currentImageIndex ? 1 : 0,
             transition: 'opacity 1000ms ease-in-out',
           }}
         />
@@ -58,60 +59,57 @@ const RotatingBanner = ({ images, whatsappLink }) => {
       <Box
         sx={{
           position: 'absolute',
-          inset: 0, // Equivalente a top, bottom, left, right = 0
-          backgroundColor: 'rgba(0, 0, 0, 0.6)', // bg-black bg-opacity-60
+          inset: 0,
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          p: { xs: 2, md: 3 }, // p-4 (MUI: 2*8px = 16px)
-          zIndex: 2, // Overlay na frente das imagens de fundo
-          color: 'common.white', // text-white
+          p: { xs: 2, sm: 3, md: 5 },
+          zIndex: 2,
         }}
       >
         <Typography
-          variant="h3" // Ajuste conforme necessário para o tamanho
-          component="h2"
-          gutterBottom
+          variant="h3"
           sx={{
             fontWeight: 'bold',
-            lineHeight: 1.2, // leading-tight
-            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)', // shadow-text
-            fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' } // Ajuste fino do tamanho
+            lineHeight: 1.1,
+            textShadow: '2px 2px 8px rgba(255, 255, 255, 0.8)',
+            fontSize: { xs: '2.1rem', sm: '2.7rem', md: '3.5rem', lg: '4rem' },
+            letterSpacing: { xs: '0.5px', md: '1.5px' },
+            mb: { xs: 2, sm: 3, md: 4 },
           }}
         >
           Venha participar do nosso <br className="sm:hidden" /> Grupo VIP no WhatsApp!
         </Typography>
         <Typography
-          variant="body1" // Ajuste conforme necessário
           sx={{
-            mb: 3, // mb-6 (MUI: 3*8px = 24px)
-            color: 'grey.200', // text-gray-200
-            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)', // shadow-text
-            fontSize: { xs: '0.9rem', md: '1.1rem' }
+            textShadow: '1px 1px 6px rgba(0,0,0,0.7)',
+            fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.35rem' },
+            maxWidth: { xs: '90%', sm: '70%', md: '60%' },
+            mb: 3,
+            color: 'grey.200',
           }}
         >
           Receba ofertas exclusivas, novidades e muito mais!
         </Typography>
         <Button
           variant="contained"
-          href={whatsappLink || "#"} // Fallback para '#' se o link não for fornecido
+          href={whatsappLink || "#"}
           target="_blank"
           rel="noopener noreferrer"
           sx={{
-            backgroundColor: 'success.main', // bg-green-500
-            color: 'common.white',
-            fontWeight: 'bold',
-            py: 1.5, // py-3
-            px: { xs: 3, md: 4 }, // px-8
-            borderRadius: 2, // rounded-lg
-            fontSize: { xs: '0.9rem', md: '1.1rem' }, // text-lg
-            boxShadow: 2, // shadow-md
+            py: { xs: 1.5, sm: 2, md: 2.5 },
+            px: { xs: 4, sm: 6, md: 8 },
+            borderRadius: 3,
+            fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.35rem' },
+            boxShadow: 4,
             transition: 'transform 0.2s ease-in-out, background-color 0.2s ease-in-out',
             '&:hover': {
-              backgroundColor: 'success.dark', // hover:bg-green-600
-              transform: 'scale(1.05)', // hover:scale-105
+              backgroundColor: 'success.dark',
+              transform: 'scale(1.05)',
             },
           }}
         >
