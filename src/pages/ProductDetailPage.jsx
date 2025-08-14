@@ -154,8 +154,9 @@ function ProductDetailPage() {
               {product.colors.map(color => <MenuItem key={color} value={color}>{color}</MenuItem>)}
             </Select>
           </FormControl>
+          
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
+          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
             <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
               {formatCurrency ? formatCurrency(parseFloat(product.price)) : `R$ ${product.price}`}
             </Typography>
@@ -164,7 +165,8 @@ function ProductDetailPage() {
             ) : (
               <Chip label="Esgotado" color="error" variant="outlined" />
             )}
-          </Box>
+          </Box> */
+          }
 
           <Button
             fullWidth

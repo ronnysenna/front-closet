@@ -1,22 +1,21 @@
 // src/components/ProductList.jsx
 import React from 'react';
-import { products } from '../data/products';
 import ProductCard from './ProductCard';
 import { Grid, Typography, Container } from '@mui/material';
 
-const ProductList = () => {
+const ProductList = ({ products }) => {
   if (!products || products.length === 0) {
     return <Typography variant="subtitle1" align="center" sx={{ mt: 5 }}>Nenhum produto encontrado.</Typography>;
   }
 
   return (
-    <Container sx={{ py: 4 }}> {/* py é padding no eixo Y */}
+    <Container sx={{ py: 4 }}>
       <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
         Nossos Produtos
       </Typography>
-      <Grid container spacing={3}> {/* spacing={3} equivale a 3*8px = 24px de espaçamento */}
+      <Grid container spacing={3}>
         {products.map(product => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}> {/* Define responsividade */}
+          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
             <ProductCard product={product} />
           </Grid>
         ))}
