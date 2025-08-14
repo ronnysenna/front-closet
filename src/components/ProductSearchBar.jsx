@@ -12,7 +12,7 @@ const ProductSearchBar = ({ onSearch }) => {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', mb: 4 }}>
+    <Box sx={{ width: '100%', maxWidth: 700, mx: 'auto', mb: 4 }}>
       <TextField
         fullWidth
         variant="outlined"
