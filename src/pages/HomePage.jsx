@@ -3,8 +3,9 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
 import ProductSearchBar from '../components/ProductSearchBar';
-import RotatingBanner from '../components/RotatingBanner'; // Importar o novo componente
-import { products } from '../data/products'; // Importar os dados dos produtos
+import RotatingBanner from '../components/RotatingBanner';
+import ShippingInfo from '../components/ShippingInfo';
+import { products } from '../data/products';
 
 import { useState } from 'react';
 
@@ -48,6 +49,7 @@ const HomePage = () => {
       <ProductList products={filteredProducts} />
       {/* Barra de busca */}
       <ProductSearchBar onSearch={setSearchTerm} />
+      <ShippingInfo />
     </div>
   );
 }

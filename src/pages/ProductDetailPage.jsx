@@ -27,6 +27,7 @@ function ProductDetailPage() {
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
+  const [mainImage, setMainImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,8 +46,8 @@ function ProductDetailPage() {
 
       if (foundProduct) {
         setProduct(foundProduct);
+        setMainImage(foundProduct.imageUrl);
         // Define os valores iniciais para os seletores se o produto for encontrado
-        // Verifica se sizes e colors existem e não estão vazios antes de tentar acessar o primeiro elemento
         if (foundProduct.sizes?.length > 0) {
           setSelectedSize(foundProduct.sizes[0]);
         }
@@ -108,13 +109,29 @@ function ProductDetailPage() {
     <Container sx={{ py: { xs: 2, md: 4 } }}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 3 }}>
+          <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 3, mb: 2 }}>
             <img
-              src={product.imageUrl || 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
+              src={mainImage || 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
               alt={product.title}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
+              style={{ width: '100%', height: '260px', objectFit: 'contain', display: 'block', background: '#fafafa' }}
               onError={(e) => e.target.src = 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
             />
+          </Box>
+          {/* Galeria de imagens */}
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap', mb: 2 }}>
+            {(product.galleryImages || [product.imageUrl]).map((img, idx) => (
+              <Box
+                key={idx}
+                sx={{ borderRadius: 1, overflow: 'hidden', boxShadow: 1, width: 64, height: 64, bgcolor: '#fff', cursor: 'pointer', border: mainImage === img ? '2px solid #1976d2' : '2px solid #eee' }}
+                onClick={() => setMainImage(img)}
+              >
+                <img
+                  src={img || 'https://via.placeholder.com/64x64?text=+'}
+                  alt={`Miniatura ${idx + 1}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </Box>
+            ))}
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -168,17 +185,21 @@ function ProductDetailPage() {
           </Box> */
           }
 
-          <Button
-            fullWidth
-            variant="contained"
-            color={added ? "success" : "primary"}
-            startIcon={added ? <CheckCircleIcon /> : <ShoppingCartIcon />}
-            onClick={handleAddToCart}
-            disabled={product.stock === 0 || added || !selectedSize || !selectedColor}
-            sx={{ py: 1.5, fontWeight: 'bold', mt: 2, mb: 2 }}
-          >
-            {added ? "Adicionado ao Carrinho!" : "Adicionar ao Carrinho"}
-          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Button
+              variant="contained"
+              color={added ? "success" : "primary"}
+              startIcon={added ? <CheckCircleIcon /> : <ShoppingCartIcon />}
+              onClick={handleAddToCart}
+              disabled={product.stock === 0 || added || !selectedSize || !selectedColor}
+              sx={{ py: 1.5, fontWeight: 'bold', minWidth: 180 }}
+            >
+              {added ? "Adicionado ao Carrinho!" : "Adicionar ao Carrinho"}
+            </Button>
+            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', fontWeight: 500 }}>
+              Solicite as estampas disponíveis
+            </Typography>
+          </Box>
 
           {product.details && product.details.length > 0 && (
             <Box sx={{ mt: 3 }}>
