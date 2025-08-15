@@ -7,7 +7,7 @@ import ImageIcon from '@mui/icons-material/Image';
 // Imagens dos ícones das transportadoras
 const jadlogIcon = '/image/jadlog.png'; // Coloque o arquivo em public/image/jadlog.png
 const sedexIcon = '/image/sedex.png';   // Coloque o arquivo em public/image/sedex.png
-const pacIcon = '/image/pac.jpeg';       // Coloque o arquivo em public/image/pac.png
+const pacIcon = '/image/pac.png';       // Coloque o arquivo em public/image/pac.png
 
 const ShippingInfo = () => (
   <Box sx={{
