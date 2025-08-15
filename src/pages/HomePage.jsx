@@ -47,8 +47,7 @@ const HomePage = () => {
 
       {/* Lista de produtos filtrada */}
       <ProductList products={filteredProducts} />
-      {/* Barra de busca */}
-      <ProductSearchBar onSearch={setSearchTerm} />
+      
       <ShippingInfo />
     </div>
   );
