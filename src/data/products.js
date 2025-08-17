@@ -14,7 +14,7 @@ export const products = [
     "price": "25.00",
     "stock": 20,
     "sizes": [
-      "Unico"
+      "P","M", "G", "GG"
     ],
     "colors": [
       "Estampado"
