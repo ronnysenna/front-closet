@@ -39,22 +39,29 @@ const ProductCard = ({ product }) => {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      alignItems: 'stretch',
+      alignItems: 'center',
       height: '100%',
-  // width removido para permitir que o Grid controle o tamanho
-      // Ajuste a altura mínima para se adequar ao layout
       minHeight: { xs: 420, sm: 440, md: 480 },
+      maxWidth: { xs: '100%', md: 320 },
+      mx: 'auto',
       borderRadius: 2,
       boxShadow: 3,
       boxSizing: 'border-box',
     }}>
       <CardMedia
         component="img"
-        height="250" // Ou um valor que funcione bem para seu layout
+        height="220"
         image={product.imageUrl}
         alt={product.title}
         onError={(e) => e.target.src = 'https://via.placeholder.com/400x400?text=Imagem+Indisponível'}
-        sx={{ objectFit: 'cover' }}
+        sx={{
+          objectFit: 'cover',
+          width: '100%',
+          maxWidth: { xs: '100%', md: 280 },
+          mx: 'auto',
+          borderRadius: 2,
+          transition: 'width 0.2s',
+        }}
       />
   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 220 }}>
         <Typography gutterBottom variant="h6" component="div" noWrap title={product.title} sx={{ fontWeight: 'bold' }}>
