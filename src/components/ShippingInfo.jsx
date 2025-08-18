@@ -7,7 +7,8 @@ import ImageIcon from '@mui/icons-material/Image';
 // Imagens dos ícones das transportadoras
 const jadlogIcon = '/image/jadlog.png'; // Coloque o arquivo em public/image/jadlog.png
 const sedexIcon = '/image/sedex.png';   // Coloque o arquivo em public/image/sedex.png
-const pacIcon = '/image/pac.png';       // Coloque o arquivo em public/image/pac.png
+const pacIcon = '/image/pac.png';  
+const loggiIcon = '/image/loggi.png'; 
 
 const ShippingInfo = () => (
   <Box sx={{
@@ -26,12 +27,13 @@ const ShippingInfo = () => (
       <img src={jadlogIcon} alt="Jadlog" style={{ height: 40 }} />
       <img src={sedexIcon} alt="Sedex" style={{ height: 40 }} />
       <img src={pacIcon} alt="PAC" style={{ height: 40 }} />
+      <img src={loggiIcon} alt="LOGGI" style={{ height: 40 }} />
     </Stack>
     <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
       Entregamos para todo o Brasil!
     </Typography>
     <Typography variant="body2" color="text.secondary">
-      Enviamos pelas principais transportadoras: Jadlog, Sedex e PAC.
+      Enviamos pelas principais transportadoras: Jadlog, Sedex e PAC, Loggi e Via aéreo.
     </Typography>
   </Box>
 );

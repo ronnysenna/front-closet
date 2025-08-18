@@ -9,9 +9,9 @@ export const products = [
     ],
     "id": "1748810288102",
     "title": "Baby doll Anna",
-    "description": "• ✅R$18,00 no Atacado • ✅Tamanho Único • ✅Tecido Suede Fabricação própria ✅",
+    "description": "• ✅R$25,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede Fabricação própria ✅",
     "imageUrl": "/image/Anna1 (1).jpg",
-    "price": "25.00",
+    "price": "18.00",
     "stock": 20,
     "sizes": [
       "P","M", "G", "GG"
@@ -30,9 +30,9 @@ export const products = [
     ],
     "id": "1748810331234",
     "title": "Camisola Sued",
-    "description": "• ✅R$14,00 no Atacado • ✅Tamanho Único • ✅Tecido Suede Fabricação própria ✅",
+    "description": "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede Fabricação própria ✅",
     "imageUrl": "/image/Camisola Sued  (1).jpg",
-    "price": "20.00",
+    "price": "14.00",
     "stock": 20,
     "sizes": [
       "Unico"
@@ -55,9 +55,9 @@ export const products = [
     ],
     "id": "1748810354567",
     "title": "Baby Doll Lara infantil ",
-    "description": "• ✅Valor 12,00 no Atacado • ✅Tamanho Único ( 2 a 8 anos  ) • ✅Suede Premium",
+    "description": "• ✅Valor 20,00 no Varejo • ✅Tamanho Único ( 2 a 8 anos  ) • ✅Suede Premium",
     "imageUrl": "/image/Baby Doll Lara infantil (1).jpg",
-    "price": "20.00",
+    "price": "12.00",
     "stock": 20,
     "sizes": [
       "Único ( 2 a 8 anos  )"
@@ -75,9 +75,9 @@ export const products = [
 
     "id": "1748810367890",
     "title": "Baby Doll Virgínia Infantil",
-    "description": " ✅Valor 15,00 no Atacado • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
+    "description": " ✅Valor 20,00 no Varejo • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
     "imageUrl": "/image/Baby Doll Virgínia Infantil (3).jpg",
-    "price": "20.00",
+    "price": "15.00",
     "stock": 20,
    "sizes": [
       "Único ( 2 a 8 anos  )"
@@ -100,9 +100,9 @@ export const products = [
     ],
     "id": "1748810372782",
     "title": "Macaquinho Suede infantil",
-    "description": "✅Valor 17,00 no Atacado • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
+    "description": "✅Valor 25,00 no Varejo • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
     "imageUrl": "/image/Macaquinho Suede infantil (1).jpg",
-    "price": "25.00",
+    "price": "17.00",
     "stock": 20,
     "sizes": [
       "Único ( 5 a 10 anos  )"
@@ -120,9 +120,9 @@ export const products = [
     ],
     "id": "1748810442982",
     "title": "Camisola Tule",
-    "description": "• ✅R$18,00 no atacado • ✅Tamanho M/G/GG • ✅Tecido Tule •✅Branco/Preto/Vermelho Fabricação própria ✅",
+    "description": "• ✅R$25,00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Tule •✅Branco/Preto/Vermelho Fabricação própria ✅",
     "imageUrl": "/image/Camisola Tule (1).jpg",
-    "price": "25.00",
+    "price": "18.00",
     "stock": 20,
      "sizes": [
       "M",
@@ -149,9 +149,9 @@ export const products = [
     ],
     "id": "1748810456789",
     "title": "Baby Doll Liso",
-    "description": "• ✅R$14.00 no atacado • ✅Tamanho M/G/GG • ✅Tecido Liganete Fabricação própria ✅",
+    "description": "• ✅R$20.00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete Fabricação própria ✅",
     "imageUrl": "/image/Baby Doll Liso (1).jpg",
-    "price": "20.00",
+    "price": "14.00",
     "stock": 20,
     "sizes": [
       "M",
@@ -179,9 +179,9 @@ export const products = [
     ],
     "id": "1748810479345",
     "title": "Baby Luxo",
-    "description": "• ✅R$13,00 no atacado • ✅Tamanho M/G/GG • ✅Tecido Liganete Fabricação própria ✅",
+    "description": "• ✅R$20,00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete Fabricação própria ✅",
     "imageUrl": "/image/Baby Luxo (1).jpg",
-    "price": "20.00",
+    "price": "13.00",
     "stock": 20,
     "sizes": [
       "M",
@@ -207,9 +207,9 @@ export const products = [
     ],
     "id": "17488105959048",
     "title": "Camisola Lisa ",
-    "description": "• ✅R$14.00 no atacado • ✅Tamanho M/G/GG • ✅Tecido Liganete",
+    "description": "• ✅R$25.00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete",
     "imageUrl": "/image/Camisola Liso (1).jpg",
-    "price": "25.00",
+    "price": "14.00",
     "stock": 20,
     "sizes": [
       "M",
@@ -239,9 +239,9 @@ export const products = [
     ],
     "id": "1748810595908",
     "title": "Kit Mozão",
-    "description": "• ✅R$32,00 no atacado • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ",
+    "description": "• ✅R$50,00 no Varejo • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ",
     "imageUrl": "/image/Kit Mozão  (1).jpg",
-    "price": "50.00",
+    "price": "32.00",
     "stock": 20,
     "sizes": [
       "Único ( 38/44 )"
@@ -259,9 +259,9 @@ export const products = [
     ],
     "id": "1748810595948",
     "title": "Conjunto João infantil ",
-    "description": "• ✅R$15,00 no atacado • ✅Tamanho Único (Veste 5 até 10 anos) • ✅Tecido Suede ",
+    "description": "• ✅R$25,00 no Varejo • ✅Tamanho Único (Veste 5 até 10 anos) • ✅Tecido Suede ",
     "imageUrl": "/image/Conjunto João infantil  (1).jpg",
-    "price": "25.00",
+    "price": "15.00",
     "stock": 20,
     "sizes": [
       "Único (Veste 5 até 10 anos)"
