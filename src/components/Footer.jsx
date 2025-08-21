@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom'; // Para links internos
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const instagramUser = "https://www.instagram.com/gofashion_brasil?igsh=MWwyNnZpZXhmMjI5eA=="; // Coloque seu usuário do Instagram
-  const whatsappNumber = "5585991792190"; // Coloque seu número de WhatsApp (ex: 5585912345678)
+  const whatsappNumber = "5585997173941"; // Coloque seu número de WhatsApp (ex: 5585912345678)
 
   return (
     <Box

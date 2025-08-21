@@ -22,7 +22,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront'; // Ícone para ver 
 const CartPage = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const total = getCartTotal();
-  const whatsappNumber = "5585991792190"; // IMPORTANTE: Coloque seu número
+  const whatsappNumber = "5585997173941"; // IMPORTANTE: Coloque seu número
 
   const handleWhatsAppCheckout = () => {
     if (cartItems.length === 0) return;
