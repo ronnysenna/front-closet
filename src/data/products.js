@@ -156,7 +156,7 @@ export const products = [
     ],
     id: "17488104797452",
     title: "Baby Doll Virgínia Full",
-    description: "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede Fabricação própria ✅",
+    description: "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Baby Doll Virgínia Full (1).jpg",
     price: "14.00",
     stock: 20,
