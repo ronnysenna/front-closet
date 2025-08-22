@@ -22,6 +22,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import HomeIcon from '@mui/icons-material/Home';
 import CategoryIcon from '@mui/icons-material/Category';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 // Se precisar de mais ícones para o drawer:
 // import StorefrontIcon from '@mui/icons-material/Storefront';
 
@@ -57,7 +58,7 @@ const ResponsiveNavbar = () => {
 
   const navItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/' },
-    { text: 'Feedback', icon: <CategoryIcon />, path: '/feedback' },
+  { text: 'Feedback', icon: <FavoriteIcon sx={{ color: '#e91e63' }} />, path: '/feedback' },
     // Adiciona cada categoria como item de navegação
     ...categories.map(cat => ({
       text: cat.text,
