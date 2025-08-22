@@ -138,6 +138,31 @@ export const products = [
       "Rosa"
     ]
   },
+   {
+    category: "babydoll",
+    galleryImages: [
+      "/image/Baby Doll Virgínia Full (1).jpg",
+      "/image/Baby Doll Virgínia Full (2).jpg",
+      "/image/Baby Doll Virgínia Full (3).jpg",
+      "/image/Baby Doll Virgínia Full (4).jpg",
+      "/image/Baby Doll Virgínia Full (5).jpg",
+      "/image/Baby Doll Virgínia Full (6).jpg",
+      "/image/Baby Doll Virgínia Full (7).jpg",
+      "/image/Baby Doll Virgínia Full (8).jpg",
+      "/image/Baby Doll Virgínia Full (9).jpg",
+      "/image/Baby Doll Virgínia Full (10).jpg"
+
+   
+    ],
+    id: "17488104797452",
+    title: "Baby Doll Virgínia Full",
+    description: "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Liganete Fabricação própria ✅",
+    imageUrl: "/image/Baby Doll Virgínia Full (1).jpg",
+    price: "14.00",
+    stock: 20,
+    sizes: ["Único"],
+    colors: ["Estampado"]
+  },
   {
     category: "babydoll",
     galleryImages: [
