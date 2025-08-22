@@ -9,7 +9,7 @@ export const products = [
     ],
     id: "1748810288102",
     title: "Baby doll Anna",
-    description: "• ✅R$25,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede ✅Fabricação própria ",
+    description: "• ✅R$25,00 no Varejo • ✅Tamanho P/M/G/GG • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Anna1 (1).jpg",
     price: "18.00",
     stock: 20,
