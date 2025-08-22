@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // CartProvider já está no main.jsx envolvendo o App
 import Header from './components/Header';
+import FeedbackPage from './pages/FeedbackPage';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
@@ -21,6 +22,7 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/categoria/:category" element={<CategoryPage />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
           </Routes>
         </Box>
         <Footer />

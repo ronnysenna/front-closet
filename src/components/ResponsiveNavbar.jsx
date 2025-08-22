@@ -57,6 +57,7 @@ const ResponsiveNavbar = () => {
 
   const navItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/' },
+    { text: 'Feedback', icon: <CategoryIcon />, path: '/feedback' },
     // Adiciona cada categoria como item de navegação
     ...categories.map(cat => ({
       text: cat.text,
