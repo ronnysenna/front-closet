@@ -1,5 +1,6 @@
 // src/pages/CartPage.jsx
 import React, { useState } from 'react';
+import couponsData from '../data/coupons.json';
 import { Link as RouterLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import CartItem from '../components/CartItem';
@@ -22,6 +23,10 @@ import StorefrontIcon from '@mui/icons-material/Storefront'; // Ícone para ver 
 const CartPage = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const [showMinOrderWarning, setShowMinOrderWarning] = useState(false);
+  const [coupon, setCoupon] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [discountValue, setDiscountValue] = useState(0);
+  const [couponError, setCouponError] = useState('');
   const total = getCartTotal();
   const whatsappNumber = "5585997173941"; // IMPORTANTE: Coloque seu número
 
@@ -44,7 +49,10 @@ const CartPage = () => {
       message += `  Qtd: ${item.quantity} x ${formatCurrency ? formatCurrency(parseFloat(item.price)) : `R$ ${item.price}`}\n`;
       message += `  Subtotal: ${formatCurrency ? formatCurrency(parseFloat(item.price) * item.quantity) : `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}`}\n\n`;
     });
-    message += `*Total do Pedido: ${formatCurrency ? formatCurrency(total) : `R$ ${total.toFixed(2)}`}*`;
+    message += `*Total do Pedido: ${formatCurrency ? formatCurrency(discountedTotal) : `R$ ${discountedTotal.toFixed(2)}`}*`;
+    if (couponApplied && coupon) {
+      message += `\nCupom aplicado: ${coupon.trim().toUpperCase()}`;
+    }
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -74,6 +82,22 @@ const CartPage = () => {
     );
   }
 
+  // Aplica desconto se houver cupom válido
+  const discountedTotal = total - discountValue;
+
+  const handleApplyCoupon = () => {
+    const found = couponsData.find(c => c.code.toUpperCase() === coupon.trim().toUpperCase());
+    if (found) {
+      setDiscountValue(found.discount);
+      setCouponApplied(true);
+      setCouponError('');
+    } else {
+      setCouponError('Cupom inválido ou expirado.');
+      setCouponApplied(false);
+      setDiscountValue(0);
+    }
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
@@ -87,6 +111,34 @@ const CartPage = () => {
         </List>
         <Divider />
         <Box sx={{ p: 3 }}>
+          {/* Campo para cupom de desconto */}
+          <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
+            <Grid item xs={12} sm={6} md={4}>
+              <input
+                type="text"
+                value={coupon}
+                onChange={e => setCoupon(e.target.value)}
+                placeholder="Digite o código do cupom"
+                style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #ccc', fontSize: '1rem' }}
+                disabled={couponApplied}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleApplyCoupon}
+                disabled={couponApplied}
+                sx={{ py: 1, fontWeight: 'bold', width: '100%' }}
+              >
+                {couponApplied ? 'Cupom Aplicado' : 'Aplicar Cupom'}
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              {couponError && <Typography color="error" sx={{ mt: 1 }}>{couponError}</Typography>}
+              {couponApplied && <Typography color="success.main" sx={{ mt: 1 }}>Cupom aplicado! Desconto de R$ {discountValue.toFixed(2)}</Typography>}
+            </Grid>
+          </Grid>
           <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
             <Grid item>
               <Typography variant="h5" component="p" sx={{ fontWeight: 'medium' }}>
@@ -95,7 +147,7 @@ const CartPage = () => {
             </Grid>
             <Grid item>
               <Typography variant="h4" component="p" color="primary" sx={{ fontWeight: 'bold' }}>
-                {formatCurrency ? formatCurrency(total) : `R$ ${total.toFixed(2)}`}
+                {formatCurrency ? formatCurrency(discountedTotal) : `R$ ${discountedTotal.toFixed(2)}`}
               </Typography>
             </Grid>
           </Grid>
