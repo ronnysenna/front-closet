@@ -247,5 +247,40 @@ export const products = [
     stock: 20,
     sizes: ["Único (Veste 5 até 10 anos)"],
     colors: ["Estampado"]
+  },
+    {
+    category: "americano",
+    galleryImages: [
+      "/image/Pijama Americano Curto (1).png",
+      "/image/Pijama Americano Curto (1).jpg",
+      "/image/Pijama Americano Curto (2).jpg",
+      "/image/Pijama Americano Curto (3).jpg",
+      "/image/Pijama Americano Curto (4).jpg",
+      "/image/Pijama Americano Curto (5).jpg",
+      "/image/Pijama Americano Curto (6).jpg",
+      "/image/Pijama Americano Curto (7).jpg",
+      "/image/Pijama Americano Curto (8).jpg",
+      "/image/Pijama Americano Curto (9).jpg",
+      "/image/Pijama Americano Curto (10).jpg",
+      "/image/Pijama Americano Curto (11).jpg",
+      "/image/Pijama Americano Curto (12).jpg",
+      "/image/Pijama Americano Curto (13).jpg",
+      "/image/Pijama Americano Curto (14).jpg",
+      "/image/Pijama Americano Curto (15).jpg",
+      "/image/Pijama Americano Curto (16).jpg",
+      "/image/Pijama Americano Curto (17).jpg",
+      "/image/Pijama Americano Curto (18).jpg",
+      "/image/Pijama Americano Curto (19).jpg"
+
+     
+    ],
+    id: "17482105959348",
+    title: "Pijama Americano Curto",
+    description: "• ✅R$50,00 no Varejo ✅Tamanhos P/M/G/GG ✅Tecido Suede",
+    imageUrl: "/image/Pijama Americano Curto (20).png",
+    price: "37.00",
+    stock: 20,
+    sizes: ["P", "M", "G", "GG"],
+    colors: ["Estampado"]
   }
 ];

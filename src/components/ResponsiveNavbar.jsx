@@ -52,6 +52,7 @@ const ResponsiveNavbar = () => {
     { text: 'Camisola', value: 'camisola' },
     { text: 'Infantil', value: 'infantil' },
     { text: 'Conjunto casal', value: 'conjunto casal' },
+    { text: 'Americano', value: 'americano' },
   ];
 
   const navItems = [
