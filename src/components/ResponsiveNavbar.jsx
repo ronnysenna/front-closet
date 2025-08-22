@@ -21,6 +21,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import HomeIcon from '@mui/icons-material/Home';
+import CategoryIcon from '@mui/icons-material/Category';
 // Se precisar de mais ícones para o drawer:
 // import StorefrontIcon from '@mui/icons-material/Storefront';
 
@@ -45,9 +46,22 @@ const ResponsiveNavbar = () => {
     }
   };
 
+  // Categorias fixas conforme produtos.js
+  const categories = [
+    { text: 'Babydoll', value: 'babydoll' },
+    { text: 'Camisola', value: 'camisola' },
+    { text: 'Infantil', value: 'infantil' },
+    { text: 'Conjunto casal', value: 'conjunto casal' },
+  ];
+
   const navItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/' },
-    // { text: 'Produtos', icon: <StorefrontIcon />, path: '/products' }, // Se tiver uma página de produtos separada
+    // Adiciona cada categoria como item de navegação
+    ...categories.map(cat => ({
+      text: cat.text,
+      icon: <CategoryIcon />,
+      path: `/categoria/${cat.value}`
+    })),
   ];
 
   const drawer = (

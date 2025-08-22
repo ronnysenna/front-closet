@@ -6,7 +6,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
-import ProductDetailPage from './pages/ProductDetailPage'; // Importe a nova página
+import ProductDetailPage from './pages/ProductDetailPage';
+import CategoryPage from './pages/CategoryPage';
 import Box from '@mui/material/Box'; // Para ajudar no layout do footer
 
 function App() {
@@ -18,7 +19,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} /> {/* Nova rota para detalhes do produto */}
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/categoria/:category" element={<CategoryPage />} />
           </Routes>
         </Box>
         <Footer />
