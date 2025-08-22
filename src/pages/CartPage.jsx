@@ -1,5 +1,5 @@
 // src/pages/CartPage.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import CartItem from '../components/CartItem';
@@ -21,12 +21,22 @@ import StorefrontIcon from '@mui/icons-material/Storefront'; // Ícone para ver 
 
 const CartPage = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
+  const [showMinOrderWarning, setShowMinOrderWarning] = useState(false);
   const total = getCartTotal();
   const whatsappNumber = "5585997173941"; // IMPORTANTE: Coloque seu número
 
+  const getTotalUnits = () => cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   const handleWhatsAppCheckout = () => {
     if (cartItems.length === 0) return;
+    if (getTotalUnits() < 10) {
+      setShowMinOrderWarning(true);
+      return;
+    }
+    sendWhatsAppOrder();
+  };
 
+  const sendWhatsAppOrder = () => {
     let message = "Olá Gofashion! Gostaria de fazer o pedido dos seguintes itens:\n\n";
     cartItems.forEach(item => {
       message += `*${item.title}*\n`;
@@ -35,7 +45,6 @@ const CartPage = () => {
       message += `  Subtotal: ${formatCurrency ? formatCurrency(parseFloat(item.price) * item.quantity) : `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}`}\n\n`;
     });
     message += `*Total do Pedido: ${formatCurrency ? formatCurrency(total) : `R$ ${total.toFixed(2)}`}*`;
-
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -107,7 +116,7 @@ const CartPage = () => {
               <Button
                 fullWidth
                 variant="contained"
-                color="success" // Usar uma cor de sucesso para o checkout
+                color="success"
                 onClick={handleWhatsAppCheckout}
                 startIcon={<WhatsAppIcon />}
                 endIcon={<ShoppingCartCheckoutIcon />}
@@ -119,6 +128,58 @@ const CartPage = () => {
           </Grid>
         </Box>
       </Paper>
+
+      {/* Modal/Aviso para pedidos abaixo de 10 peças */}
+      {showMinOrderWarning && (
+        <Box sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          bgcolor: 'rgba(0,0,0,0.4)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Paper elevation={6} sx={{ p: 4, maxWidth: 350, textAlign: 'center' }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
+              Atenção!
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+              Pedidos abaixo de <b>10 peças</b> serão cobrados no valor de <b>varejo</b>.
+            </Typography>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={12} sm={6}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    setShowMinOrderWarning(false);
+                    sendWhatsAppOrder();
+                  }}
+                  sx={{ py: 1.2, fontWeight: 'bold' }}
+                >
+                  Finalizar Pedido
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setShowMinOrderWarning(false)}
+                  sx={{ py: 1.2, fontWeight: 'bold' }}
+                >
+                  Continuar Comprando
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Box>
+      )}
     </Container>
   );
 };
