@@ -13,7 +13,25 @@ export const products = [
     imageUrl: "/image/Anna1 (1).jpg",
     price: "18.00",
     stock: 20,
-    sizes: ["P", "M", "G", "GG"],
+    sizes: ["M", "G", "GG"],
+    colors: ["Estampado"]
+  },
+  {
+    category: "babydoll",
+    galleryImages: [
+      "/image/Baby Doll Lara Adulto (1).jpg",
+      "/image/Baby Doll Lara Adulto (2).jpg",
+      "/image/Baby Doll Lara Adulto (3).jpg",
+      "/image/Baby Doll Lara Adulto (4).jpg",
+      
+    ],
+    id: "1748810444102",
+    title: "Baby Doll Lara Adulto",
+    description: "• ✅R$20,00 no Varejo • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ✅Fabricação própria ",
+    imageUrl: "/image/Baby Doll Lara Adulto (1).jpg",
+    price: "12.00",
+    stock: 20,
+    sizes: ["Único ( 38/44 )"],
     colors: ["Estampado"]
   },
   {
