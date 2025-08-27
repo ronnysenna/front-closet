@@ -25,9 +25,9 @@ const ProductList = ({ products }) => {
         }}
       >
         <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>Nossos Produtos</span><br />
-        <span style={{ fontSize: '1rem', color: '#555', fontWeight: 400 }}>
+        {/* <span style={{ fontSize: '1rem', color: '#555', fontWeight: 400 }}>
           Confira as novidades, escolha sua categoria favorita e aproveite ofertas exclusivas!
-        </span>
+        </span> */}
       </Typography>
       <Grid container spacing={3} alignItems="stretch">
         {products.map(product => (
