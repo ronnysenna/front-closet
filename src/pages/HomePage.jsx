@@ -54,9 +54,24 @@ const HomePage = () => {
   gap: '12px',
   zIndex: 100,
       }}>
-        <span>
-          Precisa de automação ou site profissional para sua empresa? Nossa equipe especializada pode ajudar você a transformar seu negócio digital!
+        <span style={{
+          fontSize: '1rem',
+          fontWeight: 500,
+          maxWidth: '90vw',
+          whiteSpace: 'pre-line',
+          textAlign: 'center',
+        }}>
+          <span className="desktop-banner-text">Transforme seu negócio digital com automação ou site profissional. Fale com especialistas!</span>
+          <span className="mobile-banner-text" style={{ display: 'none' }}>Automação ou site novo? Fale com especialistas!</span>
         </span>
+      <style>
+        {`
+          @media (max-width: 600px) {
+            .desktop-banner-text { display: none; }
+            .mobile-banner-text { display: inline; }
+          }
+        `}
+      </style>
         <button
           onClick={handleAutomacaoClick}
           style={{
@@ -72,7 +87,7 @@ const HomePage = () => {
             transition: 'background 0.2s',
           }}
         >
-          Fale com especialista
+          Precisando de Site ou Automação?
         </button>
       </div>
 

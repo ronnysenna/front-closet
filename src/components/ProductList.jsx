@@ -9,9 +9,25 @@ const ProductList = ({ products }) => {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
-        Nossos Produtos
+    <Container sx={{ py: { xs: 2, md: 4 } }}>
+      <Typography
+        variant="h4"
+        component="h2"
+        gutterBottom
+        align="center"
+        sx={{
+          mb: { xs: 2, md: 4 },
+          fontWeight: 'bold',
+          letterSpacing: '.08em',
+          color: 'primary.main',
+          textShadow: '0 2px 8px #f8bbd0',
+          fontSize: { xs: '2rem', md: '2.5rem' },
+        }}
+      >
+        <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>Nossos Produtos</span><br />
+        <span style={{ fontSize: '1rem', color: '#555', fontWeight: 400 }}>
+          Confira as novidades, escolha sua categoria favorita e aproveite ofertas exclusivas!
+        </span>
       </Typography>
       <Grid container spacing={3} alignItems="stretch">
         {products.map(product => (
