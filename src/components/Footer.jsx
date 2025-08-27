@@ -23,9 +23,16 @@ const Footer = () => {
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="space-between">
           <Grid item xs={12} sm={4} md={3}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              Gofashion
-            </Typography>
+            <Box sx={{ display: 'colun', alignItems: 'center', gap: 1, mb: 1 }}>
+              <img
+                src="/icon-removebg-preview.png"
+                alt="Ícone da loja"
+                style={{ width: '156px', height: '156px', objectFit: 'contain', marginRight: 12 }}
+              />
+              {/* <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1.3rem', md: '1.7rem' } }}>
+                Gofashion
+              </Typography> */}
+            </Box>
             <Typography variant="body2">
               Moda e estilo para todos os momentos. Encontre as melhores peças aqui.
             </Typography>
