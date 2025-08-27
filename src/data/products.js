@@ -12,6 +12,7 @@ export const products = [
     description: "• ✅R$25,00 no Varejo • ✅Tamanho P/M/G/GG • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Anna1 (1).jpg",
     price: "18.00",
+    retailPrice: "25.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
     colors: ["Estampado"]
@@ -30,6 +31,7 @@ export const products = [
     description: "• ✅R$20,00 no Varejo • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Baby Doll Lara Adulto (1).jpg",
     price: "12.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 38/44 )"],
     colors: ["Estampado"]
@@ -47,6 +49,7 @@ export const products = [
     description: "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Camisola Sued  (1).jpg",
     price: "14.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["Unico"],
     colors: ["Estampado"]
@@ -68,6 +71,7 @@ export const products = [
     description: "• ✅Valor 20,00 no Varejo • ✅Tamanho Único ( 2 a 8 anos  ) • ✅Suede Premium",
     imageUrl: "/image/Baby Doll Lara infantil (1).jpg",
     price: "12.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 2 a 8 anos  )"],
     colors: ["Estampado"]
@@ -84,6 +88,7 @@ export const products = [
     description: " ✅Valor 20,00 no Varejo • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
     imageUrl: "/image/Baby Doll Virgínia Infantil (3).jpg",
     price: "15.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 2 a 8 anos  )"],
     colors: ["Estampado"]
@@ -105,6 +110,7 @@ export const products = [
     description: "✅Valor 25,00 no Varejo • ✅Tamanho Único ( 5 a 10 anos  ) • ✅Suede Premium",
     imageUrl: "/image/Macaquinho Suede infantil (1).jpg",
     price: "17.00",
+    retailPrice: "25.00",
     stock: 20,
     sizes: ["Único ( 5 a 10 anos  )"],
     colors: ["Estampado"]
@@ -121,6 +127,7 @@ export const products = [
     description: "• ✅R$25,00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Tule •✅Branco/Preto/Vermelho ✅Fabricação própria ",
     imageUrl: "/image/Camisola Tule (1).jpg",
     price: "18.00",
+    retailPrice: "25.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
     colors: ["Vermelho", "Branco", "Preto"]
@@ -143,6 +150,7 @@ export const products = [
     description: "• ✅R$20.00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete ✅Fabricação própria ",
     imageUrl: "/image/Baby Doll Liso (1).jpg",
     price: "14.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
     colors: [
@@ -177,6 +185,7 @@ export const products = [
     description: "• ✅R$20,00 no Varejo • ✅Tamanho Único • ✅Tecido Suede ✅Fabricação própria ",
     imageUrl: "/image/Baby Doll Virgínia Full (1).jpg",
     price: "14.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["Único"],
     colors: ["Estampado"]
@@ -195,6 +204,7 @@ export const products = [
     description: "• ✅R$20,00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete ✅Fabricação própria ",
     imageUrl: "/image/Baby Luxo (1).jpg",
     price: "13.00",
+    retailPrice: "20.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
     colors: ["Preto", "Vermelho", "Rosa"]
@@ -216,6 +226,7 @@ export const products = [
     description: "• ✅R$25.00 no Varejo • ✅Tamanho M/G/GG • ✅Tecido Liganete",
     imageUrl: "/image/Camisola Liso (1).jpg",
     price: "14.00",
+    retailPrice: "25.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
     colors: [
@@ -245,6 +256,7 @@ export const products = [
     description: "• ✅R$50,00 no Varejo • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ",
     imageUrl: "/image/Kit Mozão  (1).jpg",
     price: "32.00",
+    retailPrice: "50.00",
     stock: 20,
     sizes: ["Único ( 38/44 )"],
     colors: ["Estampado"]
@@ -262,6 +274,7 @@ export const products = [
     description: "• ✅R$25,00 no Varejo • ✅Tamanho Único (Veste 5 até 10 anos) • ✅Tecido Suede ",
     imageUrl: "/image/Conjunto João infantil  (1).jpg",
     price: "15.00",
+    retailPrice: "25.00",
     stock: 20,
     sizes: ["Único (Veste 5 até 10 anos)"],
     colors: ["Estampado"]
@@ -297,6 +310,7 @@ export const products = [
     description: "• ✅R$50,00 no Varejo ✅Tamanhos P/M/G/GG ✅Tecido Suede",
     imageUrl: "/image/Pijama Americano Curto (20).png",
     price: "37.00",
+    retailPrice: "50.00",
     stock: 20,
     sizes: ["P", "M", "G", "GG"],
     colors: ["Estampado"]
