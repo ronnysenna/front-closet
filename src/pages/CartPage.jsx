@@ -27,7 +27,13 @@ const CartPage = () => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [couponError, setCouponError] = useState('');
-  const total = getCartTotal();
+  // Calcula total de atacado e varejo
+  const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalRetail = cartItems.reduce((sum, item) => sum + ((item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price)) * item.quantity), 0);
+  const totalWholesale = cartItems.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+  // O total exibido depende da quantidade
+  const isWholesale = totalUnits >= 10;
+  const total = isWholesale ? totalWholesale : totalRetail;
   const whatsappNumber = "5585997173941"; // IMPORTANTE: Coloque seu número
 
   const getTotalUnits = () => cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -46,10 +52,11 @@ const CartPage = () => {
     cartItems.forEach(item => {
       message += `*${item.title}*\n`;
       message += `  Cor: ${item.selectedColor}, Tamanho: ${item.selectedSize}\n`;
-      message += `  Qtd: ${item.quantity} x ${formatCurrency ? formatCurrency(parseFloat(item.price)) : `R$ ${item.price}`}\n`;
-      message += `  Subtotal: ${formatCurrency ? formatCurrency(parseFloat(item.price) * item.quantity) : `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}`}\n\n`;
+      message += `  Qtd: ${item.quantity} x ${isWholesale ? formatCurrency(parseFloat(item.price)) : formatCurrency(item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price))}\n`;
+      message += `  Subtotal: ${isWholesale ? formatCurrency(parseFloat(item.price) * item.quantity) : formatCurrency((item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price)) * item.quantity)}\n\n`;
     });
-    message += `*Total do Pedido: ${formatCurrency ? formatCurrency(discountedTotal) : `R$ ${discountedTotal.toFixed(2)}`}*`;
+    message += `*Total do Pedido: ${formatCurrency ? formatCurrency(total) : `R$ ${total.toFixed(2)}`}*`;
+    message += `\nTipo de cobrança: ${isWholesale ? 'Atacado' : 'Varejo'} (Pedido com ${totalUnits} peça${totalUnits > 1 ? 's' : ''})`;
     if (couponApplied && coupon) {
       message += `\nCupom aplicado: ${coupon.trim().toUpperCase()}`;
     }
@@ -148,6 +155,16 @@ const CartPage = () => {
             <Grid item>
               <Typography variant="h4" component="p" color="primary" sx={{ fontWeight: 'bold' }}>
                 {formatCurrency ? formatCurrency(discountedTotal) : `R$ ${discountedTotal.toFixed(2)}`}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+            <Grid item>
+              <Typography variant="body2" color="text.secondary">
+                <b>Varejo:</b> {formatCurrency(totalRetail)} | <b>Atacado:</b> {formatCurrency(totalWholesale)}
+              </Typography>
+              <Typography variant="body2" color={isWholesale ? 'success.main' : 'primary.main'} sx={{ mt: 0.5 }}>
+                {isWholesale ? 'Cobrança no valor de atacado (10 peças ou mais)' : 'Cobrança no valor de varejo (menos de 10 peças)'}
               </Typography>
             </Grid>
           </Grid>
