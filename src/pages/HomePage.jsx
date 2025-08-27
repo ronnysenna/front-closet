@@ -10,6 +10,9 @@ import { products } from '../data/products';
 import { useState } from 'react';
 
 const HomePage = () => {
+  const handleAutomacaoClick = () => {
+    window.open('https://wa.me/5585991908723?text=Olá!%20Tenho%20interesse%20em%20soluções%20de%20automação%20ou%20criação%20de%20site.%20Gostaria%20de%20saber%20mais.', '_blank');
+  };
   const [searchTerm, setSearchTerm] = useState('');
   // Extrai apenas as URLs das imagens dos produtos
   // Ajusta o caminho da imagem: remove '../public/' para funcionar corretamente
@@ -35,6 +38,43 @@ const HomePage = () => {
           <p className="text-lg text-gray-700">Seu estilo, sua moda. Encontre as melhores peças aqui.</p>
         </div>
       </section>
+      {/* Banner de automação/site no fundo */}
+      <div style={{
+  width: '100%',
+  background: 'linear-gradient(90deg, #e91e63 0%, #f8bbd0 100%)',
+  color: '#fff',
+  padding: '8px 0',
+  textAlign: 'center',
+  fontSize: '1rem',
+  fontWeight: 500,
+  boxShadow: '0 -2px 8px rgba(233,30,99,0.08)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '12px',
+  zIndex: 100,
+      }}>
+        <span>
+          Precisa de automação ou site profissional para sua empresa? Nossa equipe especializada pode ajudar você a transformar seu negócio digital!
+        </span>
+        <button
+          onClick={handleAutomacaoClick}
+          style={{
+            background: '#fff',
+            color: '#e91e63',
+            border: 'none',
+            borderRadius: '20px',
+            padding: '4px 18px',
+            fontWeight: 700,
+            fontSize: '1rem',
+            cursor: 'pointer',
+            boxShadow: '0 1px 4px rgba(233,30,99,0.12)',
+            transition: 'background 0.2s',
+          }}
+        >
+          Fale com especialista
+        </button>
+      </div>
 
       {/* Usando o componente RotatingBanner */}
       <RotatingBanner 
