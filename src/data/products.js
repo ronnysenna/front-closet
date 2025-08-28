@@ -170,13 +170,13 @@ export const products = [
    
     ],
     id: "17488104797452",
-    title: "Baby Doll Virgínia Full",
+    title: "Baby Doll Virgínia Adulto",
   description: "Estampa divertida e tecido macio. Seu novo favorito!",
     imageUrl: "/image/Baby Doll Virgínia Full (1).jpg",
     price: "14.00",
     retailPrice: "20.00",
     stock: 20,
-    sizes: ["Único"],
+    sizes: ["P", "M", "G", "GG"],
      colors: ["Stitch","Gata Marie","Galáxia ","Meninas Poderosas"]
   },
   {
