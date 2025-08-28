@@ -15,7 +15,7 @@ export const products = [
     retailPrice: "25.00",
     stock: 20,
     sizes: ["M", "G", "GG"],
-    colors: ["Estampado"]
+    colors: ["Stitch","Macaco louco","Vaquinha"]
   },
   {
     category: "babydoll",
@@ -34,7 +34,7 @@ export const products = [
     retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 38/44 )"],
-    colors: ["Estampado"]
+    colors: ["Stitch","Netflix","Borboleta"]
   },
   {
     category: "camisola",
@@ -52,7 +52,7 @@ export const products = [
     retailPrice: "20.00",
     stock: 20,
     sizes: ["Unico"],
-    colors: ["Estampado"]
+     colors: ["Stitch","Cereja","Ursinho Pooh","Capivara"]
   },
   {
     category: "infantil",
@@ -60,10 +60,6 @@ export const products = [
       "/image/Baby Doll Lara infantil (1).jpg",
       "/image/Baby Doll Lara infantil (2).jpg",
       "/image/Baby Doll Lara infantil (3).jpg",
-      "/image/Baby Doll Lara infantil (4).jpg",
-      "/image/Baby Doll Lara infantil (5).jpg",
-      "/image/Baby Doll Lara infantil (6).jpg",
-      "/image/Baby Doll Lara infantil (7).jpg",
       "/image/Baby Doll Lara infantil (8).jpg"
     ],
     id: "1748810354567",
@@ -74,7 +70,7 @@ export const products = [
     retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 2 a 8 anos  )"],
-    colors: ["Estampado"]
+     colors: ["Stitch","Princesa","Hello kitty","Minnie"]
   },
   {
     category: "infantil",
@@ -91,16 +87,12 @@ export const products = [
     retailPrice: "20.00",
     stock: 20,
     sizes: ["Único ( 2 a 8 anos  )"],
-    colors: ["Estampado"]
+     colors: ["Stitch","Princesa"]
   },
   {
     category: "infantil",
     galleryImages: [
       "/image/Macaquinho Suede infantil (1).jpg",
-      "/image/Macaquinho Suede infantil (2).jpg",
-      "/image/Macaquinho Suede infantil (3).jpg",
-      "/image/Macaquinho Suede infantil (4).jpg",
-      "/image/Macaquinho Suede infantil (5).jpg",
       "/image/Macaquinho Suede infantil (6).jpg",
       "/image/Macaquinho Suede infantil (7).jpg",
       "/image/Macaquinho Suede infantil (8).jpg"
@@ -113,7 +105,7 @@ export const products = [
     retailPrice: "25.00",
     stock: 20,
     sizes: ["Único ( 5 a 10 anos  )"],
-    colors: ["Estampado"]
+     colors: ["Stitch","Hello kitty","Princesa","Coroa"]
   },
   {
     category: "camisola",
@@ -168,11 +160,8 @@ export const products = [
     category: "babydoll",
     galleryImages: [
       "/image/Baby Doll Virgínia Full (1).jpg",
-      "/image/Baby Doll Virgínia Full (2).jpg",
-      "/image/Baby Doll Virgínia Full (3).jpg",
       "/image/Baby Doll Virgínia Full (4).jpg",
       "/image/Baby Doll Virgínia Full (5).jpg",
-      "/image/Baby Doll Virgínia Full (6).jpg",
       "/image/Baby Doll Virgínia Full (7).jpg",
       "/image/Baby Doll Virgínia Full (8).jpg",
       "/image/Baby Doll Virgínia Full (9).jpg",
@@ -188,7 +177,7 @@ export const products = [
     retailPrice: "20.00",
     stock: 20,
     sizes: ["Único"],
-    colors: ["Estampado"]
+     colors: ["Stitch","Gata Marie","Galáxia ","Meninas Poderosas"]
   },
   {
     category: "babydoll",
@@ -243,29 +232,24 @@ export const products = [
   {
     category: "conjunto casal",
     galleryImages: [
-      "/image/Kit Mozão  (1).jpg",
       "/image/Kit Mozão  (2).jpg",
       "/image/Kit Mozão  (3).jpg",
       "/image/Kit Mozão  (4).jpg",
-      "/image/Kit Mozão  (5).jpg",
-      "/image/Kit Mozão  (6).jpg",
-      "/image/Kit Mozão  (7).jpg"
     ],
     id: "1748810595908",
     title: "Kit Mozão",
     description: "• ✅R$50,00 no Varejo • ✅Tamanho Único ( 38/44 ) • ✅Tecido Suede ",
-    imageUrl: "/image/Kit Mozão  (1).jpg",
+    imageUrl: "/image/Kit Mozão  (2).jpg",
     price: "32.00",
     retailPrice: "50.00",
     stock: 20,
     sizes: ["Único ( 38/44 )"],
-    colors: ["Estampado"]
+    colors: ["Stitch","Mickey e Minnie"]
   },
   {
     category: "infantil",
     galleryImages: [
       "/image/Conjunto João infantil  (1).jpg",
-      "/image/Conjunto João infantil  (2).jpg",
       "/image/Conjunto João infantil  (3).jpg",
       "/image/Conjunto João infantil  (4).jpg"
     ],
@@ -277,7 +261,7 @@ export const products = [
     retailPrice: "25.00",
     stock: 20,
     sizes: ["Único (Veste 5 até 10 anos)"],
-    colors: ["Estampado"]
+    colors: ["Herois","Homem Aranha"]
   },
     {
     category: "americano",
@@ -294,7 +278,6 @@ export const products = [
       "/image/Pijama Americano Curto (9).jpg",
       "/image/Pijama Americano Curto (10).jpg",
       "/image/Pijama Americano Curto (11).jpg",
-      "/image/Pijama Americano Curto (12).jpg",
       "/image/Pijama Americano Curto (13).jpg",
       "/image/Pijama Americano Curto (14).jpg",
       "/image/Pijama Americano Curto (15).jpg",
@@ -313,6 +296,6 @@ export const products = [
     retailPrice: "50.00",
     stock: 20,
     sizes: ["P", "M", "G", "GG"],
-    colors: ["Estampado"]
+    colors: ["Cereja","Capivara","Abelha","Coração","Stitch","Borboleta","Harry Potter","Ursinho Pooh","Flores","Minnie","Vaquinha","Hello Kitty"]
   }
 ];
