@@ -9,7 +9,7 @@ const ProductList = ({ products }) => {
   }
 
   return (
-    <Container sx={{ py: { xs: 2, md: 4 } }}>
+    <Container sx={{ py: { xs: 2, md: 4 }, px: { xs: 0.5, sm: 2 } }}>
       <Typography
         variant="h4"
         component="h2"
@@ -25,13 +25,27 @@ const ProductList = ({ products }) => {
         }}
       >
         <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>Nossos Produtos</span><br />
-        {/* <span style={{ fontSize: '1rem', color: '#555', fontWeight: 400 }}>
-          Confira as novidades, escolha sua categoria favorita e aproveite ofertas exclusivas!
-        </span> */}
       </Typography>
-      <Grid container spacing={3} alignItems="stretch">
+      <Grid
+        container
+        spacing={{ xs: 2, sm: 3, md: 4 }}
+        alignItems="stretch"
+        justifyContent="center"
+        sx={{
+          width: '100%',
+          margin: 0,
+        }}
+      >
         {products.map(product => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3} style={{ display: 'flex' }}>
+          <Grid
+            item
+            key={product.id}
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', px: { xs: 0, sm: 1 } }}
+          >
             <ProductCard product={product} />
           </Grid>
         ))}
