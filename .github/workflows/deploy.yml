@@ -23,8 +23,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x' # Pode ajustar se usar outra versão do Node
-          cache: 'npm'
+          node-version: "20.x" # Pode ajustar se usar outra versão do Node
+          cache: "npm"
 
       # 3. Instala as dependências do projeto (o famoso 'npm install')
       - name: Install dependencies
@@ -44,10 +44,10 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
 
           # Diretório de origem: A pasta 'build' que foi gerada no passo anterior
-          local-dir: ./build/
+          local-dir: ./dist/
 
           # Diretório de destino no servidor. Geralmente é 'public_html/'
           server-dir: public_html/
 
           # Limpa o diretório de destino antes de enviar os novos arquivos. Ótimo para remover lixo.
-          cleanup: true
+          dangerous-clean-slate: true
