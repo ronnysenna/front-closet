@@ -46,8 +46,8 @@ jobs:
           # Diretório de origem: A pasta 'build' que foi gerada no passo anterior
           local-dir: ./dist/
 
-          # Diretório de destino no servidor. Geralmente é 'public_html/'
-          server-dir: public_html/
+          # Diretório de destino para o domínio 'closetmodafitness.com'.
+          server-dir: ./domains/closetmodafitness.com/public_html/
 
           # Limpa o diretório de destino antes de enviar os novos arquivos. Ótimo para remover lixo.
           dangerous-clean-slate: true
