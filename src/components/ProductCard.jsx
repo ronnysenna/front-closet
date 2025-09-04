@@ -24,8 +24,17 @@ import { Link as RouterLink } from 'react-router-dom'; // Importar Link para nav
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  
+  // Define tamanhos e cores padrão
+  const defaultSizes = ['P', 'M', 'G'];
+  const defaultColors = ['Preto', 'Branco', 'Rosa'];
+  
+  // Usa as propriedades do produto se existirem, ou valores padrão
+  const sizes = product.sizes || defaultSizes;
+  const colors = product.colors || defaultColors;
+  
+  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
@@ -51,8 +60,8 @@ const ProductCard = ({ product }) => {
       <CardMedia
         component="img"
         height="220"
-        image={product.imageUrl}
-        alt={product.title}
+        image={product.main_image}
+        alt={product.name}
         onError={(e) => e.target.src = 'https://via.placeholder.com/400x400?text=Imagem+Indisponível'}
         sx={{
           objectFit: 'cover',
@@ -64,11 +73,11 @@ const ProductCard = ({ product }) => {
         }}
       />
   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 220 }}>
-        <Typography gutterBottom variant="h6" component="div" noWrap title={product.title} sx={{ fontWeight: 'bold' }}>
-          {product.title}
+        <Typography gutterBottom variant="h6" component="div" noWrap title={product.name} sx={{ fontWeight: 'bold' }}>
+          {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ minHeight: '40px', mb: 2 }}>
-          {product.description.length > 70 ? `${product.description.substring(0, 70)}...` : product.description}
+          {product.description && product.description.length > 70 ? `${product.description.substring(0, 70)}...` : (product.description || product.short_description || 'Sem descrição disponível')}
         </Typography>
 
         <FormControl fullWidth size="small" sx={{ mb: 1.5 }}>
@@ -79,7 +88,7 @@ const ProductCard = ({ product }) => {
             label="Tamanho"
             onChange={(e) => setSelectedSize(e.target.value)}
           >
-            {product.sizes.map(size => <MenuItem key={size} value={size}>{size}</MenuItem>)}
+            {sizes.map(size => <MenuItem key={size} value={size}>{size}</MenuItem>)}
           </Select>
         </FormControl>
 
@@ -91,7 +100,7 @@ const ProductCard = ({ product }) => {
             label="Cor"
             onChange={(e) => setSelectedColor(e.target.value)}
           >
-            {product.colors.map(color => <MenuItem key={color} value={color}>{color}</MenuItem>)}
+            {colors.map(color => <MenuItem key={color} value={color}>{color}</MenuItem>)}
           </Select>
         </FormControl>
         

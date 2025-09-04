@@ -19,7 +19,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/formatCurrency';
-import { products as allProducts } from '../data/products'; // Importar a lista de produtos real
+import { getProductById, getProductBySlug } from '../utils/api';
 
 
 function ProductDetailPage() {
@@ -36,30 +36,42 @@ function ProductDetailPage() {
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
-    // Simula uma chamada de API
-    setLoading(true);
-    setError(null);
-    const timer = setTimeout(() => {
-      // Busca o produto na lista importada
-      // Converte ambos os IDs para string para garantir a comparação correta
-      const foundProduct = allProducts.find(p => String(p.id) === String(productId));
+    // Busca o produto na API
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Verifica se o ID é numérico ou slug
+        const isNumeric = !isNaN(productId);
+        
+        let productData;
+        if (isNumeric) {
+          productData = await getProductById(productId);
+        } else {
+          productData = await getProductBySlug(productId);
+        }
 
-      if (foundProduct) {
-        setProduct(foundProduct);
-        setMainImage(foundProduct.imageUrl);
-        // Define os valores iniciais para os seletores se o produto for encontrado
-        if (foundProduct.sizes?.length > 0) {
-          setSelectedSize(foundProduct.sizes[0]);
+        if (productData && !productData.message) { // Verifica se não é uma mensagem de erro da API
+          setProduct(productData);
+          setMainImage(productData.main_image);
+          
+          // Define valores padrão para tamanho e cor baseados em variantes (se disponíveis)
+          // Lógica simplificada - ajuste conforme sua estrutura de dados
+          setSelectedSize('P'); // Tamanho padrão
+          setSelectedColor('Preto'); // Cor padrão
+        } else {
+          setError('Produto não encontrado.');
         }
-        if (foundProduct.colors?.length > 0) {
-          setSelectedColor(foundProduct.colors[0]);
-        }
-      } else {
-        setError('Produto não encontrado.');
+      } catch (err) {
+        console.error("Erro ao buscar produto:", err);
+        setError('Não foi possível carregar o produto. Por favor, tente novamente mais tarde.');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 500); // Simula um pequeno atraso de rede
-    return () => clearTimeout(timer);
+    };
+    
+    fetchProduct();
   }, [productId]);
 
   const handleAddToCart = () => {

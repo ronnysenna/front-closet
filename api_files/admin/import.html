@@ -1,0 +1,110 @@
+<?php
+// import.html
+session_start();
+
+// Verifica login
+if (!isset($_SESSION['admin_loggedin']) || $_SESSION['admin_loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar Produtos - Closet Moda Fitness</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mb-4">Importar Produtos</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Upload de Arquivo JSON/JS</h5>
+                <form id="importForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="products_json" class="form-label">Arquivo de Produtos (JSON ou JS)</label>
+                        <input class="form-control" type="file" id="products_json" name="products_json"
+                            accept=".json,.js" required>
+                        <div class="form-text">Selecione o arquivo products.js ou products.json da sua aplicação.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Importar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <h5>Instruções:</h5>
+            <ol>
+                <li>O arquivo deve conter um array de produtos em formato JSON.</li>
+                <li>Se for um arquivo JS, deve estar no formato: <code>export const products = [...]</code></li>
+                <li>Cada produto deve ter pelo menos <code>name</code> e <code>price</code>.</li>
+                <li>Outros campos serão preenchidos com valores padrão se não especificados.</li>
+            </ol>
+        </div>
+
+        <div id="result" style="display: none;"></div>
+
+        <a href="index.php" class="btn btn-secondary mt-3">Voltar ao Painel</a>
+    </div>
+
+    <script>
+        document.getElementById('importForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = new FormData(this);
+            const resultDiv = document.getElementById('result');
+
+            try {
+                resultDiv.innerHTML = '<div class="alert alert-warning">Importando... Por favor, aguarde.</div>';
+                resultDiv.style.display = 'block';
+
+                const response = await fetch('import_products.php', {
+                    method: 'POST',
+                    body: form
+                });
+
+                const data = await response.json();
+
+                if (data.message && data.message.includes('Importação concluída')) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <h5>${data.message}</h5>
+                            <p>Produtos importados com sucesso: ${data.successful}</p>
+                            <p>Produtos com erro: ${data.failed}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h5>Erro na importação</h5>
+                            <p>${data.message || 'Erro desconhecido'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5>Erro na requisição</h5>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
