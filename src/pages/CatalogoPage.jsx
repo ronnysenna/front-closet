@@ -19,12 +19,12 @@ const CatalogoPage = () => {
             variant="contained"
             color="primary"
             startIcon={<LanguageIcon />}
-            href="https://gofashion.click"
+            href="https://closetmodafitness.click"
             target="_blank"
             fullWidth
             sx={{ fontWeight: 600, fontSize: '1.1rem' }}
           >
-            Ir para o site Gofashion
+            Ir para o site Closet Moda Fitness
           </Button>
           <Button
             variant="contained"
