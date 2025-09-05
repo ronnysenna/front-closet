@@ -19,6 +19,7 @@ import { useId, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom'; // Importar Link para navegação
 import { useCart } from '../context/CartContext'; // Mantenha seu contexto
 import { formatCurrency } from '../utils/formatCurrency'; // Mantenha seu utilitário
+import { ASSETS_BASE_URL } from '../config'; // Importar a URL base para os ativos
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -64,7 +65,13 @@ const ProductCard = ({ product }) => {
       <CardMedia
         component="img"
         height="220"
-        image={product.main_image}
+        image={
+          product.main_image && product.main_image.startsWith('http')
+            ? product.main_image
+            : product.main_image
+              ? `${ASSETS_BASE_URL}/${product.main_image.startsWith('/') ? product.main_image.substring(1) : product.main_image}`
+              : 'https://via.placeholder.com/400x400?text=Imagem+Indisponível'
+        }
         alt={product.name}
         onError={(e) => {
           e.target.src = 'https://via.placeholder.com/400x400?text=Imagem+Indisponível';

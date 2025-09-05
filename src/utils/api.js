@@ -1,38 +1,39 @@
 // api.js - Arquivo para centralizar as chamadas da API
-const BASE_URL = 'http://localhost:3000/api'; // Altere para a URL correta do seu backend
+import { API_BASE_URL } from "../config.js";
+const BASE_URL = API_BASE_URL; // URL da API definida no arquivo config.js
 
 // Função para obter um novo token de acesso usando o refresh token
 const refreshAuthToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) {
-      throw new Error('Nenhum refresh token disponível');
+      throw new Error("Nenhum refresh token disponível");
     }
 
     const response = await fetch(`${BASE_URL}/auth/refresh`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ refreshToken }),
     });
 
     if (!response.ok) {
-      throw new Error('Falha ao renovar o token');
+      throw new Error("Falha ao renovar o token");
     }
 
     const data = await response.json();
-    localStorage.setItem('authToken', data.token);
+    localStorage.setItem("authToken", data.token);
     if (data.refreshToken) {
-      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
     }
 
     return data.token;
   } catch (error) {
-    console.error('Erro ao renovar token:', error);
+    console.error("Erro ao renovar token:", error);
     // Limpa os tokens se a renovação falhar
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
     throw error;
   }
 };
@@ -41,7 +42,7 @@ const refreshAuthToken = async () => {
 const fetchData = async (endpoint, options = {}) => {
   try {
     // Adiciona o token de autenticação se ele existir
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (token) {
       options.headers = {
         ...options.headers,
@@ -67,8 +68,8 @@ const fetchData = async (endpoint, options = {}) => {
         return await retryResponse.json();
       } catch (_refreshError) {
         // Se a renovação falhar, redireciona para login
-        window.location.href = '/login';
-        throw new Error('Sessão expirada. Por favor, faça login novamente.');
+        window.location.href = "/login";
+        throw new Error("Sessão expirada. Por favor, faça login novamente.");
       }
     }
 
@@ -83,7 +84,7 @@ const fetchData = async (endpoint, options = {}) => {
 };
 
 // Funções específicas para cada tipo de dados
-export const getAllProducts = () => fetchData('/products');
+export const getAllProducts = () => fetchData("/products");
 
 export const getProductById = (id) => fetchData(`/products/id/${id}`);
 
@@ -91,73 +92,77 @@ export const getProductBySlug = (slug) => fetchData(`/products/${slug}`);
 
 // CRUD para produtos
 export const createProduct = (productData) =>
-  fetchData('/products', {
-    method: 'POST',
+  fetchData("/products", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(productData),
   });
 
 export const updateProduct = (id, productData) =>
   fetchData(`/products/id/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(productData),
   });
 
 export const deleteProduct = (id) =>
   fetchData(`/products/id/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
-export const getCategories = () => fetchData('/categories');
+export const getCategories = () => fetchData("/categories");
 
 export const getCategoryById = (id) => fetchData(`/categories/id/${id}`);
 
-export const getCategoryBySlug = (slug) => fetchData(`/categories/slug/${slug}`);
+export const getCategoryBySlug = (slug) =>
+  fetchData(`/categories/slug/${slug}`);
 
 // CRUD para categorias
 export const createCategory = (categoryData) =>
-  fetchData('/categories', {
-    method: 'POST',
+  fetchData("/categories", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(categoryData),
   });
 
 export const updateCategory = (id, categoryData) =>
   fetchData(`/categories/id/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(categoryData),
   });
 
 export const deleteCategory = (id) =>
   fetchData(`/categories/id/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
 export const getProductsByCategory = (categoryId) =>
   fetchData(`/products/category/id/${categoryId}`);
 
-export const getProductsByCategorySlug = (slug) => fetchData(`/products/category/${slug}`);
+export const getProductsByCategorySlug = (slug) =>
+  fetchData(`/products/category/${slug}`);
 
 export const searchProducts = async (query) => {
   try {
     // Usar a query string para buscar no servidor
-    const response = await fetch(`${BASE_URL}/products?search=${encodeURIComponent(query)}`);
+    const response = await fetch(
+      `${BASE_URL}/products?search=${encodeURIComponent(query)}`
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     return await response.json();
   } catch (error) {
-    console.error('Erro ao buscar produtos:', error);
+    console.error("Erro ao buscar produtos:", error);
     // Fallback para busca local se o servidor não tiver endpoint de busca
     const products = await getAllProducts();
     return products.filter(
@@ -172,29 +177,31 @@ export const searchProducts = async (query) => {
 export const loginUser = async (email, password) => {
   try {
     const response = await fetch(`${BASE_URL}/auth/login`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! Status: ${response.status}`
+      );
     }
 
     const data = await response.json();
     // Armazena os tokens JWT no localStorage
     if (data.token) {
-      localStorage.setItem('authToken', data.token);
+      localStorage.setItem("authToken", data.token);
     }
     if (data.refreshToken) {
-      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
     }
     return data;
   } catch (error) {
-    console.error('Erro ao fazer login:', error);
+    console.error("Erro ao fazer login:", error);
     throw error;
   }
 };
@@ -202,9 +209,9 @@ export const loginUser = async (email, password) => {
 export const registerUser = async (userData) => {
   try {
     const response = await fetch(`${BASE_URL}/auth/register`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     });
@@ -215,33 +222,33 @@ export const registerUser = async (userData) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Erro ao registrar usuário:', error);
+    console.error("Erro ao registrar usuário:", error);
     throw error;
   }
 };
 
 export const logoutUser = () => {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('refreshToken');
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("refreshToken");
 };
 
 export const getUserProfile = async () => {
-  return fetchData('/auth/profile');
+  return fetchData("/auth/profile");
 };
 
 // Funções para pedidos e carrinho
 export const createOrder = async (orderData) => {
-  return fetchData('/orders', {
-    method: 'POST',
+  return fetchData("/orders", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(orderData),
   });
 };
 
 export const getOrders = async () => {
-  return fetchData('/orders');
+  return fetchData("/orders");
 };
 
 export const getOrderById = async (orderId) => {
@@ -249,15 +256,15 @@ export const getOrderById = async (orderId) => {
 };
 
 // Funções para produtos em destaque
-export const getFeaturedProducts = () => fetchData('/products/featured');
+export const getFeaturedProducts = () => fetchData("/products/featured");
 
 // Função para upload de imagens de produtos
 export const uploadProductImage = async (file) => {
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append("image", file);
 
   try {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
 
     // Não podemos adicionar o header Content-Type quando usamos FormData
     // O navegador configurará automaticamente com o boundary correto
@@ -268,7 +275,7 @@ export const uploadProductImage = async (file) => {
     }
 
     const response = await fetch(`${BASE_URL}/upload/product-image`, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: formData,
     });
@@ -279,7 +286,7 @@ export const uploadProductImage = async (file) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Erro ao fazer upload da imagem:', error);
+    console.error("Erro ao fazer upload da imagem:", error);
     throw error;
   }
 };

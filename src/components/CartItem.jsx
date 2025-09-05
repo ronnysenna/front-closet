@@ -11,6 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { ASSETS_BASE_URL } from '../config';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/formatCurrency';
 
@@ -40,7 +41,17 @@ const CartItem = ({ item }) => {
     >
       <ListItemAvatar sx={{ mr: { xs: 0, sm: 2 }, mb: { xs: 1, sm: 0 } }}>
         <Avatar
-          src={item.imageUrl}
+          src={
+            item.imageUrl 
+              ? (item.imageUrl.startsWith('http') 
+                ? item.imageUrl 
+                : `${ASSETS_BASE_URL}/${item.imageUrl.startsWith('/') ? item.imageUrl.substring(1) : item.imageUrl}`)
+              : (item.main_image 
+                ? (item.main_image.startsWith('http')
+                  ? item.main_image
+                  : `${ASSETS_BASE_URL}/${item.main_image.startsWith('/') ? item.main_image.substring(1) : item.main_image}`)
+                : 'https://via.placeholder.com/80x80?text=Img')
+          }
           alt={item.title}
           variant="rounded"
           sx={{ width: 80, height: 80 }}

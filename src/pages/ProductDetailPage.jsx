@@ -18,6 +18,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { ASSETS_BASE_URL } from '../config';
 import { getProductById, getProductBySlug } from '../utils/api';
 
 function ProductDetailPage() {
@@ -136,7 +137,13 @@ function ProductDetailPage() {
         <Grid item xs={12} md={6}>
           <Box sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 3, mb: 2 }}>
             <img
-              src={mainImage || 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
+              src={
+                mainImage 
+                  ? (mainImage.startsWith('http') 
+                    ? mainImage 
+                    : `${ASSETS_BASE_URL}/${mainImage.startsWith('/') ? mainImage.substring(1) : mainImage}`)
+                  : 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'
+              }
               alt={product.title}
               style={{
                 width: '100%',
@@ -180,8 +187,13 @@ function ProductDetailPage() {
               >
                 <img
                   src={
-                    (typeof img === 'string' ? img : img.url) ||
-                    'https://via.placeholder.com/64x64?text=+'
+                    (() => {
+                      const imgSrc = typeof img === 'string' ? img : img.url;
+                      if (!imgSrc) return 'https://via.placeholder.com/64x64?text=+';
+                      return imgSrc.startsWith('http') 
+                        ? imgSrc 
+                        : `${ASSETS_BASE_URL}/${imgSrc.startsWith('/') ? imgSrc.substring(1) : imgSrc}`;
+                    })()
                   }
                   alt={typeof img === 'object' && img.alt ? img.alt : `Miniatura ${idx + 1}`}
                   style={{
