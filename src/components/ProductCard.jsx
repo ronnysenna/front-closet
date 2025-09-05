@@ -1,5 +1,5 @@
 // src/components/ProductCard.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Card,
   CardMedia,
@@ -12,8 +12,6 @@ import {
   FormControl,
   InputLabel,
   Box,
-  Chip, // Para o estoque
-  IconButton, // Para o ícone no botão
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Ícone MUI
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ícone MUI
@@ -30,11 +28,11 @@ const ProductCard = ({ product }) => {
   const defaultColors = ['Preto', 'Branco', 'Rosa'];
   
   // Usa as propriedades do produto se existirem, ou valores padrão
-  const sizes = product.sizes || defaultSizes;
-  const colors = product.colors || defaultColors;
+  const sizes = Array.isArray(product.sizes) ? product.sizes : defaultSizes;
+  const colors = Array.isArray(product.colors) ? product.colors : defaultColors;
   
-  const [selectedSize, setSelectedSize] = useState(sizes[0]);
-  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [selectedSize, setSelectedSize] = useState(sizes.length > 0 ? sizes[0] : '');
+  const [selectedColor, setSelectedColor] = useState(colors.length > 0 ? colors[0] : '');
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
@@ -62,7 +60,7 @@ const ProductCard = ({ product }) => {
         height="220"
         image={product.main_image}
         alt={product.name}
-        onError={(e) => e.target.src = 'https://via.placeholder.com/400x400?text=Imagem+Indisponível'}
+        onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400?text=Imagem+Indisponível'; }}
         sx={{
           objectFit: 'cover',
           width: '100%',

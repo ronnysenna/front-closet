@@ -4,11 +4,11 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#FF69B4', // Sua cor rosa de destaque (brand-pink)
+      main: '#FF6923', // Sua cor rosa de destaque (brand-pink)
       contrastText: '#fff', // Cor do texto para botões primários, etc.
     },
     secondary: {
-      main: '#f50057', // Outra cor, se precisar
+      main: '#f236897', // Outra cor, se precisar
     },
     // Você pode adicionar mais cores ou customizar outras seções da paleta
     // background: {

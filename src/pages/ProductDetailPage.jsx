@@ -1,5 +1,5 @@
 // src/pages/ProductDetailPage.jsx
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import {
   Container,
@@ -11,14 +11,12 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Chip,
   CircularProgress,
   Alert
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useCart } from '../context/CartContext';
-import { formatCurrency } from '../utils/formatCurrency';
 import { getProductById, getProductBySlug } from '../utils/api';
 
 
@@ -43,7 +41,7 @@ function ProductDetailPage() {
         setError(null);
         
         // Verifica se o ID é numérico ou slug
-        const isNumeric = !isNaN(productId);
+        const isNumeric = !Number.isNaN(Number(productId));
         
         let productData;
         if (isNumeric) {
@@ -54,12 +52,19 @@ function ProductDetailPage() {
 
         if (productData && !productData.message) { // Verifica se não é uma mensagem de erro da API
           setProduct(productData);
-          setMainImage(productData.main_image);
           
-          // Define valores padrão para tamanho e cor baseados em variantes (se disponíveis)
-          // Lógica simplificada - ajuste conforme sua estrutura de dados
-          setSelectedSize('P'); // Tamanho padrão
-          setSelectedColor('Preto'); // Cor padrão
+          // Define a imagem principal
+          setMainImage(productData.main_image || (productData.images && productData.images.length > 0 ? productData.images[0].url : null));
+          
+          // Define valores padrão para tamanho
+          const defaultSizes = ['P', 'M', 'G'];
+          const sizes = Array.isArray(productData.sizes) ? productData.sizes : defaultSizes;
+          setSelectedSize(sizes.length > 0 ? sizes[0] : 'P');
+          
+          // Define valores padrão para cor
+          const defaultColors = ['Preto', 'Branco', 'Rosa'];
+          const colors = Array.isArray(productData.colors) ? productData.colors : defaultColors;
+          setSelectedColor(colors.length > 0 ? colors[0] : 'Preto');
         } else {
           setError('Produto não encontrado.');
         }
@@ -126,20 +131,20 @@ function ProductDetailPage() {
               src={mainImage || 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
               alt={product.title}
               style={{ width: '100%', height: '260px', objectFit: 'contain', display: 'block', background: '#fafafa' }}
-              onError={(e) => e.target.src = 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'}
+              onError={(e) => { e.target.src = 'https://via.placeholder.com/600x800?text=Imagem+Indisponível'; }}
             />
           </Box>
           {/* Galeria de imagens */}
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap', mb: 2 }}>
-            {(product.galleryImages || [product.imageUrl]).map((img, idx) => (
+            {(product.images || [product.main_image]).map((img, idx) => (
               <Box
-                key={idx}
-                sx={{ borderRadius: 1, overflow: 'hidden', boxShadow: 1, width: 64, height: 64, bgcolor: '#fff', cursor: 'pointer', border: mainImage === img ? '2px solid #1976d2' : '2px solid #eee' }}
-                onClick={() => setMainImage(img)}
+                key={`img-thumb-${product.id}-${idx}`}
+                sx={{ borderRadius: 1, overflow: 'hidden', boxShadow: 1, width: 64, height: 64, bgcolor: '#fff', cursor: 'pointer', border: mainImage === (typeof img === 'string' ? img : img.url) ? '2px solid #1976d2' : '2px solid #eee' }}
+                onClick={() => setMainImage(typeof img === 'string' ? img : img.url)}
               >
                 <img
-                  src={img || 'https://via.placeholder.com/64x64?text=+'}
-                  alt={`Miniatura ${idx + 1}`}
+                  src={(typeof img === 'string' ? img : img.url) || 'https://via.placeholder.com/64x64?text=+'}
+                  alt={typeof img === 'object' && img.alt ? img.alt : `Miniatura ${idx + 1}`}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               </Box>
@@ -148,15 +153,15 @@ function ProductDetailPage() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            {product.title}
+            {product.name || product.title}
           </Typography>
           <Typography variant="body1" color="text.secondary" paragraph sx={{ lineHeight: 1.7 }}>
-            {product.description}
+            {product.description || product.short_description || "Sem descrição disponível"}
           </Typography>
 
-          {product.category && (
+          {product.categories && product.categories.length > 0 && (
             <Typography variant="overline" display="block" color="text.secondary" gutterBottom>
-              Categoria: {product.category}
+              Categoria: {product.categories.map(cat => cat.name || cat).join(", ")}
             </Typography>
           )}
 
@@ -164,30 +169,32 @@ function ProductDetailPage() {
             <InputLabel id={`size-label-detail-${product.id}`}>Tamanho</InputLabel>
             <Select
               labelId={`size-label-detail-${product.id}`}
-              value={selectedSize || (product.sizes?.length > 0 ? product.sizes[0] : '')}
+              value={selectedSize}
               label="Tamanho"
               onChange={(e) => setSelectedSize(e.target.value)}
             >
-              {product.sizes.map(size => <MenuItem key={size} value={size}>{size}</MenuItem>)}
+              {(Array.isArray(product.sizes) ? product.sizes : ['P', 'M', 'G']).map(size => <MenuItem key={`size-${size}`} value={size}>{size}</MenuItem>)}
             </Select>
           </FormControl>
 
-          <FormControl fullWidth sx={{ mb: 2 }} disabled={product.stock === 0}>
+          <FormControl fullWidth sx={{ mb: 2 }} disabled={product.stock_quantity === 0}>
             <InputLabel id={`color-label-detail-${product.id}`}>Cor</InputLabel>
             <Select
               labelId={`color-label-detail-${product.id}`}
-              value={selectedColor || (product.colors?.length > 0 ? product.colors[0] : '')}
+              value={selectedColor}
               label="Cor"
               onChange={(e) => setSelectedColor(e.target.value)}
             >
-              {product.colors.map(color => <MenuItem key={color} value={color}>{color}</MenuItem>)}
+              {(Array.isArray(product.colors) ? product.colors : ['Preto', 'Branco', 'Rosa']).map(color => 
+                <MenuItem key={`color-${color}`} value={color}>{color}</MenuItem>
+              )}
             </Select>
           </FormControl>
           
 
           {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 2 }}>
             <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
-              {formatCurrency ? formatCurrency(parseFloat(product.price)) : `R$ ${product.price}`}
+              {`R$ ${product.price}`}
             </Typography>
             {product.stock > 0 ? (
               <Chip label={`Em estoque: ${product.stock}`} color="success" variant="outlined" />
@@ -203,7 +210,7 @@ function ProductDetailPage() {
               color={added ? "success" : "primary"}
               startIcon={added ? <CheckCircleIcon /> : <ShoppingCartIcon />}
               onClick={handleAddToCart}
-              disabled={product.stock === 0 || added || !selectedSize || !selectedColor}
+              disabled={(product.stock_quantity === 0) || added || !selectedSize || !selectedColor}
               sx={{ py: 1.5, fontWeight: 'bold', minWidth: 180 }}
             >
               {added ? "Adicionado ao Carrinho!" : "Adicionar ao Carrinho"}
@@ -218,7 +225,7 @@ function ProductDetailPage() {
               <Typography variant="h6" gutterBottom>Mais Detalhes:</Typography>
               <ul>
                 {product.details.map((detail, index) => (
-                  <Typography component="li" variant="body2" key={index} sx={{ mb: 0.5 }}>{detail}</Typography>
+                  <Typography component="li" variant="body2" key={`detail-${index}-${detail.substring(0, 10)}`} sx={{ mb: 0.5 }}>{detail}</Typography>
                 ))}
               </ul>
             </Box>

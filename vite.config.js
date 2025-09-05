@@ -1,3 +1,4 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 

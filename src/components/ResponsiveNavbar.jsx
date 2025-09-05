@@ -17,24 +17,35 @@ import {
   Container,
   useTheme,
   useMediaQuery,
+  Menu,
+  MenuItem,
+  Divider,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import HomeIcon from '@mui/icons-material/Home';
 import CategoryIcon from '@mui/icons-material/Category';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonIcon from '@mui/icons-material/Person';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // Se precisar de mais ícones para o drawer:
 // import StorefrontIcon from '@mui/icons-material/Storefront';
 
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const ResponsiveNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { getCartItemCount } = useCart();
+  const { user, isAuthenticated, logout, isAdmin } = useAuth();
   const itemCount = getCartItemCount();
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md')); // 'md' é um bom breakpoint para alternar
+  const open = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -45,6 +56,25 @@ const ResponsiveNavbar = () => {
     if (isMobile) {
       setMobileOpen(false);
     }
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleClose();
+    navigate('/');
+  };
+
+  const handleProfile = () => {
+    navigate('/profile');
+    handleClose();
   };
 
   // Categorias fixas conforme produtos.js
@@ -79,6 +109,27 @@ const ResponsiveNavbar = () => {
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
+        
+        <Divider sx={{ my: 1 }} />
+        
+        {/* Opções de autenticação no menu móvel */}
+        {isAuthenticated ? (
+          <>
+            <ListItem button onClick={handleProfile}>
+              <ListItemIcon sx={{ color: 'primary.main' }}><PersonIcon /></ListItemIcon>
+              <ListItemText primary="Meu Perfil" />
+            </ListItem>
+            <ListItem button onClick={handleLogout}>
+              <ListItemIcon sx={{ color: 'primary.main' }}><LogoutIcon /></ListItemIcon>
+              <ListItemText primary="Sair" />
+            </ListItem>
+          </>
+        ) : (
+          <ListItem button onClick={() => handleNavigation('/login')}>
+            <ListItemIcon sx={{ color: 'primary.main' }}><LoginIcon /></ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
+        )}
       </List>
     </Box>
   );
@@ -116,6 +167,76 @@ const ResponsiveNavbar = () => {
                   {item.text}
                 </Button>
               ))}
+            </Box>
+
+            {/* Botões de autenticação para Desktop */}
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {!isAuthenticated ? (
+                <>
+                  <Button
+                    color="primary"
+                    component={RouterLink}
+                    to="/login"
+                    startIcon={<LoginIcon />}
+                    sx={{ ml: 1 }}
+                  >
+                    Login
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <IconButton
+                    onClick={handleMenu}
+                    size="large"
+                    aria-label="conta do usuário"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    color="primary"
+                    sx={{ ml: 1 }}
+                  >
+                    <AccountCircleIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleProfile}>
+                      <ListItemIcon>
+                        <PersonIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Meu Perfil</ListItemText>
+                    </MenuItem>
+                    
+                    {isAdmin && (
+                      <MenuItem onClick={() => { handleClose(); navigate('/admin'); }}>
+                        <ListItemIcon>
+                          <CategoryIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Painel Admin</ListItemText>
+                      </MenuItem>
+                    )}
+                    
+                    <Divider />
+                    <MenuItem onClick={handleLogout}>
+                      <ListItemIcon>
+                        <LogoutIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Sair</ListItemText>
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
             </Box>
 
             {/* Ícone do Carrinho */}
