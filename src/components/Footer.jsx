@@ -2,12 +2,13 @@
 // Material-UI components
 
 // Material-UI icons
-import EmailIcon from '@mui/icons-material/Email';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { Box, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
 
 // Router
@@ -15,17 +16,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const instagramUser = 'https://www.instagram.com/closetmodafitness?igsh=MWwyNnZpZXhmMjI5eA==';
-  const whatsappNumber = '5585997173941';
-
-  // Categorias para o footer
-  const categories = [
-    { text: 'Babydoll', path: '/categoria/babydoll' },
-    { text: 'Camisola', path: '/categoria/camisola' },
-    { text: 'Infantil', path: '/categoria/infantil' },
-    { text: 'Conjunto casal', path: '/categoria/conjunto casal' },
-    { text: 'Americano', path: '/categoria/americano' },
-  ];
+  const instagramUser = 'https://www.instagram.com/closettmodafitness_?igsh=MTB1b3c5NWRlYm1kZA==';
+  const whatsappNumber = '5585991893149';
 
   return (
     <Box
@@ -47,16 +39,37 @@ const Footer = () => {
       }}
     >
       <Box className="content-container">
+
+         <Grid item xs={6} sm={3} md={2}>
+            <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF', borderBottom: 'none !important', pb: 0 }}>
+              Navegação
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', mt: 1 }}>
+              <Link component={RouterLink} to="/" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <HomeOutlinedIcon sx={{ fontSize: 18 }} /> Home
+              </Link>
+              <Link component={RouterLink} to="/cart" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <ShoppingCartOutlinedIcon sx={{ fontSize: 18 }} /> Carrinho
+              </Link>
+              <Link component={RouterLink} to="/feedback" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <FeedbackOutlinedIcon sx={{ fontSize: 18 }} /> Feedback
+              </Link>
+              <Link component={RouterLink} to="/login" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <LoginOutlinedIcon sx={{ fontSize: 18 }} /> Entrar
+              </Link>
+            </Box>
+          </Grid>
+
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Box sx={{ mb: 3 }}>
               <img
-                src="/icon-removebg-preview.png"
-                alt="Gofashion"
+                src="/image/logo_fundo_trasparente_letra_clara.png"
+                alt="Closet Moda Fitness"
                 style={{
-                  maxWidth: '130px',
+                  maxWidth: '180px',
                   height: 'auto',
-                  marginBottom: '16px',
+                  marginBottom: '6px',
                 }}
               />
               <Typography variant="body2" sx={{ mb: 2, maxWidth: '90%', color: '#B3B3B3' }}>
@@ -101,6 +114,9 @@ const Footer = () => {
                   <WhatsAppIcon fontSize="small" />
                 </IconButton>
                 <IconButton
+                  href="https://facebook.com/closettmodafitness"
+                  target="_blank"
+                  rel="noopener"
                   size="small"
                   sx={{
                     color: '#B3B3B3',
@@ -116,87 +132,6 @@ const Footer = () => {
                   <FacebookIcon fontSize="small" />
                 </IconButton>
               </Stack>
-            </Box>
-          </Grid>
-
-          <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
-              Navegação
-            </Typography>
-            <Link component={RouterLink} to="/" className="footer-link" sx={{ color: '#B3B3B3' }}>
-              Home
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/cart"
-              className="footer-link"
-              sx={{ color: '#B3B3B3' }}
-            >
-              Carrinho
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/feedback"
-              className="footer-link"
-              sx={{ color: '#B3B3B3' }}
-            >
-              Feedback
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/login"
-              className="footer-link"
-              sx={{ color: '#B3B3B3' }}
-            >
-              Entrar
-            </Link>
-          </Grid>
-
-          <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
-              Categorias
-            </Typography>
-            {categories.map((category) => (
-              <Link
-                key={category.path}
-                component={RouterLink}
-                to={category.path}
-                className="footer-link"
-                sx={{ color: '#B3B3B3' }}
-              >
-                {category.text}
-              </Link>
-            ))}
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
-              Contato
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              <LocalPhoneIcon sx={{ fontSize: '1rem', mr: 1, color: 'primary.light' }} />
-              <Typography variant="body2" sx={{ color: '#B3B3B3' }}>
-                +55 (85) 99717-3941
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              <EmailIcon sx={{ fontSize: '1rem', mr: 1, color: 'primary.light' }} />
-              <Typography variant="body2" sx={{ color: '#B3B3B3' }}>
-                contato@closetmodafitness.com.br
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', mb: 1.5 }}>
-              <LocationOnIcon
-                sx={{
-                  fontSize: '1rem',
-                  mr: 1,
-                  color: 'primary.light',
-                  mt: 0.3,
-                }}
-              />
-              <Typography variant="body2" sx={{ color: '#B3B3B3' }}>
-                Rua Exemplo, 123 - Fortaleza, CE
-              </Typography>
             </Box>
           </Grid>
         </Grid>
