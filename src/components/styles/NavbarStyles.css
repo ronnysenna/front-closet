@@ -1,0 +1,192 @@
+/* Estilos específicos para a Navbar responsiva */
+
+.menu-item-hover-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Estilos para layout expandido do Navbar e Footer */
+.full-width-layout {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item-hover-effect::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: var(--primary-color, #ff6923);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 3px 3px 0 0;
+  opacity: 0;
+}
+
+.menu-item-hover-effect:hover::after {
+  width: 70%;
+  opacity: 1;
+}
+
+/* Animação do menu mobile */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.mobile-menu-enter {
+  animation: slideIn 0.3s forwards;
+}
+
+/* Efeito de elevação nos botões */
+.button-elevation {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button-elevation:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 105, 35, 0.15);
+}
+
+/* Efeito de ripple personalizado */
+.modern-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.modern-ripple::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 105, 35, 0.2) 10%,
+    transparent 10.01%
+  );
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.8s;
+}
+
+.modern-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+/* Efeito para o logo */
+.logo-pulse {
+  position: relative;
+}
+
+.logo-pulse::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary-color, #ff6923);
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(-50%) scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 105, 35, 0.7);
+  }
+  70% {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 0 10px rgba(255, 105, 35, 0);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 105, 35, 0);
+  }
+}
+
+/* Badge animado para o carrinho */
+.cart-badge-animated {
+  animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Estilos para os links do footer */
+.footer-link {
+  display: block;
+  margin: 8px 0;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding-left: 0;
+}
+
+.footer-link:hover {
+  transform: translateX(5px);
+  color: #ff6923 !important;
+}
+
+.footer-header {
+  position: relative;
+  margin-bottom: 16px;
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.footer-header:after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: #ff6923;
+  border-radius: 2px;
+}
