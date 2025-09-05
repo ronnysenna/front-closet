@@ -146,9 +146,8 @@ const ProductManagement = ({ onSuccess }) => {
   const [newImageUrl, setNewImageUrl] = useState('');
   const [newImageAlt, setNewImageAlt] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState('');
-  const [previewImage, setPreviewImage] = useState(null);
+  const [, setPreviewImage] = useState(null);
   const [lastUploadedImage, setLastUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -305,10 +304,6 @@ const ProductManagement = ({ onSuccess }) => {
     }
   };
 
-
-
-
-
   const handleDeleteProduct = async () => {
     try {
       setLoading(true);
@@ -326,7 +321,7 @@ const ProductManagement = ({ onSuccess }) => {
     }
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
 
@@ -613,7 +608,132 @@ const ProductManagement = ({ onSuccess }) => {
 
       {/* Diálogo para gerenciar imagens do produto */}
       <Dialog open={openImagesDialog} onClose={handleCloseImagesDialog} maxWidth="md" fullWidth>
-        {/* ... conteúdo existente para o diálogo de imagens ... */}
+        <DialogTitle>Gerenciar Imagens do Produto</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Adicione, remova ou defina a imagem principal do produto.
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
+            {(currentProduct.images && currentProduct.images.length > 0) ? (
+              currentProduct.images.map((img, idx) => (
+                <Box key={img.url || idx} sx={{ position: 'relative', width: 120, height: 120 }}>
+                  <img
+                    src={img.url?.startsWith('http') ? img.url : `${ASSETS_BASE_URL}/${img.url}`}
+                    alt={img.alt || `Imagem ${idx + 1}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8, border: currentProduct.mainImage === img.url ? '2px solid #ff6923' : '1px solid #ccc' }}
+                  />
+                  <IconButton
+                    size="small"
+                    color="error"
+                    sx={{ position: 'absolute', top: 2, right: 2, bgcolor: 'white', p: 0.5 }}
+                    onClick={() => {
+                      setCurrentProduct({
+                        ...currentProduct,
+                        images: currentProduct.images.filter((_, i) => i !== idx),
+                      });
+                      // Se remover a principal, limpa mainImage
+                      if (currentProduct.mainImage === img.url) {
+                        setCurrentProduct(cp => ({ ...cp, mainImage: '' }));
+                      }
+                    }}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                  {currentProduct.mainImage !== img.url && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      sx={{ position: 'absolute', bottom: 4, left: 4, fontSize: 10, p: 0.5, minWidth: 0 }}
+                      onClick={() => setCurrentProduct(cp => ({ ...cp, mainImage: img.url }))}
+                    >
+                      Definir Principal
+                    </Button>
+                  )}
+                  {currentProduct.mainImage === img.url && (
+                    <Typography variant="caption" sx={{ position: 'absolute', bottom: 4, left: 4, bgcolor: '#ff6923', color: 'white', px: 1, borderRadius: 1, fontSize: 10 }}>
+                      Principal
+                    </Typography>
+                  )}
+                </Box>
+              ))
+            ) : (
+              <Typography variant="body2" color="text.secondary">Nenhuma imagem adicionada.</Typography>
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Button
+              variant="contained"
+              component="label"
+              disabled={isUploading}
+            >
+              Upload Imagem
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                ref={fileInputRef}
+                onChange={async (e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  setIsUploading(true);
+                  setUploadError('');
+                  try {
+                    const result = await uploadProductImage(file);
+                    const url = result?.url || result?.imageUrl || result?.path || '';
+                    if (url) {
+                      setCurrentProduct(cp => ({
+                        ...cp,
+                        images: [...(cp.images || []), { url, alt: file.name }],
+                      }));
+                      setLastUploadedImage(url);
+                    }
+                  } catch {
+                    setUploadError('Erro ao fazer upload da imagem.');
+                  } finally {
+                    setIsUploading(false);
+                  }
+                }}
+              />
+            </Button>
+            {isUploading && <CircularProgress size={24} />}
+            {uploadError && <Typography color="error">{uploadError}</Typography>}
+          </Box>
+          <TextField
+            label="URL da Imagem Manual"
+            value={newImageUrl}
+            onChange={e => setNewImageUrl(e.target.value)}
+            size="small"
+            sx={{ mr: 1, width: 300 }}
+            placeholder="image/nome-da-imagem.jpg"
+          />
+          <TextField
+            label="Descrição/Alt da Imagem"
+            value={newImageAlt}
+            onChange={e => setNewImageAlt(e.target.value)}
+            size="small"
+            sx={{ mr: 1, width: 200 }}
+            placeholder="Ex: Foto lateral"
+          />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              if (newImageUrl) {
+                setCurrentProduct(cp => ({
+                  ...cp,
+                  images: [...(cp.images || []), { url: newImageUrl, alt: newImageAlt }],
+                }));
+                setNewImageUrl('');
+                setNewImageAlt('');
+              }
+            }}
+            disabled={!newImageUrl}
+          >
+            Adicionar Manualmente
+          </Button>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseImagesDialog}>Fechar</Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

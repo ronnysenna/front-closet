@@ -1,18 +1,12 @@
-// src/components/Footer.jsx
-// Material-UI components
-
-// Material-UI icons
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { Box, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
-
-// Router
 import { Link as RouterLink } from 'react-router-dom';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -39,26 +33,77 @@ const Footer = () => {
       }}
     >
       <Box className="content-container">
-
-         <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF', borderBottom: 'none !important', pb: 0 }}>
-              Navegação
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', mt: 1 }}>
-              <Link component={RouterLink} to="/" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <HomeOutlinedIcon sx={{ fontSize: 18 }} /> Home
-              </Link>
-              <Link component={RouterLink} to="/cart" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <ShoppingCartOutlinedIcon sx={{ fontSize: 18 }} /> Carrinho
-              </Link>
-              <Link component={RouterLink} to="/feedback" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <FeedbackOutlinedIcon sx={{ fontSize: 18 }} /> Feedback
-              </Link>
-              <Link component={RouterLink} to="/login" className="footer-link" sx={{ color: '#B3B3B3', textDecoration: 'none', '&:hover': { textDecoration: 'none', color: '#ff6923' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <LoginOutlinedIcon sx={{ fontSize: 18 }} /> Entrar
-              </Link>
-            </Box>
-          </Grid>
+        <Grid item xs={6} sm={3} md={2}>
+          <Typography
+            variant="subtitle2"
+            className="footer-header"
+            sx={{ color: '#FFFFFF', borderBottom: 'none !important', pb: 0 }}
+          >
+            Navegação
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', mt: 1 }}>
+            <Link
+              component={RouterLink}
+              to="/"
+              className="footer-link"
+              sx={{
+                color: '#B3B3B3',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'none', color: '#ff6923' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
+            >
+              <HomeOutlinedIcon sx={{ fontSize: 18 }} /> Home
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/cart"
+              className="footer-link"
+              sx={{
+                color: '#B3B3B3',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'none', color: '#ff6923' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
+            >
+              <ShoppingCartOutlinedIcon sx={{ fontSize: 18 }} /> Carrinho
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/feedback"
+              className="footer-link"
+              sx={{
+                color: '#B3B3B3',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'none', color: '#ff6923' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
+            >
+              <FeedbackOutlinedIcon sx={{ fontSize: 18 }} /> Feedback
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/login"
+              className="footer-link"
+              sx={{
+                color: '#B3B3B3',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'none', color: '#ff6923' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
+            >
+              <LoginOutlinedIcon sx={{ fontSize: 18 }} /> Entrar
+            </Link>
+          </Box>
+        </Grid>
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>

@@ -1,23 +1,14 @@
 // src/pages/HomePage.jsx
 /** biome-ignore-all assist/source/organizeImports: Importações organizadas manualmente para manter a ordem específica por relevância de componentes */
-import react from 'react';
-import ProductList from '../components/ProductList';
-import ProductSearchBar from '../components/ProductSearchBar';
-import RotatingBanner from '../components/RotatingBanner';
-import ShippingInfo from '../components/ShippingInfo';
-import FeaturedProducts from '../components/FeaturedProducts';
-import CategoryGrid from '../components/CategoryGrid';
-import { getAllProducts } from '../utils/api';
+import react from "react";
+import ProductList from "../components/ProductList";
+import ProductSearchBar from "../components/ProductSearchBar";
+import ShippingInfo from "../components/ShippingInfo";
+import CategoryGrid from "../components/CategoryGrid";
+import { getAllProducts } from "../utils/api";
 
 const HomePage = () => {
-  const _handleAutomacaoClick = () => {
-    window.open(
-      'https://wa.me/5585991904540?text=Olá!%20Tenho%20interesse%20em%20soluções%20de%20automação%20ou%20criação%20de%20site.%20Gostaria%20de%20saber%20mais.',
-      '_blank'
-    );
-  };
-
-  const [searchTerm, setSearchTerm] = react.useState('');
+  const [searchTerm, setSearchTerm] = react.useState("");
   const [products, setProducts] = react.useState([]);
   const [loading, setLoading] = react.useState(true);
   const [error, setError] = react.useState(null);
@@ -30,8 +21,10 @@ const HomePage = () => {
         const data = await getAllProducts();
         setProducts(data);
       } catch (err) {
-        console.error('Erro ao carregar produtos:', err);
-        setError('Não foi possível carregar os produtos. Por favor, tente novamente mais tarde.');
+        console.error("Erro ao carregar produtos:", err);
+        setError(
+          "Não foi possível carregar os produtos. Por favor, tente novamente mais tarde."
+        );
       } finally {
         setLoading(false);
       }
@@ -39,11 +32,6 @@ const HomePage = () => {
 
     fetchProducts();
   }, []);
-
-  // Extrai apenas as URLs das imagens dos produtos
-  const productImages = products.map((p) => p.main_image).filter((url) => url); // Garante que apenas URLs válidas sejam passadas
-
-  const whatsappGroupLink = 'https://chat.whatsapp.com/';
 
   // Filtra produtos pelo termo de busca
   const filteredProducts = products.filter(
@@ -66,18 +54,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Usando o componente RotatingBanner */}
-      <RotatingBanner images={productImages} whatsappLink={whatsappGroupLink} />
-
       {/* Barra de busca */}
       <ProductSearchBar onSearch={setSearchTerm} />
-
       {/* Grid de Categorias */}
       <CategoryGrid />
-
-      {/* Produtos em Destaque */}
-      <FeaturedProducts />
-
       {/* Lista de produtos filtrada */}
       {loading ? (
         <p>Carregando produtos...</p>
@@ -86,7 +66,6 @@ const HomePage = () => {
       ) : (
         <ProductList products={filteredProducts} />
       )}
-
       <ShippingInfo />
     </div>
   );
