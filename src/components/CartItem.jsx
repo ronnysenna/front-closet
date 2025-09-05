@@ -1,36 +1,33 @@
-// src/components/CartItem.jsx
-import React from 'react';
-import { useCart } from '../context/CartContext';
-import { formatCurrency } from '../utils/formatCurrency';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from '@mui/icons-material/Remove';
 import {
+  Avatar,
   Box,
-  Typography,
   IconButton,
   ListItem,
   ListItemAvatar,
-  Avatar,
   ListItemText,
-  TextField, // Para uma entrada de quantidade mais estilizada
-  Tooltip
+  Tooltip,
+  Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useCart } from '../context/CartContext';
+import { formatCurrency } from '../utils/formatCurrency';
 
 const CartItem = ({ item }) => {
   const { updateQuantity, removeFromCart } = useCart();
 
   const handleQuantityChange = (newQuantity) => {
-    const quantityNum = parseInt(newQuantity, 10);
-    if (!isNaN(quantityNum) && quantityNum >= 0) { // Permite 0 para remover via updateQuantity
-        if (quantityNum > item.stock) {
-            updateQuantity(item.cartItemId, item.stock);
-        } else {
-            updateQuantity(item.cartItemId, quantityNum);
-        }
+    const quantityNum = parseInt(newQuantity, 10); // Radix 10 para notação decimal
+    if (!Number.isNaN(quantityNum) && quantityNum >= 0) {
+      // Permite 0 para remover via updateQuantity
+      if (quantityNum > item.stock) {
+        updateQuantity(item.cartItemId, item.stock);
+      } else {
+        updateQuantity(item.cartItemId, quantityNum);
+      }
     }
   };
-
 
   return (
     <ListItem
@@ -47,7 +44,9 @@ const CartItem = ({ item }) => {
           alt={item.title}
           variant="rounded"
           sx={{ width: 80, height: 80 }}
-          onError={(e) => e.target.src = 'https://via.placeholder.com/80x80?text=Img'}
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/80x80?text=Img';
+          }}
         />
       </ListItemAvatar>
       <ListItemText
@@ -68,16 +67,25 @@ const CartItem = ({ item }) => {
         }
         sx={{ flexGrow: 1, mb: { xs: 1, sm: 0 } }}
       />
-      <Box sx={{ display: 'flex', alignItems: 'center', my: { xs: 1, sm: 0 }, minWidth: '130px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          my: { xs: 1, sm: 0 },
+          minWidth: '130px',
+        }}
+      >
         <Tooltip title="Diminuir quantidade">
-          <span> {/* Span para habilitar tooltip em botão desabilitado */}
+          <span>
+            {' '}
+            {/* Span para habilitar tooltip em botão desabilitado */}
             <IconButton
               size="small"
               onClick={() => handleQuantityChange(item.quantity - 1)}
               disabled={item.quantity <= 1}
               aria-label="diminuir quantidade"
             >
-              <RemoveIcon fontSize="small"/>
+              <RemoveIcon fontSize="small" />
             </IconButton>
           </span>
         </Tooltip>
@@ -92,13 +100,23 @@ const CartItem = ({ item }) => {
               disabled={item.quantity >= item.stock}
               aria-label="aumentar quantidade"
             >
-              <AddIcon fontSize="small"/>
+              <AddIcon fontSize="small" />
             </IconButton>
           </span>
         </Tooltip>
       </Box>
-      <Typography variant="subtitle1" fontWeight="bold" sx={{ width: { xs: 'auto', sm: '120px' }, textAlign: {xs: 'left', sm: 'right'}, my: { xs: 1, sm: 0 } }}>
-        {formatCurrency ? formatCurrency(parseFloat(item.price) * item.quantity) : `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}`}
+      <Typography
+        variant="subtitle1"
+        fontWeight="bold"
+        sx={{
+          width: { xs: 'auto', sm: '120px' },
+          textAlign: { xs: 'left', sm: 'right' },
+          my: { xs: 1, sm: 0 },
+        }}
+      >
+        {formatCurrency
+          ? formatCurrency(parseFloat(item.price) * item.quantity)
+          : `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}`}
       </Typography>
       <Tooltip title="Remover item">
         <IconButton

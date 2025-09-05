@@ -1,11 +1,13 @@
-// src/components/ProductList.jsx
-import React from 'react';
+import { Container, Grid, Typography } from '@mui/material';
 import ProductCard from './ProductCard';
-import { Grid, Typography, Container } from '@mui/material';
 
 const ProductList = ({ products }) => {
   if (!products || products.length === 0) {
-    return <Typography variant="subtitle1" align="center" sx={{ mt: 5 }}>Nenhum produto encontrado.</Typography>;
+    return (
+      <Typography variant="subtitle1" align="center" sx={{ mt: 5 }}>
+        Nenhum produto encontrado.
+      </Typography>
+    );
   }
 
   return (
@@ -24,7 +26,10 @@ const ProductList = ({ products }) => {
           fontSize: { xs: '2rem', md: '2.5rem' },
         }}
       >
-        <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>Nossos Produtos</span><br />
+        <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>
+          Nossos Produtos
+        </span>
+        <br />
       </Typography>
       <Grid
         container
@@ -36,7 +41,7 @@ const ProductList = ({ products }) => {
           margin: 0,
         }}
       >
-        {products.map(product => (
+        {products.map((product) => (
           <Grid
             item
             key={product.id}
@@ -44,7 +49,12 @@ const ProductList = ({ products }) => {
             sm={6}
             md={4}
             lg={3}
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', px: { xs: 0, sm: 1 } }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'stretch',
+              px: { xs: 0, sm: 1 },
+            }}
           >
             <ProductCard product={product} />
           </Grid>

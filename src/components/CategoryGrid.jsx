@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
-  CardActionArea, 
+import {
+  Alert,
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
   CardMedia,
   CircularProgress,
-  Alert,
-  Box
+  Container,
+  Grid,
+  Typography,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCategories } from '../utils/api';
 
 const CategoryGrid = () => {
@@ -59,15 +59,15 @@ const CategoryGrid = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, mt: 2 }}>
-      <Typography 
-        variant="h4" 
-        component="h2" 
-        gutterBottom 
+      <Typography
+        variant="h4"
+        component="h2"
+        gutterBottom
         align="center"
-        sx={{ 
-          mb: 4, 
+        sx={{
+          mb: 4,
           fontWeight: 'bold',
-          color: 'primary.main'
+          color: 'primary.main',
         }}
       >
         Categorias
@@ -76,22 +76,26 @@ const CategoryGrid = () => {
       <Grid container spacing={3} justifyContent="center">
         {categories.map((category) => (
           <Grid item xs={6} sm={4} md={3} key={category.id}>
-            <Card 
+            <Card
               elevation={2}
-              sx={{ 
-                height: '100%', 
-                display: 'flex', 
+              sx={{
+                height: '100%',
+                display: 'flex',
                 flexDirection: 'column',
                 transition: 'transform 0.3s, box-shadow 0.3s',
                 '&:hover': {
                   transform: 'translateY(-5px)',
-                  boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
-                }
+                  boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                },
               }}
             >
-              <CardActionArea 
+              <CardActionArea
                 onClick={() => handleCategoryClick(category.slug)}
-                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
               >
                 {category.image && (
                   <CardMedia

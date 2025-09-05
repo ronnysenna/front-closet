@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Container, 
-  Box, 
-  Typography, 
-  Tabs, 
-  Tab, 
-  Paper, 
-  CircularProgress, 
-  Alert, 
-  Snackbar
+import {
+  Alert,
+  Box,
+  CircularProgress,
+  Container,
+  Paper,
+  Snackbar,
+  Tab,
+  Tabs,
+  Typography,
 } from '@mui/material';
-import { useAuth } from '../context/AuthContext';
-import ProductManagement from '../components/admin/ProductManagement';
+import { useEffect, useState } from 'react';
 import CategoryManagement from '../components/admin/CategoryManagement';
-import OrderManagement from '../components/admin/OrderManagement';
-import UserManagement from '../components/admin/UserManagement';
 import DashboardOverview from '../components/admin/DashboardOverview';
+import OrderManagement from '../components/admin/OrderManagement';
+import ProductManagement from '../components/admin/ProductManagement';
+import UserManagement from '../components/admin/UserManagement';
+import { useAuth } from '../context/AuthContext';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -28,11 +28,7 @@ function TabPanel(props) {
       aria-labelledby={`admin-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -46,7 +42,7 @@ function a11yProps(index) {
 
 const AdminDashboard = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, _setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const { user, isAdmin } = useAuth();
@@ -58,7 +54,7 @@ const AdminDashboard = () => {
     }
   }, [isAdmin]);
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (_event, newValue) => {
     setTabValue(newValue);
   };
 
@@ -91,11 +87,9 @@ const AdminDashboard = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Painel Administrativo
       </Typography>
-      
+
       <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle1">
-          Bem-vindo, {user?.name || 'Administrador'}
-        </Typography>
+        <Typography variant="subtitle1">Bem-vindo, {user?.name || 'Administrador'}</Typography>
         <Typography variant="body2" color="text.secondary">
           Aqui você pode gerenciar produtos, categorias, pedidos e usuários.
         </Typography>

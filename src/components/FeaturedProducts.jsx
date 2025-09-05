@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Grid, Typography, Box, CircularProgress, Alert } from '@mui/material';
+import { Alert, Box, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { getFeaturedProducts } from '../utils/api';
 
@@ -17,7 +17,9 @@ const FeaturedProducts = () => {
         setError(null);
       } catch (err) {
         console.error('Erro ao carregar produtos em destaque:', err);
-        setError('Não foi possível carregar os produtos em destaque. Por favor, tente novamente mais tarde.');
+        setError(
+          'Não foi possível carregar os produtos em destaque. Por favor, tente novamente mais tarde.'
+        );
       } finally {
         setLoading(false);
       }
@@ -47,7 +49,7 @@ const FeaturedProducts = () => {
       <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3, fontWeight: 'bold' }}>
         Produtos em Destaque
       </Typography>
-      
+
       {products.length === 0 ? (
         <Typography variant="body1">Nenhum produto em destaque disponível no momento.</Typography>
       ) : (

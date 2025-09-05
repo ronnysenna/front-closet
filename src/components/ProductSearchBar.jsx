@@ -1,7 +1,6 @@
-// src/components/ProductSearchBar.jsx
-import React, { useState } from 'react';
-import { TextField, InputAdornment, IconButton, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import { useState } from 'react';
 
 const ProductSearchBar = ({ onSearch }) => {
   const [search, setSearch] = useState('');

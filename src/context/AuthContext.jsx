@@ -1,5 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { loginUser as apiLoginUser, logoutUser as apiLogoutUser, getUserProfile } from '../utils/api';
+import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  loginUser as apiLoginUser,
+  logoutUser as apiLogoutUser,
+  getUserProfile,
+} from '../utils/api';
 
 // Criando o contexto de autenticação
 const AuthContext = createContext(null);
@@ -72,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated,
-    isAdmin
+    isAdmin,
   };
 
   return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

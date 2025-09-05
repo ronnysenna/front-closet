@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
+  Alert,
   Box,
   Button,
-  Typography,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  IconButton,
-  CircularProgress,
   TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Alert
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { getCategories, createCategory, updateCategory, deleteCategory } from '../../utils/api';
+import { useCallback, useEffect, useState } from 'react';
+import { createCategory, deleteCategory, getCategories, updateCategory } from '../../utils/api';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
@@ -42,15 +42,10 @@ const CategoryManagement = ({ onSuccess }) => {
   const [currentCategory, setCurrentCategory] = useState({
     id: null,
     name: '',
-    description: ''
+    description: '',
   });
-  
-  // Buscar categorias ao carregar a página
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getCategories();
@@ -62,8 +57,13 @@ const CategoryManagement = ({ onSuccess }) => {
     } finally {
       setLoading(false);
     }
-  };
-  
+  }, []);
+
+  // Buscar categorias ao carregar a página
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
   const handleOpenDialog = (category = null) => {
     if (category) {
       setCurrentCategory(category);
@@ -72,13 +72,13 @@ const CategoryManagement = ({ onSuccess }) => {
       setCurrentCategory({
         id: null,
         name: '',
-        description: ''
+        description: '',
       });
       setEditMode(false);
     }
     setOpenDialog(true);
   };
-  
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -96,10 +96,10 @@ const CategoryManagement = ({ onSuccess }) => {
     const { name, value } = e.target;
     setCurrentCategory({
       ...currentCategory,
-      [name]: value
+      [name]: value,
     });
   };
-  
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -137,11 +137,18 @@ const CategoryManagement = ({ onSuccess }) => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 2,
+        }}
+      >
         <Typography variant="h6">Gerenciamento de Categorias</Typography>
-        <Button 
-          variant="contained" 
-          color="primary" 
+        <Button
+          variant="contained"
+          color="primary"
           startIcon={<AddIcon />}
           onClick={() => handleOpenDialog()}
         >
@@ -149,7 +156,11 @@ const CategoryManagement = ({ onSuccess }) => {
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
       {loading && !openDialog && !confirmDeleteDialog ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
@@ -224,9 +235,9 @@ const CategoryManagement = ({ onSuccess }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button 
+          <Button
             onClick={handleSubmit}
-            variant="contained" 
+            variant="contained"
             color="primary"
             disabled={!currentCategory.name}
           >
@@ -240,17 +251,13 @@ const CategoryManagement = ({ onSuccess }) => {
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Você tem certeza que deseja excluir a categoria <strong>{currentCategory.name}</strong>? 
+            Você tem certeza que deseja excluir a categoria <strong>{currentCategory.name}</strong>?
             Esta ação não poderá ser desfeita e poderá afetar produtos associados a esta categoria.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
-          <Button 
-            onClick={handleDelete} 
-            color="error" 
-            variant="contained"
-          >
+          <Button onClick={handleDelete} color="error" variant="contained">
             {loading ? <CircularProgress size={24} /> : 'Excluir'}
           </Button>
         </DialogActions>

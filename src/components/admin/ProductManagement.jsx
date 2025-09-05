@@ -1,50 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ImageIcon from '@mui/icons-material/Image';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {
+  Alert,
   Box,
   Button,
-  Typography,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  FormControl,
+  Grid,
+  IconButton,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  IconButton,
-  CircularProgress,
   TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Divider,
   Tooltip,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  LinearProgress,
-  Alert
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import ImageIcon from '@mui/icons-material/Image';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { getAllProducts, getCategories, createProduct, updateProduct, deleteProduct, uploadProductImage } from '../../utils/api';
+import { useEffect, useId, useRef, useState } from 'react';
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getCategories,
+  updateProduct,
+  uploadProductImage,
+} from '../../utils/api';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
@@ -55,6 +58,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Componente placeholder para gerenciamento de produtos
 // Na implementação real, você adicionaria funções para editar, criar e excluir produtos
 const ProductManagement = ({ onSuccess }) => {
+  // Gerar IDs únicos para componentes
+  const _categoryLabelId = useId();
+  const _uploadImageInputId = useId();
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,9 +76,13 @@ const ProductManagement = ({ onSuccess }) => {
     shortDescription: '',
     mainImage: '',
     categoryId: '',
-    images: []
+    images: [],
   });
-  
+
+  // IDs únicos para elementos
+  const categoryLabelId = useId();
+  const uploadImageInputId = useId();
+
   // Estado para o gerenciamento de imagens
   const [openImagesDialog, setOpenImagesDialog] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState('');
@@ -82,7 +93,7 @@ const ProductManagement = ({ onSuccess }) => {
   const [previewImage, setPreviewImage] = useState(null);
   const [lastUploadedImage, setLastUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
-  
+
   // Buscar produtos e categorias ao carregar a página
   useEffect(() => {
     const fetchData = async () => {
@@ -90,9 +101,9 @@ const ProductManagement = ({ onSuccess }) => {
         setLoading(true);
         const [productsData, categoriesData] = await Promise.all([
           getAllProducts(),
-          getCategories()
+          getCategories(),
         ]);
-        
+
         setProducts(productsData);
         setCategories(categoriesData);
         setError(null);
@@ -103,17 +114,18 @@ const ProductManagement = ({ onSuccess }) => {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
-  
+
   const handleOpenDialog = (product = null) => {
     if (product) {
       // Mapeia os nomes de campos para garantir consistência
       setCurrentProduct({
         ...product,
         stockQuantity: product.stock_quantity || product.stockQuantity || '',
-        categoryId: product.categories && product.categories.length > 0 ? product.categories[0].id : ''
+        categoryId:
+          product.categories && product.categories.length > 0 ? product.categories[0].id : '',
       });
       setEditMode(true);
     } else {
@@ -125,25 +137,25 @@ const ProductManagement = ({ onSuccess }) => {
         shortDescription: '',
         mainImage: '',
         categoryId: '',
-        images: []
+        images: [],
       });
       setEditMode(false);
     }
     setOpenDialog(true);
   };
-  
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCurrentProduct({
       ...currentProduct,
-      [name]: value
+      [name]: value,
     });
   };
-  
+
   const handleSaveProduct = async () => {
     try {
       setLoading(true);
@@ -151,12 +163,14 @@ const ProductManagement = ({ onSuccess }) => {
         await updateProduct(currentProduct.id, {
           name: currentProduct.name,
           price: parseFloat(currentProduct.price),
-          originalPrice: currentProduct.original_price ? parseFloat(currentProduct.original_price) : null,
+          originalPrice: currentProduct.original_price
+            ? parseFloat(currentProduct.original_price)
+            : null,
           description: currentProduct.description,
           shortDescription: currentProduct.shortDescription,
           mainImage: currentProduct.mainImage,
-          stockQuantity: parseInt(currentProduct.stockQuantity) || 0,
-          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId)] : []
+          stockQuantity: parseInt(currentProduct.stockQuantity, 10) || 0,
+          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId, 10)] : [],
         });
         onSuccess('Produto atualizado com sucesso!');
       } else {
@@ -164,10 +178,10 @@ const ProductManagement = ({ onSuccess }) => {
           name: currentProduct.name,
           price: parseFloat(currentProduct.price),
           description: currentProduct.description,
-          shortDescription: currentProduct.description?.split('.')[0] + '.',
+          shortDescription: `${currentProduct.description?.split('.')[0]}.`,
           mainImage: currentProduct.mainImage || 'image/default.jpg',
-          stockQuantity: parseInt(currentProduct.stockQuantity) || 0,
-          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId)] : []
+          stockQuantity: parseInt(currentProduct.stockQuantity, 10) || 0,
+          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId, 10)] : [],
         });
         onSuccess('Produto criado com sucesso!');
       }
@@ -182,9 +196,9 @@ const ProductManagement = ({ onSuccess }) => {
       setLoading(false);
     }
   };
-  
+
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
-  
+
   const handleOpenDeleteDialog = (product) => {
     setCurrentProduct(product);
     setConfirmDeleteDialog(true);
@@ -193,7 +207,7 @@ const ProductManagement = ({ onSuccess }) => {
   const handleCloseDeleteDialog = () => {
     setConfirmDeleteDialog(false);
   };
-  
+
   // Handlers para gerenciamento de imagens
   const handleOpenImagesDialog = () => {
     setOpenImagesDialog(true);
@@ -205,50 +219,55 @@ const ProductManagement = ({ onSuccess }) => {
     setNewImageAlt('');
     setPreviewImage(null);
     setUploadError('');
-    
+
     // Atualizar a lista de produtos se houver novas imagens
     if (lastUploadedImage) {
-      getAllProducts().then(productsData => {
-        setProducts(productsData);
-      }).catch(error => {
-        console.error('Erro ao atualizar lista de produtos:', error);
-      });
+      getAllProducts()
+        .then((productsData) => {
+          setProducts(productsData);
+        })
+        .catch((error) => {
+          console.error('Erro ao atualizar lista de produtos:', error);
+        });
     }
   };
-  
+
   const handleAddImage = () => {
     if (!newImageUrl) return;
-    
-    const newImages = [...(currentProduct.images || []), {
-      url: newImageUrl,
-      alt: newImageAlt || currentProduct.name || 'Imagem do produto'
-    }];
-    
+
+    const newImages = [
+      ...(currentProduct.images || []),
+      {
+        url: newImageUrl,
+        alt: newImageAlt || currentProduct.name || 'Imagem do produto',
+      },
+    ];
+
     setCurrentProduct({
       ...currentProduct,
-      images: newImages
+      images: newImages,
     });
-    
+
     setNewImageUrl('');
     setNewImageAlt('');
   };
-  
+
   const handleFileInputChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     // Gerar preview da imagem selecionada
     const fileUrl = URL.createObjectURL(file);
     setPreviewImage(fileUrl);
-    
+
     // Extrair o nome do arquivo para usar como texto alternativo
     const fileName = file.name.split('.')[0] || 'Imagem do produto';
     setNewImageAlt(fileName);
-    
+
     try {
       setIsUploading(true);
       setUploadProgress(10);
-      
+
       // Simular progresso para dar feedback visual
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
@@ -259,56 +278,58 @@ const ProductManagement = ({ onSuccess }) => {
           return prev + 10;
         });
       }, 300);
-      
+
       // Fazer upload da imagem
       const response = await uploadProductImage(file);
       clearInterval(progressInterval);
       setUploadProgress(100);
-      
+
       // Usar o texto alternativo fornecido ou extraído do nome do arquivo
       const imageAlt = newImageAlt || fileName || currentProduct.name || 'Imagem do produto';
-      
+
       // Adicionar a URL da imagem retornada à lista de imagens do produto
-      const newImages = [...(currentProduct.images || []), {
-        url: response.imageUrl,
-        alt: imageAlt
-      }];
-      
+      const newImages = [
+        ...(currentProduct.images || []),
+        {
+          url: response.imageUrl,
+          alt: imageAlt,
+        },
+      ];
+
       // Salvar a informação sobre a última imagem enviada
       setLastUploadedImage({
         url: response.imageUrl,
-        alt: imageAlt
+        alt: imageAlt,
       });
-      
+
       // Atualizar o produto com a nova imagem
       setCurrentProduct({
         ...currentProduct,
-        images: newImages
+        images: newImages,
       });
-      
+
       // Se não houver imagem principal, definir essa como principal
       if (!currentProduct.mainImage) {
-        setCurrentProduct(prev => ({
+        setCurrentProduct((prev) => ({
           ...prev,
-          mainImage: response.imageUrl
+          mainImage: response.imageUrl,
         }));
       }
-      
+
       // Mostrar a imagem por um momento antes de limpar
       setTimeout(() => {
         // Manter a pré-visualização para o usuário ver o que foi enviado
         setNewImageAlt('');
         setUploadError('');
-        
+
         // Limpar o input de arquivo
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
       }, 2000); // Mostra a pré-visualização por 2 segundos após o upload
-      
+
       // Feedback de sucesso
-      onSuccess && onSuccess('Imagem adicionada com sucesso');
-      
+      onSuccess?.('Imagem adicionada com sucesso');
     } catch (error) {
       console.error('Erro no upload:', error);
       setUploadError(error.message || 'Ocorreu um erro durante o upload da imagem');
@@ -317,30 +338,30 @@ const ProductManagement = ({ onSuccess }) => {
       setUploadProgress(0);
     }
   };
-  
+
   const handleRemoveImage = (index) => {
     const newImages = [...currentProduct.images];
     newImages.splice(index, 1);
-    
+
     setCurrentProduct({
       ...currentProduct,
-      images: newImages
+      images: newImages,
     });
   };
-  
+
   const handleSetMainImage = (url) => {
     // Garantir que a URL esteja padronizada (remover a barra inicial se existir)
     const normalizedUrl = url.startsWith('/') ? url.substring(1) : url;
-    
+
     setCurrentProduct({
       ...currentProduct,
-      mainImage: normalizedUrl
+      mainImage: normalizedUrl,
     });
-    
+
     // Feedback para o usuário
-    onSuccess && onSuccess('Imagem principal atualizada com sucesso');
+    onSuccess?.('Imagem principal atualizada com sucesso');
   };
-  
+
   const handleDeleteProduct = async () => {
     try {
       setLoading(true);
@@ -432,7 +453,7 @@ const ProductManagement = ({ onSuccess }) => {
           <DialogContentText sx={{ mb: 2 }}>
             Preencha os detalhes do produto abaixo:
           </DialogContentText>
-          
+
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -448,9 +469,9 @@ const ProductManagement = ({ onSuccess }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth margin="dense">
-                <InputLabel id="category-label">Categoria</InputLabel>
+                <InputLabel id={categoryLabelId}>Categoria</InputLabel>
                 <Select
-                  labelId="category-label"
+                  labelId={categoryLabelId}
                   name="categoryId"
                   value={currentProduct.categoryId}
                   onChange={handleInputChange}
@@ -464,7 +485,7 @@ const ProductManagement = ({ onSuccess }) => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={12} sm={6}>
               <TextField
                 name="price"
@@ -490,7 +511,7 @@ const ProductManagement = ({ onSuccess }) => {
                 variant="outlined"
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <TextField
                 name="description"
@@ -504,7 +525,7 @@ const ProductManagement = ({ onSuccess }) => {
                 variant="outlined"
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <TextField
@@ -518,7 +539,7 @@ const ProductManagement = ({ onSuccess }) => {
                   placeholder="image/nome-da-imagem.jpg"
                   helperText="Coloque o caminho da imagem em relação à pasta 'public/image'"
                 />
-                <Button 
+                <Button
                   variant="contained"
                   color="primary"
                   startIcon={<ImageIcon />}
@@ -529,26 +550,28 @@ const ProductManagement = ({ onSuccess }) => {
                 </Button>
               </Box>
             </Grid>
-            
+
             {currentProduct.mainImage && (
               <Grid item xs={12} sx={{ mt: 2, textAlign: 'center' }}>
                 <Typography variant="subtitle2" gutterBottom>
                   Pré-visualização da imagem principal:
                 </Typography>
-                <Box 
+                <Box
                   component="img"
-                  src={currentProduct.mainImage.startsWith('http') ? 
-                    currentProduct.mainImage : 
-                    `/${currentProduct.mainImage.startsWith('/') ? currentProduct.mainImage.substring(1) : currentProduct.mainImage}`}
+                  src={
+                    currentProduct.mainImage.startsWith('http')
+                      ? currentProduct.mainImage
+                      : `/${currentProduct.mainImage.startsWith('/') ? currentProduct.mainImage.substring(1) : currentProduct.mainImage}`
+                  }
                   alt={currentProduct.name}
-                  sx={{ 
-                    maxHeight: 200, 
-                    maxWidth: '100%', 
+                  sx={{
+                    maxHeight: 200,
+                    maxWidth: '100%',
                     objectFit: 'contain',
                     border: '1px solid #ddd',
                     borderRadius: '4px',
                     p: 1,
-                    backgroundColor: '#f9f9f9'
+                    backgroundColor: '#f9f9f9',
                   }}
                   onError={(e) => {
                     console.log('Erro ao carregar imagem principal:', currentProduct.mainImage);
@@ -576,17 +599,13 @@ const ProductManagement = ({ onSuccess }) => {
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Você tem certeza que deseja excluir o produto <strong>{currentProduct.name}</strong>? 
+            Você tem certeza que deseja excluir o produto <strong>{currentProduct.name}</strong>?
             Esta ação não poderá ser desfeita.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
-          <Button 
-            onClick={handleDeleteProduct} 
-            color="error" 
-            variant="contained"
-          >
+          <Button onClick={handleDeleteProduct} color="error" variant="contained">
             {loading ? <CircularProgress size={24} /> : 'Excluir'}
           </Button>
         </DialogActions>
@@ -618,7 +637,7 @@ const ProductManagement = ({ onSuccess }) => {
                 </IconButton>
               </Tooltip>
             </Box>
-            
+
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Box sx={{ mb: 2 }}>
@@ -628,9 +647,9 @@ const ProductManagement = ({ onSuccess }) => {
                     ref={fileInputRef}
                     style={{ display: 'none' }}
                     onChange={handleFileInputChange}
-                    id="upload-image-input"
+                    id={uploadImageInputId}
                   />
-                  <label htmlFor="upload-image-input">
+                  <label htmlFor={uploadImageInputId}>
                     <Button
                       variant="contained"
                       component="span"
@@ -638,20 +657,20 @@ const ProductManagement = ({ onSuccess }) => {
                       disabled={isUploading}
                       color="primary"
                       size="large"
-                      sx={{ 
-                        mb: 1, 
+                      sx={{
+                        mb: 1,
                         fontSize: '1rem',
                         padding: '10px 20px',
                         background: '#4caf50',
                         '&:hover': {
-                          background: '#388e3c'
-                        }
+                          background: '#388e3c',
+                        },
                       }}
                     >
                       {isUploading ? 'Enviando...' : 'SELECIONAR IMAGEM'}
                     </Button>
                   </label>
-                  
+
                   {isUploading && (
                     <Box sx={{ width: '100%', mt: 1 }}>
                       <LinearProgress variant="determinate" value={uploadProgress} />
@@ -660,7 +679,7 @@ const ProductManagement = ({ onSuccess }) => {
                       </Typography>
                     </Box>
                   )}
-                  
+
                   <TextField
                     fullWidth
                     label="Texto Alternativo"
@@ -671,12 +690,14 @@ const ProductManagement = ({ onSuccess }) => {
                   />
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12} sm={6}>
                 <Box sx={{ textAlign: 'center' }}>
                   {previewImage ? (
                     <>
-                      <Typography variant="subtitle2" gutterBottom>Pré-visualização:</Typography>
+                      <Typography variant="subtitle2" gutterBottom>
+                        Pré-visualização:
+                      </Typography>
                       <Box
                         component="img"
                         src={previewImage}
@@ -687,47 +708,62 @@ const ProductManagement = ({ onSuccess }) => {
                           objectFit: 'contain',
                           border: '1px solid #ddd',
                           borderRadius: '4px',
-                          p: 1
-                        }}
-                      />
-                    </>
-                  ) : lastUploadedImage && (
-                    <>
-                      <Typography variant="subtitle2" gutterBottom>Última imagem enviada:</Typography>
-                      <Box
-                        component="img"
-                        src={lastUploadedImage.url.startsWith('http') ? 
-                          lastUploadedImage.url : 
-                          `/${lastUploadedImage.url.startsWith('/') ? lastUploadedImage.url.substring(1) : lastUploadedImage.url}`
-                        }
-                        alt={lastUploadedImage.alt}
-                        sx={{
-                          maxHeight: 150,
-                          maxWidth: '100%',
-                          objectFit: 'contain',
-                          border: '1px solid #ddd',
-                          borderRadius: '4px',
                           p: 1,
-                          backgroundColor: '#f9f9f9'
-                        }}
-                        onError={(e) => {
-                          console.log('Erro ao carregar última imagem enviada:', lastUploadedImage.url);
-                          e.target.onerror = null;
-                          e.target.src = '/image/placeholder.jpg';
                         }}
                       />
-                      <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
-                        {lastUploadedImage.url.split('/').pop()}
-                      </Typography>
                     </>
+                  ) : (
+                    lastUploadedImage && (
+                      <>
+                        <Typography variant="subtitle2" gutterBottom>
+                          Última imagem enviada:
+                        </Typography>
+                        <Box
+                          component="img"
+                          src={
+                            lastUploadedImage.url.startsWith('http')
+                              ? lastUploadedImage.url
+                              : `/${lastUploadedImage.url.startsWith('/') ? lastUploadedImage.url.substring(1) : lastUploadedImage.url}`
+                          }
+                          alt={lastUploadedImage.alt}
+                          sx={{
+                            maxHeight: 150,
+                            maxWidth: '100%',
+                            objectFit: 'contain',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            p: 1,
+                            backgroundColor: '#f9f9f9',
+                          }}
+                          onError={(e) => {
+                            console.log(
+                              'Erro ao carregar última imagem enviada:',
+                              lastUploadedImage.url
+                            );
+                            e.target.onerror = null;
+                            e.target.src = '/image/placeholder.jpg';
+                          }}
+                        />
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          display="block"
+                          sx={{ mt: 1 }}
+                        >
+                          {lastUploadedImage.url.split('/').pop()}
+                        </Typography>
+                      </>
+                    )
                   )}
                 </Box>
               </Grid>
             </Grid>
 
             <Divider sx={{ my: 2 }} />
-            
-            <Typography variant="subtitle1" gutterBottom>Ou Adicionar por URL</Typography>
+
+            <Typography variant="subtitle1" gutterBottom>
+              Ou Adicionar por URL
+            </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={8}>
                 <TextField
@@ -740,7 +776,7 @@ const ProductManagement = ({ onSuccess }) => {
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Button 
+                <Button
                   variant="contained"
                   color="primary"
                   fullWidth
@@ -753,30 +789,47 @@ const ProductManagement = ({ onSuccess }) => {
               </Grid>
             </Grid>
           </Box>
-          
+
           <Divider sx={{ my: 2 }} />
-          
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
             <Typography variant="subtitle1">
               Imagens do Produto ({currentProduct.images?.length || 0})
             </Typography>
-            
+
             <Tooltip title="A imagem principal é a que aparece primeiro na página do produto">
               <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
                 Clique em "Definir como Principal" para escolher a imagem principal
               </Typography>
             </Tooltip>
           </Box>
-          
+
           {currentProduct.images && currentProduct.images.length > 0 ? (
             <Grid container spacing={2}>
               {currentProduct.images.map((image, index) => (
-                <Grid item xs={12} sm={6} md={4} key={`image-${index}-${image.url.split('/').pop()}`}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  key={`image-${index}-${image.url.split('/').pop()}`}
+                >
                   <Card variant="outlined">
                     <CardMedia
                       component="img"
                       height="140"
-                      image={image.url.startsWith('http') ? image.url : `/${image.url.startsWith('/') ? image.url.substring(1) : image.url}`}
+                      image={
+                        image.url.startsWith('http')
+                          ? image.url
+                          : `/${image.url.startsWith('/') ? image.url.substring(1) : image.url}`
+                      }
                       alt={image.alt}
                       onError={(e) => {
                         console.log('Erro ao carregar imagem:', image.url);
@@ -799,21 +852,26 @@ const ProductManagement = ({ onSuccess }) => {
                       )}
                     </CardContent>
                     <CardActions>
-                      <Button 
-                        size="small" 
-                        color={currentProduct.mainImage === image.url ? "success" : "primary"}
+                      <Button
+                        size="small"
+                        color={currentProduct.mainImage === image.url ? 'success' : 'primary'}
                         onClick={() => handleSetMainImage(image.url)}
                         disabled={currentProduct.mainImage === image.url}
-                        startIcon={currentProduct.mainImage === image.url ? <CheckCircleIcon /> : null}
+                        startIcon={
+                          currentProduct.mainImage === image.url ? <CheckCircleIcon /> : null
+                        }
                         sx={{
                           fontWeight: currentProduct.mainImage === image.url ? 'bold' : 'normal',
-                          backgroundColor: currentProduct.mainImage === image.url ? '#e8f5e9' : 'inherit',
+                          backgroundColor:
+                            currentProduct.mainImage === image.url ? '#e8f5e9' : 'inherit',
                         }}
                       >
-                        {currentProduct.mainImage === image.url ? 'Imagem Principal' : 'Definir como Principal'}
+                        {currentProduct.mainImage === image.url
+                          ? 'Imagem Principal'
+                          : 'Definir como Principal'}
                       </Button>
-                      <IconButton 
-                        color="error" 
+                      <IconButton
+                        color="error"
                         size="small"
                         onClick={() => handleRemoveImage(index)}
                       >
@@ -836,11 +894,7 @@ const ProductManagement = ({ onSuccess }) => {
               Total de imagens: {currentProduct.images?.length || 0}
             </Typography>
           </Box>
-          <Button 
-            onClick={handleCloseImagesDialog} 
-            variant="contained"
-            color="primary"
-          >
+          <Button onClick={handleCloseImagesDialog} variant="contained" color="primary">
             Fechar
           </Button>
         </DialogActions>

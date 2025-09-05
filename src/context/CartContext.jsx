@@ -1,5 +1,5 @@
 // src/context/CartContext.jsx
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const CartContext = createContext();
 
@@ -16,36 +16,46 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const addToCart = (product, quantity = 1, selectedSize, selectedColor) => {
-    setCartItems(prevItems => {
-      const itemExists = prevItems.find(item =>
-        item.id === product.id &&
-        item.selectedSize === selectedSize &&
-        item.selectedColor === selectedColor
+    setCartItems((prevItems) => {
+      const itemExists = prevItems.find(
+        (item) =>
+          item.id === product.id &&
+          item.selectedSize === selectedSize &&
+          item.selectedColor === selectedColor
       );
       if (itemExists) {
-        return prevItems.map(item =>
+        return prevItems.map((item) =>
           item.id === product.id &&
           item.selectedSize === selectedSize &&
           item.selectedColor === selectedColor
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
-      } else {
-        return [...prevItems, { ...product, quantity, selectedSize, selectedColor, cartItemId: `${product.id}-${selectedSize}-${selectedColor}` }];
       }
+
+      return [
+        ...prevItems,
+        {
+          ...product,
+          quantity,
+          selectedSize,
+          selectedColor,
+          cartItemId: `${product.id}-${selectedSize}-${selectedColor}`,
+        },
+      ];
     });
   };
 
   const removeFromCart = (cartItemId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== cartItemId));
+    setCartItems((prevItems) => prevItems.filter((item) => item.cartItemId !== cartItemId));
   };
 
   const updateQuantity = (cartItemId, newQuantity) => {
     if (newQuantity <= 0) {
       removeFromCart(cartItemId);
     } else {
-      setCartItems(prevItems =>
-        prevItems.map(item =>
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
           item.cartItemId === cartItemId ? { ...item, quantity: newQuantity } : item
         )
       );

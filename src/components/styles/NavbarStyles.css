@@ -7,12 +7,12 @@
 
 /* Estilos para layout expandido do Navbar e Footer */
 .full-width-layout {
-  width: 100vw !important;
-  max-width: none !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  width: 100vw;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
   box-sizing: border-box;
   position: relative;
   left: 0;
@@ -62,7 +62,9 @@ body {
 
 /* Efeito de elevação nos botões */
 .button-elevation {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .button-elevation:hover {
@@ -85,16 +87,14 @@ body {
   top: 0;
   left: 0;
   pointer-events: none;
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 105, 35, 0.2) 10%,
-    transparent 10.01%
-  );
+  background-image: radial-gradient(circle, rgba(255, 105, 35, 0.2) 10%, transparent 10.01%);
   background-repeat: no-repeat;
   background-position: 50%;
   transform: scale(10, 10);
   opacity: 0;
-  transition: transform 0.5s, opacity 0.8s;
+  transition:
+    transform 0.5s,
+    opacity 0.8s;
 }
 
 .modern-ripple:active::after {
@@ -169,7 +169,7 @@ body {
 
 .footer-link:hover {
   transform: translateX(5px);
-  color: #ff6923 !important;
+  color: #ff6923;
 }
 
 .footer-header {

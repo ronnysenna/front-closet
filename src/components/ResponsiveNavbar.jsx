@@ -1,40 +1,48 @@
 // src/components/ResponsiveNavbar.jsx
-import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+// React hooks
+import { useEffect, useState } from 'react';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+
+// Styles
 import './styles/NavbarStyles.css';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Badge,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Menu,
-  MenuItem,
-  Divider,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import HomeIcon from '@mui/icons-material/Home';
+import './styles/FullWidthLayout.css';
+
+// Material-UI icons
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CategoryIcon from '@mui/icons-material/Category';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// Material-UI components
+import {
+  AppBar,
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+
 // Se precisar de mais ícones para o drawer:
 // import StorefrontIcon from '@mui/icons-material/Storefront';
 
-import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const ResponsiveNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -48,10 +56,9 @@ const ResponsiveNavbar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md')); // 'md' é um bom breakpoint para alternar
   const open = Boolean(anchorEl);
   const menuId = 'primary-search-account-menu';
-  
+
   const isActivePath = (path) => {
-    return location.pathname === path || 
-           (path !== '/' && location.pathname.startsWith(path));
+    return location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
   };
 
   // Efeito para animar o badge do carrinho quando o número de itens muda
@@ -62,7 +69,7 @@ const ResponsiveNavbar = () => {
       const timeout = setTimeout(() => {
         badgeElement.classList.remove('cart-badge-animated');
       }, 500);
-      
+
       return () => clearTimeout(timeout);
     }
   }, [itemCount]);
@@ -101,34 +108,42 @@ const ResponsiveNavbar = () => {
 
   const navItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/' },
-    { text: 'Feedback', icon: <FavoriteIcon sx={{ color: '#e91e63' }} />, path: '/feedback' },
+    {
+      text: 'Feedback',
+      icon: <FavoriteIcon sx={{ color: '#e91e63' }} />,
+      path: '/feedback',
+    },
   ];
 
   const drawer = (
-    <Box sx={{ 
-      textAlign: 'center', 
-      width: 280,
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      bgcolor: '#1A1A2E',
-    }}>
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        p: 2, 
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        bgcolor: 'rgba(255, 105, 35, 0.1)'
-      }}>
-        <Typography 
-          variant="h5" 
+    <Box
+      sx={{
+        textAlign: 'center',
+        width: 280,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: '#1A1A2E',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 2,
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          bgcolor: 'rgba(255, 105, 35, 0.1)',
+        }}
+      >
+        <Typography
+          variant="h5"
           component={RouterLink}
           to="/"
           onClick={() => setMobileOpen(false)}
-          sx={{ 
-            py: 1.5, 
-            color: '#FFFFFF', 
+          sx={{
+            py: 1.5,
+            color: '#FFFFFF',
             fontWeight: 700,
             letterSpacing: '.1rem',
             textDecoration: 'none',
@@ -140,125 +155,127 @@ const ResponsiveNavbar = () => {
           Closet Moda Fitness
         </Typography>
       </Box>
-      <List sx={{ 
-        flex: 1, 
-        pt: 2,
-        px: 1.5,
-      }}>
+      <List
+        sx={{
+          flex: 1,
+          pt: 2,
+          px: 1.5,
+        }}
+      >
         {navItems.map((item) => (
-          <ListItem 
-            button 
-            key={item.text} 
+          <ListItem
+            button
+            key={item.text}
             onClick={() => handleNavigation(item.path)}
-            sx={{ 
+            sx={{
               borderRadius: 2,
               mb: 0.5,
               transition: 'all 0.2s ease',
               bgcolor: isActivePath(item.path) ? 'rgba(255, 105, 35, 0.08)' : 'transparent',
               '&:hover': {
                 bgcolor: 'rgba(255, 105, 35, 0.08)',
-                transform: 'translateX(5px)'
-              }
+                transform: 'translateX(5px)',
+              },
             }}
           >
-            <ListItemIcon 
-              sx={{ 
+            <ListItemIcon
+              sx={{
                 color: 'primary.light',
                 minWidth: '40px',
               }}
             >
               {item.icon}
             </ListItemIcon>
-            <ListItemText 
-              primary={item.text} 
-              primaryTypographyProps={{ 
+            <ListItemText
+              primary={item.text}
+              primaryTypographyProps={{
                 fontWeight: 500,
                 fontSize: '0.95rem',
-                color: '#FFFFFF'
-              }} 
+                color: '#FFFFFF',
+              }}
             />
           </ListItem>
         ))}
-        
+
         <Divider sx={{ my: 2, bgcolor: 'rgba(255, 255, 255, 0.1)' }} />
-        
+
         {/* Opções de autenticação no menu móvel */}
         {isAuthenticated ? (
           <>
-            <ListItem 
-              button 
+            <ListItem
+              button
               onClick={handleProfile}
-              sx={{ 
+              sx={{
                 borderRadius: 2,
                 mb: 0.5,
                 transition: 'all 0.2s ease',
                 '&:hover': {
                   bgcolor: 'rgba(255, 105, 35, 0.08)',
-                  transform: 'translateX(5px)'
-                }
+                  transform: 'translateX(5px)',
+                },
               }}
             >
               <ListItemIcon sx={{ color: 'primary.light', minWidth: '40px' }}>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText 
-                primary="Meu Perfil" 
-                primaryTypographyProps={{ 
+              <ListItemText
+                primary="Meu Perfil"
+                primaryTypographyProps={{
                   fontWeight: 500,
                   fontSize: '0.95rem',
-                  color: '#FFFFFF'
+                  color: '#FFFFFF',
                 }}
               />
             </ListItem>
-            <ListItem 
-              button 
+            <ListItem
+              button
               onClick={handleLogout}
-              sx={{ 
+              sx={{
                 borderRadius: 2,
                 mb: 0.5,
                 transition: 'all 0.2s ease',
                 '&:hover': {
                   bgcolor: 'rgba(255, 105, 35, 0.08)',
-                  transform: 'translateX(5px)'
-                }
+                  transform: 'translateX(5px)',
+                },
               }}
             >
               <ListItemIcon sx={{ color: 'primary.light', minWidth: '40px' }}>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText 
-                primary="Sair" 
-                primaryTypographyProps={{ 
+              <ListItemText
+                primary="Sair"
+                primaryTypographyProps={{
                   fontWeight: 500,
                   fontSize: '0.95rem',
-                  color: '#FFFFFF'
+                  color: '#FFFFFF',
                 }}
               />
             </ListItem>
           </>
         ) : (
-          <ListItem 
-            button 
+          <ListItem
+            button
             onClick={() => handleNavigation('/login')}
-            sx={{ 
+            sx={{
               borderRadius: 2,
               mb: 0.5,
               transition: 'all 0.2s ease',
               '&:hover': {
                 bgcolor: 'rgba(255, 105, 35, 0.08)',
-                transform: 'translateX(5px)'
-              }
+                transform: 'translateX(5px)',
+              },
             }}
           >
             <ListItemIcon sx={{ color: 'primary.light', minWidth: '40px' }}>
               <LoginIcon />
             </ListItemIcon>
-            <ListItemText 
-              primary="Login" 
-              primaryTypographyProps={{ 
+            <ListItemText
+              primary="Login"
+              primaryTypographyProps={{
                 fontWeight: 500,
                 fontSize: '0.95rem',
-                color: '#FFFFFF'
+                color: '#FFFFFF',
               }}
             />
           </ListItem>
@@ -289,26 +306,28 @@ const ResponsiveNavbar = () => {
 
   return (
     <>
-      <AppBar 
-        position="sticky" 
-        sx={{ 
+      <AppBar
+        position="sticky"
+        className="full-width-container"
+        sx={{
           bgcolor: '#1A1A2E', // Cor de fundo escura azul-marinho profundo
           boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.2)',
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
           transition: 'all 0.3s ease',
-          width: '100%',
+          width: '100vw',
           padding: 0,
+          margin: 0,
           left: 0,
           right: 0,
           '&:hover': {
-            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)'
-          }
+            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)',
+          },
         }}
         elevation={0}
       >
-        <Toolbar sx={{ py: 0.5, maxWidth: '1200px', width: '100%', mx: 'auto', px: { xs: 2, sm: 3 } }}>
+        <Toolbar className="content-container" sx={{ py: 0.5, width: '100%' }}>
           <Typography
             variant="h5"
             noWrap
@@ -348,18 +367,24 @@ const ResponsiveNavbar = () => {
           </Typography>
 
           {/* Links para Desktop */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex' },
+              justifyContent: 'center',
+            }}
+          >
             {navItems.map((item) => (
               <Button
                 key={item.text}
                 onClick={() => handleNavigation(item.path)}
                 className={`menu-item-hover-effect modern-ripple ${isActivePath(item.path) ? 'active' : ''}`}
-                sx={{ 
-                  my: 2, 
-                  color: isActivePath(item.path) ? 'primary.light' : '#FFFFFF', 
+                sx={{
+                  my: 2,
+                  color: isActivePath(item.path) ? 'primary.light' : '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
-                  mx: 1.2, 
+                  mx: 1.2,
                   fontWeight: 500,
                   borderRadius: 2,
                   px: 2,
@@ -401,33 +426,31 @@ const ResponsiveNavbar = () => {
           {/* Botões de autenticação para Desktop */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
             {!isAuthenticated ? (
-              <>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  component={RouterLink}
-                  to="/login"
-                  className="button-elevation"
-                  startIcon={<LoginIcon />}
-                  sx={{ 
-                    ml: 1,
-                    borderRadius: 2,
-                    px: 2.5,
-                    py: 1,
-                    border: '1.5px solid',
-                    fontWeight: 600,
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 105, 35, 0.08)',
-                      borderColor: 'primary.main',
-                      transform: 'translateY(-3px)',
-                      boxShadow: '0 4px 8px rgba(255, 105, 35, 0.15)',
-                    },
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  Login
-                </Button>
-              </>
+              <Button
+                variant="outlined"
+                color="primary"
+                component={RouterLink}
+                to="/login"
+                className="button-elevation"
+                startIcon={<LoginIcon />}
+                sx={{
+                  ml: 1,
+                  borderRadius: 2,
+                  px: 2.5,
+                  py: 1,
+                  border: '1.5px solid',
+                  fontWeight: 600,
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 105, 35, 0.08)',
+                    borderColor: 'primary.main',
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 4px 8px rgba(255, 105, 35, 0.15)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                Login
+              </Button>
             ) : (
               <>
                 <IconButton
@@ -437,7 +460,7 @@ const ResponsiveNavbar = () => {
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   color="primary"
-                  sx={{ 
+                  sx={{
                     ml: 1,
                     border: '1.5px solid',
                     borderColor: 'primary.main',
@@ -478,7 +501,7 @@ const ResponsiveNavbar = () => {
                         borderTop: '1px solid rgba(229, 231, 235, 0.8)',
                         borderLeft: '1px solid rgba(229, 231, 235, 0.8)',
                         zIndex: 0,
-                      }
+                      },
                     },
                     '& .MuiMenuItem-root': {
                       borderRadius: 1,
@@ -488,8 +511,8 @@ const ResponsiveNavbar = () => {
                       transition: 'all 0.1s ease',
                       '&:hover': {
                         backgroundColor: 'rgba(255, 105, 35, 0.08)',
-                      }
-                    }
+                      },
+                    },
                   }}
                   anchorOrigin={{
                     vertical: 'bottom',
@@ -510,16 +533,21 @@ const ResponsiveNavbar = () => {
                     </ListItemIcon>
                     <ListItemText>Meu Perfil</ListItemText>
                   </MenuItem>
-                  
+
                   {isAdmin && (
-                    <MenuItem onClick={() => { handleClose(); navigate('/admin'); }}>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        navigate('/admin');
+                      }}
+                    >
                       <ListItemIcon>
                         <CategoryIcon fontSize="small" />
                       </ListItemIcon>
                       <ListItemText>Painel Admin</ListItemText>
                     </MenuItem>
                   )}
-                  
+
                   <Divider />
                   <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
@@ -538,20 +566,20 @@ const ResponsiveNavbar = () => {
             aria-label="Abrir carrinho"
             onClick={() => navigate('/cart')}
             className="button-elevation"
-            sx={{ 
+            sx={{
               ml: { xs: 0, md: 1 },
               bgcolor: 'rgba(255, 105, 35, 0.08)',
               transition: 'all 0.2s ease',
               '&:hover': {
                 bgcolor: 'rgba(255, 105, 35, 0.16)',
-                transform: 'translateY(-2px)'
+                transform: 'translateY(-2px)',
               },
               width: 42,
-              height: 42
+              height: 42,
             }}
           >
-            <Badge 
-              badgeContent={itemCount} 
+            <Badge
+              badgeContent={itemCount}
               color="secondary"
               sx={{
                 '& .MuiBadge-badge': {
@@ -559,8 +587,8 @@ const ResponsiveNavbar = () => {
                   minWidth: 18,
                   height: 18,
                   padding: '0 4px',
-                  fontSize: 10
-                }
+                  fontSize: 10,
+                },
               }}
             >
               <ShoppingCartIcon fontSize="small" />
@@ -573,8 +601,8 @@ const ResponsiveNavbar = () => {
             aria-label="Abrir menu"
             edge="end" // Para alinhar à direita no mobile, antes do carrinho
             onClick={handleDrawerToggle}
-            sx={{ 
-              display: { md: 'none' }, 
+            sx={{
+              display: { md: 'none' },
               ml: 1,
               bgcolor: 'rgba(255, 105, 35, 0.08)',
               transition: 'all 0.2s ease',
@@ -582,7 +610,7 @@ const ResponsiveNavbar = () => {
                 bgcolor: 'rgba(255, 105, 35, 0.16)',
               },
               width: 42,
-              height: 42
+              height: 42,
             }}
           >
             <MenuIcon fontSize="small" />
@@ -602,8 +630,8 @@ const ResponsiveNavbar = () => {
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { 
-              boxSizing: 'border-box', 
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: 280,
               borderTopLeftRadius: 16,
               borderBottomLeftRadius: 16,
@@ -613,11 +641,11 @@ const ResponsiveNavbar = () => {
             '& .MuiBackdrop-root': {
               backgroundColor: 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(2px)',
-            }
+            },
           }}
           transitionDuration={{
             enter: 400,
-            exit: 300
+            exit: 300,
           }}
         >
           {drawer}

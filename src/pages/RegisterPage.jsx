@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
   Alert,
+  Box,
+  Button,
   CircularProgress,
+  Container,
+  Grid,
   Link,
-  Grid
+  Paper,
+  TextField,
+  Typography,
 } from '@mui/material';
+import { useId, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { registerUser } from '../utils/api';
 
 const RegisterPage = () => {
+  // IDs únicos para os elementos de formulário
+  const nameId = useId();
+  const emailId = useId();
+  const passwordId = useId();
+  const confirmPasswordId = useId();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,7 +34,7 @@ const RegisterPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -49,10 +55,10 @@ const RegisterPage = () => {
     try {
       setLoading(true);
       // Enviando apenas os dados necessários, sem o confirmPassword
-      const { confirmPassword, ...userData } = formData;
+      const { confirmPassword: _confirmPassword, ...userData } = formData;
       await registerUser(userData);
       setSuccess(true);
-      
+
       // Redirecionamento com timeout para mostrar a mensagem de sucesso
       setTimeout(() => {
         navigate('/login');
@@ -94,7 +100,7 @@ const RegisterPage = () => {
             margin="normal"
             required
             fullWidth
-            id="name"
+            id={nameId}
             label="Nome completo"
             name="name"
             autoComplete="name"
@@ -106,7 +112,7 @@ const RegisterPage = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
+            id={emailId}
             label="Email"
             name="email"
             autoComplete="email"
@@ -120,7 +126,7 @@ const RegisterPage = () => {
             name="password"
             label="Senha"
             type="password"
-            id="password"
+            id={passwordId}
             autoComplete="new-password"
             value={formData.password}
             onChange={handleChange}
@@ -132,7 +138,7 @@ const RegisterPage = () => {
             name="confirmPassword"
             label="Confirme a senha"
             type="password"
-            id="confirmPassword"
+            id={confirmPasswordId}
             value={formData.confirmPassword}
             onChange={handleChange}
           />
@@ -148,7 +154,7 @@ const RegisterPage = () => {
           <Grid container justifyContent="center">
             <Grid item>
               <Link component={RouterLink} to="/login" variant="body2">
-                {"Já tem uma conta? Faça login"}
+                {'Já tem uma conta? Faça login'}
               </Link>
             </Grid>
           </Grid>

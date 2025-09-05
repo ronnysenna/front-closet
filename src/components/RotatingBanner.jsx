@@ -1,6 +1,5 @@
-// src/components/RotatingBanner.jsx
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const RotatingBanner = ({ images, whatsappLink }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -9,7 +8,7 @@ const RotatingBanner = ({ images, whatsappLink }) => {
     if (!images || images.length === 0) return;
 
     const intervalId = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000); // Muda a imagem a cada 5 segundos
 
     return () => clearInterval(intervalId);
@@ -35,7 +34,7 @@ const RotatingBanner = ({ images, whatsappLink }) => {
     >
       {images.map((imageUrl, index) => (
         <Box
-          key={index}
+          key={`banner-image-${index}-${imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.lastIndexOf('.'))}`}
           component="img" // Mantendo como img para objectFit, mas poderia ser um Box com backgroundImage
           src={imageUrl} // src é para img, backgroundImage para Box
           alt={`Banner Promocional ${index + 1}`}
@@ -78,7 +77,7 @@ const RotatingBanner = ({ images, whatsappLink }) => {
             fontWeight: 'bold',
             lineHeight: 1.2, // leading-tight
             textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)', // shadow-text
-            fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' } // Ajuste fino do tamanho
+            fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' }, // Ajuste fino do tamanho
           }}
         >
           Venha participar do nosso <br className="sm:hidden" /> Grupo VIP no WhatsApp!
@@ -89,14 +88,14 @@ const RotatingBanner = ({ images, whatsappLink }) => {
             mb: 3, // mb-6 (MUI: 3*8px = 24px)
             color: 'grey.200', // text-gray-200
             textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)', // shadow-text
-            fontSize: { xs: '0.9rem', md: '1.1rem' }
+            fontSize: { xs: '0.9rem', md: '1.1rem' },
           }}
         >
           Receba ofertas exclusivas, novidades e muito mais!
         </Typography>
         <Button
           variant="contained"
-          href={whatsappLink || "#"} // Fallback para '#' se o link não for fornecido
+          href={whatsappLink || '#'} // Fallback para '#' se o link não for fornecido
           target="_blank"
           rel="noopener noreferrer"
           sx={{

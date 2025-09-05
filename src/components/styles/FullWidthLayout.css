@@ -1,0 +1,44 @@
+/* Estilos para garantir que o Navbar e o Footer ocupem toda a largura */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Remove qualquer padding ou margem do #root */
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos específicos para o Navbar e Footer com largura total */
+.full-width-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+}
+
+/* Estilos para o conteúdo interno centralizado */
+.content-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 600px) {
+  .content-container {
+    padding: 0 24px;
+  }
+}

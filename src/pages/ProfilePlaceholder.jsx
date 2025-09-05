@@ -1,5 +1,4 @@
-import React from 'react';
-import { Container, Typography, Paper, Box, Button, Grid, Divider } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, Paper, Typography } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 
 // Este é um componente temporário para a página de perfil
@@ -20,27 +19,27 @@ const ProfilePlaceholder = () => {
         <Typography variant="h4" gutterBottom>
           Meu Perfil
         </Typography>
-        
+
         <Divider sx={{ mb: 4 }} />
-        
+
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1">Nome:</Typography>
             <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
               {user.name}
             </Typography>
-            
+
             <Typography variant="subtitle1">Email:</Typography>
             <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
               {user.email}
             </Typography>
-            
+
             <Typography variant="subtitle1">Função:</Typography>
             <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
               {user.role === 'ADMIN' ? 'Administrador' : 'Cliente'}
             </Typography>
           </Grid>
-          
+
           <Grid item xs={12} md={6}>
             <Typography variant="h6" gutterBottom>
               Informações da Conta
@@ -53,7 +52,7 @@ const ProfilePlaceholder = () => {
             </Typography>
           </Grid>
         </Grid>
-        
+
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
           <Button variant="outlined" color="primary">
             Editar Perfil

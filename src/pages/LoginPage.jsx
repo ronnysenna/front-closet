@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
   Alert,
+  Box,
+  Button,
   CircularProgress,
+  Container,
+  Grid,
   Link,
-  Grid
+  Paper,
+  TextField,
+  Typography,
 } from '@mui/material';
+import { useId, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
+  // IDs únicos para os elementos de formulário
+  const emailId = useId();
+  const passwordId = useId();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState('');
@@ -63,7 +67,7 @@ const LoginPage = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
+            id={emailId}
             label="Email"
             name="email"
             autoComplete="email"
@@ -78,7 +82,7 @@ const LoginPage = () => {
             name="password"
             label="Senha"
             type="password"
-            id="password"
+            id={passwordId}
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -100,7 +104,7 @@ const LoginPage = () => {
             </Grid>
             <Grid item>
               <Link component={RouterLink} to="/register" variant="body2">
-                {"Não tem uma conta? Cadastre-se"}
+                {'Não tem uma conta? Cadastre-se'}
               </Link>
             </Grid>
           </Grid>

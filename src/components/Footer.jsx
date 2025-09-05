@@ -1,17 +1,22 @@
 // src/components/Footer.jsx
-import { Box, Typography, Link, IconButton, Grid, Divider, Stack } from '@mui/material';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import FacebookIcon from '@mui/icons-material/Facebook';
+// Material-UI components
+
+// Material-UI icons
 import EmailIcon from '@mui/icons-material/Email';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { Box, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+
+// Router
 import { Link as RouterLink } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const instagramUser = "https://www.instagram.com/closetmodafitness?igsh=MWwyNnZpZXhmMjI5eA==";
-  const whatsappNumber = "5585997173941";
+  const instagramUser = 'https://www.instagram.com/closetmodafitness?igsh=MWwyNnZpZXhmMjI5eA==';
+  const whatsappNumber = '5585997173941';
 
   // Categorias para o footer
   const categories = [
@@ -25,7 +30,7 @@ const Footer = () => {
   return (
     <Box
       component="footer"
-      className="modern-footer full-width-layout"
+      className="modern-footer full-width-container"
       sx={{
         bgcolor: '#1A1A2E',
         color: '#B3B3B3',
@@ -38,78 +43,74 @@ const Footer = () => {
         left: 0,
         right: 0,
         padding: 0,
-        margin: 0
+        margin: 0,
       }}
     >
-      <Box sx={{ 
-        maxWidth: '1200px', 
-        width: '100%', 
-        mx: 'auto', 
-        px: { xs: 2, sm: 3 }
-      }}>
+      <Box className="content-container">
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Box sx={{ mb: 3 }}>
               <img
                 src="/icon-removebg-preview.png"
                 alt="Gofashion"
-                style={{ 
+                style={{
                   maxWidth: '130px',
                   height: 'auto',
-                  marginBottom: '16px'
+                  marginBottom: '16px',
                 }}
               />
               <Typography variant="body2" sx={{ mb: 2, maxWidth: '90%', color: '#B3B3B3' }}>
-                Moda e conforto para todos os momentos. Descubra nossa coleção exclusiva de peças que combinam estilo, qualidade e preços acessíveis.
+                Moda e conforto para todos os momentos. Descubra nossa coleção exclusiva de peças
+                que combinam estilo, qualidade e preços acessíveis.
               </Typography>
               <Stack direction="row" spacing={1}>
-                <IconButton 
-                  href={instagramUser} 
-                  target="_blank" 
+                <IconButton
+                  href={instagramUser}
+                  target="_blank"
                   rel="noopener"
                   size="small"
-                  sx={{ 
-                    color: '#B3B3B3', 
+                  sx={{
+                    color: '#B3B3B3',
                     border: '1px solid',
                     borderColor: 'rgba(255, 255, 255, 0.2)',
-                    '&:hover': { 
-                      bgcolor: 'primary.main', 
+                    '&:hover': {
+                      bgcolor: 'primary.main',
                       color: 'white',
-                      borderColor: 'primary.main'
-                    }
+                      borderColor: 'primary.main',
+                    },
                   }}
                 >
                   <InstagramIcon fontSize="small" />
                 </IconButton>
-                <IconButton 
+                <IconButton
                   href={`https://wa.me/${whatsappNumber}`}
-                  target="_blank" 
+                  target="_blank"
                   rel="noopener"
                   size="small"
-                  sx={{ 
-                    color: '#B3B3B3', 
+                  sx={{
+                    color: '#B3B3B3',
                     border: '1px solid',
                     borderColor: 'rgba(255, 255, 255, 0.2)',
-                    '&:hover': { 
-                      bgcolor: 'primary.main', 
+                    '&:hover': {
+                      bgcolor: 'primary.main',
                       color: 'white',
-                      borderColor: 'primary.main'
-                    }
+                      borderColor: 'primary.main',
+                    },
                   }}
                 >
                   <WhatsAppIcon fontSize="small" />
                 </IconButton>
-                <IconButton 
+                <IconButton
                   size="small"
-                  sx={{ 
-                    color: '#B3B3B3', 
+                  sx={{
+                    color: '#B3B3B3',
                     border: '1px solid',
                     borderColor: 'rgba(255, 255, 255, 0.2)',
-                    '&:hover': { 
-                      bgcolor: 'primary.main', 
+                    '&:hover': {
+                      bgcolor: 'primary.main',
                       color: 'white',
-                      borderColor: 'primary.main'
-                    }
+                      borderColor: 'primary.main',
+                    },
                   }}
                 >
                   <FacebookIcon fontSize="small" />
@@ -117,25 +118,48 @@ const Footer = () => {
               </Stack>
             </Box>
           </Grid>
-          
+
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
               Navegação
             </Typography>
-            <Link component={RouterLink} to="/" className="footer-link" sx={{ color: '#B3B3B3' }}>Home</Link>
-            <Link component={RouterLink} to="/cart" className="footer-link" sx={{ color: '#B3B3B3' }}>Carrinho</Link>
-            <Link component={RouterLink} to="/feedback" className="footer-link" sx={{ color: '#B3B3B3' }}>Feedback</Link>
-            <Link component={RouterLink} to="/login" className="footer-link" sx={{ color: '#B3B3B3' }}>Entrar</Link>
+            <Link component={RouterLink} to="/" className="footer-link" sx={{ color: '#B3B3B3' }}>
+              Home
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/cart"
+              className="footer-link"
+              sx={{ color: '#B3B3B3' }}
+            >
+              Carrinho
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/feedback"
+              className="footer-link"
+              sx={{ color: '#B3B3B3' }}
+            >
+              Feedback
+            </Link>
+            <Link
+              component={RouterLink}
+              to="/login"
+              className="footer-link"
+              sx={{ color: '#B3B3B3' }}
+            >
+              Entrar
+            </Link>
           </Grid>
-          
+
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
               Categorias
             </Typography>
             {categories.map((category) => (
-              <Link 
+              <Link
                 key={category.path}
-                component={RouterLink} 
+                component={RouterLink}
                 to={category.path}
                 className="footer-link"
                 sx={{ color: '#B3B3B3' }}
@@ -144,7 +168,7 @@ const Footer = () => {
               </Link>
             ))}
           </Grid>
-          
+
           <Grid item xs={12} sm={6} md={4}>
             <Typography variant="subtitle2" className="footer-header" sx={{ color: '#FFFFFF' }}>
               Contato
@@ -162,16 +186,23 @@ const Footer = () => {
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', mb: 1.5 }}>
-              <LocationOnIcon sx={{ fontSize: '1rem', mr: 1, color: 'primary.light', mt: 0.3 }} />
+              <LocationOnIcon
+                sx={{
+                  fontSize: '1rem',
+                  mr: 1,
+                  color: 'primary.light',
+                  mt: 0.3,
+                }}
+              />
               <Typography variant="body2" sx={{ color: '#B3B3B3' }}>
                 Rua Exemplo, 123 - Fortaleza, CE
               </Typography>
             </Box>
           </Grid>
         </Grid>
-        
+
         <Divider sx={{ my: 4, bgcolor: 'rgba(255,255,255,0.1)' }} />
-        
+
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: '#B3B3B3' }}>
             &copy; {currentYear} Closet Moda Fitness. Todos os direitos reservados.

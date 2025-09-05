@@ -1,27 +1,19 @@
 // src/pages/CartPage.jsx
-import React, { useState } from 'react';
-import couponsData from '../data/coupons.json';
-import { Link as RouterLink } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import CartItem from '../components/CartItem';
-import { formatCurrency } from '../utils/formatCurrency';
-import {
-  Container,
-  Typography,
-  Button,
-  Box,
-  Paper,
-  List,
-  Divider,
-  Grid,
-} from '@mui/material';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import StorefrontIcon from '@mui/icons-material/Storefront'; // Ícone para ver produtos
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { Box, Button, Container, Divider, Grid, List, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import CartItem from '../components/CartItem';
+import { useCart } from '../context/CartContext';
+import couponsData from '../data/coupons.json';
+import { formatCurrency } from '../utils/formatCurrency';
 
 const CartPage = () => {
-  const { cartItems, getCartTotal, clearCart } = useCart();
+  const { cartItems, clearCart } = useCart();
   const [showMinOrderWarning, setShowMinOrderWarning] = useState(false);
   const [coupon, setCoupon] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
@@ -29,12 +21,20 @@ const CartPage = () => {
   const [couponError, setCouponError] = useState('');
   // Calcula total de atacado e varejo
   const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalRetail = cartItems.reduce((sum, item) => sum + ((item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price)) * item.quantity), 0);
-  const totalWholesale = cartItems.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+  const totalRetail = cartItems.reduce(
+    (sum, item) =>
+      sum +
+      (item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price)) * item.quantity,
+    0
+  );
+  const totalWholesale = cartItems.reduce(
+    (sum, item) => sum + parseFloat(item.price) * item.quantity,
+    0
+  );
   // O total exibido depende da quantidade
   const isWholesale = totalUnits >= 10;
   const total = isWholesale ? totalWholesale : totalRetail;
-  const whatsappNumber = "5585997173941"; // IMPORTANTE: Coloque seu número
+  const whatsappNumber = '5585997173941'; // IMPORTANTE: Coloque seu número
 
   const getTotalUnits = () => cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -48,8 +48,8 @@ const CartPage = () => {
   };
 
   const sendWhatsAppOrder = () => {
-    let message = "Olá Gofashion! Gostaria de fazer o pedido dos seguintes itens:\n\n";
-    cartItems.forEach(item => {
+    let message = 'Olá Gofashion! Gostaria de fazer o pedido dos seguintes itens:\n\n';
+    cartItems.forEach((item) => {
       message += `*${item.title}*\n`;
       message += `  Cor: ${item.selectedColor}, Tamanho: ${item.selectedSize}\n`;
       message += `  Qtd: ${item.quantity} x ${isWholesale ? formatCurrency(parseFloat(item.price)) : formatCurrency(item.retailPrice ? parseFloat(item.retailPrice) : parseFloat(item.price))}\n`;
@@ -73,7 +73,8 @@ const CartPage = () => {
           Seu carrinho está vazio!
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          Parece que você ainda não adicionou nenhum produto. Que tal dar uma olhada nas nossas novidades?
+          Parece que você ainda não adicionou nenhum produto. Que tal dar uma olhada nas nossas
+          novidades?
         </Typography>
         <Button
           variant="contained"
@@ -93,7 +94,7 @@ const CartPage = () => {
   const discountedTotal = total - discountValue;
 
   const handleApplyCoupon = () => {
-    const found = couponsData.find(c => c.code.toUpperCase() === coupon.trim().toUpperCase());
+    const found = couponsData.find((c) => c.code.toUpperCase() === coupon.trim().toUpperCase());
     if (found) {
       setDiscountValue(found.discount);
       setCouponApplied(true);
@@ -107,12 +108,18 @@ const CartPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        align="center"
+        sx={{ mb: 4, fontWeight: 'bold' }}
+      >
         Seu Carrinho de Compras
       </Typography>
       <Paper elevation={3} sx={{ borderRadius: 2 }}>
         <List>
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <CartItem key={item.cartItemId} item={item} />
           ))}
         </List>
@@ -124,9 +131,15 @@ const CartPage = () => {
               <input
                 type="text"
                 value={coupon}
-                onChange={e => setCoupon(e.target.value)}
+                onChange={(e) => setCoupon(e.target.value)}
                 placeholder="Digite o código do cupom"
-                style={{ width: '100%', padding: '10px', borderRadius: 6, border: '1px solid #ccc', fontSize: '1rem' }}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: 6,
+                  border: '1px solid #ccc',
+                  fontSize: '1rem',
+                }}
                 disabled={couponApplied}
               />
             </Grid>
@@ -142,8 +155,16 @@ const CartPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={6}>
-              {couponError && <Typography color="error" sx={{ mt: 1 }}>{couponError}</Typography>}
-              {couponApplied && <Typography color="success.main" sx={{ mt: 1 }}>Cupom aplicado! Desconto de R$ {discountValue.toFixed(2)}</Typography>}
+              {couponError && (
+                <Typography color="error" sx={{ mt: 1 }}>
+                  {couponError}
+                </Typography>
+              )}
+              {couponApplied && (
+                <Typography color="success.main" sx={{ mt: 1 }}>
+                  Cupom aplicado! Desconto de R$ {discountValue.toFixed(2)}
+                </Typography>
+              )}
             </Grid>
           </Grid>
           <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
@@ -154,17 +175,26 @@ const CartPage = () => {
             </Grid>
             <Grid item>
               <Typography variant="h4" component="p" color="primary" sx={{ fontWeight: 'bold' }}>
-                {formatCurrency ? formatCurrency(discountedTotal) : `R$ ${discountedTotal.toFixed(2)}`}
+                {formatCurrency
+                  ? formatCurrency(discountedTotal)
+                  : `R$ ${discountedTotal.toFixed(2)}`}
               </Typography>
             </Grid>
           </Grid>
           <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
             <Grid item>
               <Typography variant="body2" color="text.secondary">
-                <b>Varejo:</b> {formatCurrency(totalRetail)} | <b>Atacado:</b> {formatCurrency(totalWholesale)}
+                <b>Varejo:</b> {formatCurrency(totalRetail)} | <b>Atacado:</b>{' '}
+                {formatCurrency(totalWholesale)}
               </Typography>
-              <Typography variant="body2" color={isWholesale ? 'success.main' : 'primary.main'} sx={{ mt: 0.5 }}>
-                {isWholesale ? 'Cobrança no valor de atacado (10 peças ou mais)' : 'Cobrança no valor de varejo (menos de 10 peças)'}
+              <Typography
+                variant="body2"
+                color={isWholesale ? 'success.main' : 'primary.main'}
+                sx={{ mt: 0.5 }}
+              >
+                {isWholesale
+                  ? 'Cobrança no valor de atacado (10 peças ou mais)'
+                  : 'Cobrança no valor de varejo (menos de 10 peças)'}
               </Typography>
             </Grid>
           </Grid>
@@ -200,18 +230,20 @@ const CartPage = () => {
 
       {/* Modal/Aviso para pedidos abaixo de 10 peças */}
       {showMinOrderWarning && (
-        <Box sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          bgcolor: 'rgba(0,0,0,0.4)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            bgcolor: 'rgba(0,0,0,0.4)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <Paper elevation={6} sx={{ p: 4, maxWidth: 350, textAlign: 'center' }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
               Atenção!

@@ -1,5 +1,5 @@
 // src/pages/HomePage.jsx
-/** biome-ignore-all assist/source/organizeImports: <explanation> */
+/** biome-ignore-all assist/source/organizeImports: Importações organizadas manualmente para manter a ordem específica por relevância de componentes */
 import react from 'react';
 import ProductList from '../components/ProductList';
 import ProductSearchBar from '../components/ProductSearchBar';
@@ -10,8 +10,11 @@ import CategoryGrid from '../components/CategoryGrid';
 import { getAllProducts } from '../utils/api';
 
 const HomePage = () => {
-  const handleAutomacaoClick = () => {
-    window.open('https://wa.me/5585991904540?text=Olá!%20Tenho%20interesse%20em%20soluções%20de%20automação%20ou%20criação%20de%20site.%20Gostaria%20de%20saber%20mais.', '_blank');
+  const _handleAutomacaoClick = () => {
+    window.open(
+      'https://wa.me/5585991904540?text=Olá!%20Tenho%20interesse%20em%20soluções%20de%20automação%20ou%20criação%20de%20site.%20Gostaria%20de%20saber%20mais.',
+      '_blank'
+    );
   };
 
   const [searchTerm, setSearchTerm] = react.useState('');
@@ -27,8 +30,8 @@ const HomePage = () => {
         const data = await getAllProducts();
         setProducts(data);
       } catch (err) {
-        console.error("Erro ao carregar produtos:", err);
-        setError("Não foi possível carregar os produtos. Por favor, tente novamente mais tarde.");
+        console.error('Erro ao carregar produtos:', err);
+        setError('Não foi possível carregar os produtos. Por favor, tente novamente mais tarde.');
       } finally {
         setLoading(false);
       }
@@ -38,15 +41,13 @@ const HomePage = () => {
   }, []);
 
   // Extrai apenas as URLs das imagens dos produtos
-  const productImages = products
-    .map(p => p.main_image)
-    .filter(url => url); // Garante que apenas URLs válidas sejam passadas
+  const productImages = products.map((p) => p.main_image).filter((url) => url); // Garante que apenas URLs válidas sejam passadas
 
-  const whatsappGroupLink = "https://chat.whatsapp.com/";
+  const whatsappGroupLink = 'https://chat.whatsapp.com/';
 
   // Filtra produtos pelo termo de busca
   const filteredProducts = products.filter(
-    p =>
+    (p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -56,16 +57,17 @@ const HomePage = () => {
       {/* Pode adicionar um Hero Banner aqui se desejar */}
       <section className="bg-pink-50 py-12 text-center">
         <div className="container-app mx-auto px-4">
-          <h1 className="text-4xl font-bold text-brand-pink mb-4">Bem-vinda à Closet Moda Fitness!</h1>
-          <p className="text-lg text-gray-700">Seu estilo, sua moda. Encontre as melhores peças aqui.</p>
+          <h1 className="text-4xl font-bold text-brand-pink mb-4">
+            Bem-vinda à Closet Moda Fitness!
+          </h1>
+          <p className="text-lg text-gray-700">
+            Seu estilo, sua moda. Encontre as melhores peças aqui.
+          </p>
         </div>
       </section>
 
       {/* Usando o componente RotatingBanner */}
-      <RotatingBanner 
-        images={productImages} 
-        whatsappLink={whatsappGroupLink} 
-      />
+      <RotatingBanner images={productImages} whatsappLink={whatsappGroupLink} />
 
       {/* Barra de busca */}
       <ProductSearchBar onSearch={setSearchTerm} />
@@ -75,7 +77,7 @@ const HomePage = () => {
 
       {/* Produtos em Destaque */}
       <FeaturedProducts />
-      
+
       {/* Lista de produtos filtrada */}
       {loading ? (
         <p>Carregando produtos...</p>
@@ -84,10 +86,10 @@ const HomePage = () => {
       ) : (
         <ProductList products={filteredProducts} />
       )}
-      
+
       <ShippingInfo />
     </div>
   );
-}
+};
 
 export default HomePage;

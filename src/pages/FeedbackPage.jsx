@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
+import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const FeedbackPage = () => {
-  const [form, setForm] = useState({ nome: '', email: '', celular: '', mensagem: '' });
+  const [form, setForm] = useState({
+    nome: '',
+    email: '',
+    celular: '',
+    mensagem: '',
+  });
   const [enviado, setEnviado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
 
   const handleChange = (e) => {
-  setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -23,7 +28,7 @@ const FeedbackPage = () => {
       });
       if (!res.ok) throw new Error('Erro ao enviar feedback');
       setEnviado(true);
-    } catch (err) {
+    } catch (_err) {
       setErro('Não foi possível enviar. Tente novamente.');
     } finally {
       setLoading(false);
@@ -37,14 +42,20 @@ const FeedbackPage = () => {
           Sua opinião é muito importante!
         </Typography>
         <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 3 }}>
-          O feedback dos nossos clientes nos ajuda a melhorar cada vez mais. Por favor, preencha seus dados e compartilhe sua experiência ou sugestão. Sua participação faz toda a diferença!
+          O feedback dos nossos clientes nos ajuda a melhorar cada vez mais. Por favor, preencha
+          seus dados e compartilhe sua experiência ou sugestão. Sua participação faz toda a
+          diferença!
         </Typography>
         {enviado ? (
           <Typography variant="h6" color="success.main" align="center">
             Obrigado pelo seu feedback! 😊
           </Typography>
         ) : (
-          <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+          >
             <TextField
               label="Nome"
               name="nome"
@@ -87,11 +98,20 @@ const FeedbackPage = () => {
               sx={{ mt: 1 }}
               placeholder="Conte sua experiência, sugestão ou opinião..."
             />
-            <Button type="submit" variant="contained" color="primary" size="large" disabled={loading} sx={{ mt: 2 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              disabled={loading}
+              sx={{ mt: 2 }}
+            >
               {loading ? 'Enviando...' : 'Enviar Feedback'}
             </Button>
             {erro && (
-              <Typography color="error" align="center">{erro}</Typography>
+              <Typography color="error" align="center">
+                {erro}
+              </Typography>
             )}
           </Box>
         )}

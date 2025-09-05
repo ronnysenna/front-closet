@@ -1,13 +1,17 @@
-
 // src/main.jsx
+// React core
+
+// Material-UI
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// App components
 import App from './App.jsx';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from './theme';
-import { CartProvider } from './context/CartContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { CartProvider } from './context/CartContext.jsx';
+import { theme } from './theme';
 
 // Importações para melhorar a performance e a experiência do usuário
 import '@fontsource/inter/300.css';
@@ -35,5 +39,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

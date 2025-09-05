@@ -1,11 +1,10 @@
-import React from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { CircularProgress, Box, Typography } from '@mui/material';
 
 // Componente para rotas protegidas que requerem autenticação
 export const ProtectedRoute = ({ children, adminOnly = false }) => {
-  const { isAuthenticated, isAdmin, loading, user } = useAuth();
+  const { isAuthenticated, isAdmin, loading } = useAuth();
 
   // Mostra o indicador de carregamento enquanto verifica a autenticação
   if (loading) {

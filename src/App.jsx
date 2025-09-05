@@ -1,9 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Core imports
+
+// Material-UI components
+import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import { lazy, Suspense } from 'react';
-import Header from './components/Header';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+
+// Styles
+import './App.css';
+import './components/styles/FullWidthLayout.css';
+
+// Local components
 import Footer from './components/Footer';
-import { ProtectedRoute, GuestRoute } from './components/ProtectedRoute';
-import { Box, Container, Typography, CircularProgress } from '@mui/material';
+import Header from './components/Header';
+import { GuestRoute, ProtectedRoute } from './components/ProtectedRoute';
 
 // Lazy loading para melhorar a performance
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -23,7 +32,7 @@ const LoadingFallback = () => (
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: '70vh'
+      minHeight: '70vh',
     }}
   >
     <CircularProgress color="primary" />
@@ -68,19 +77,21 @@ const NotFoundPage = () => (
 function App() {
   return (
     <Router>
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        minHeight: '100vh',
-        bgcolor: 'background.default'
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          bgcolor: 'background.default',
+        }}
+      >
         <Header />
-        <Box 
-          component="main" 
-          sx={{ 
+        <Box
+          component="main"
+          sx={{
             flexGrow: 1,
             pt: { xs: 2, sm: 3 },
-            pb: { xs: 4, sm: 6 }
+            pb: { xs: 4, sm: 6 },
           }}
           className="fade-in"
         >
@@ -91,36 +102,48 @@ function App() {
               <Route path="/product/:id" element={<ProductDetailPage />} />
               <Route path="/categoria/:category" element={<CategoryPage />} />
               <Route path="/feedback" element={<FeedbackPage />} />
-              
+
               {/* Rotas de autenticação */}
-              <Route path="/login" element={
-                <GuestRoute>
-                  <LoginPage />
-                </GuestRoute>
-              } />
-              <Route path="/register" element={
-                <GuestRoute>
-                  <RegisterPage />
-                </GuestRoute>
-              } />
-              
+              <Route
+                path="/login"
+                element={
+                  <GuestRoute>
+                    <LoginPage />
+                  </GuestRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <GuestRoute>
+                    <RegisterPage />
+                  </GuestRoute>
+                }
+              />
+
               {/* Página de perfil protegida */}
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <ProfilePlaceholder />
-                </ProtectedRoute>
-              } />
-              
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePlaceholder />
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Painel de administração */}
-              <Route path="/admin" element={
-                <ProtectedRoute adminOnly={true}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } />
-              
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute adminOnly={true}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Página de acesso não autorizado */}
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
-              
+
               {/* Rota para página 404 - não encontrada */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
