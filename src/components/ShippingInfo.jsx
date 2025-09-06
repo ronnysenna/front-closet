@@ -3,10 +3,10 @@ import { Box, Stack, Typography } from "@mui/material";
 import { ASSETS_BASE_URL } from "../config";
 
 // Imagens dos ícones das transportadoras
-const jadlogIcon = `${ASSETS_BASE_URL}/image/jadlog.png`;
+const jadlogIcon = `${ASSETS_BASE_URL}/image/jadlogg.png`;
 const sedexIcon = `${ASSETS_BASE_URL}/image/sedex.png`;
 const pacIcon = `${ASSETS_BASE_URL}/image/pac.png`;
-const loggiIcon = `${ASSETS_BASE_URL}/image/loggi.png`;
+const loggiIcon = `${ASSETS_BASE_URL}/image/loggii.png`;
 
 const ShippingInfo = () => (
   <Box

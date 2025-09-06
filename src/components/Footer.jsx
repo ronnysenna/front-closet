@@ -109,7 +109,7 @@ const Footer = () => {
           <Grid item xs={12} md={4}>
             <Box sx={{ mb: 3 }}>
               <img
-                src="/image/logo_fundo_trasparente_letra_clara.png"
+                src="/image/cmf-preto.png"
                 alt="Closet Moda Fitness"
                 style={{
                   maxWidth: '180px',
