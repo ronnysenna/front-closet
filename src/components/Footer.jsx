@@ -18,7 +18,7 @@ const Footer = () => {
       component="footer"
       className="modern-footer full-width-container"
       sx={{
-        bgcolor: '#1A1A2E',
+        bgcolor: '#000',
         color: '#B3B3B3',
         py: { xs: 4, md: 6 },
         mt: 'auto',
@@ -112,7 +112,7 @@ const Footer = () => {
                 src="/image/cmf-preto.jpeg"
                 alt="Closet Moda Fitness"
                 style={{
-                  maxWidth: '180px',
+                  maxWidth: '100px',
                   height: 'auto',
                   marginBottom: '6px',
                 }}

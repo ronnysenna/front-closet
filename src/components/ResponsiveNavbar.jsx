@@ -136,7 +136,7 @@ const ResponsiveNavbar = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#1A1A2E",
+        bgcolor: "#000",
       }}
     >
       <Box
@@ -326,7 +326,7 @@ const ResponsiveNavbar = () => {
         position="sticky"
         className="full-width-container"
         sx={{
-          bgcolor: "#1A1A2E", // Mesma cor do Footer
+          bgcolor: "#000", // Mesma cor do Footer
           color: "#fff",
           boxShadow: "0 2px 12px 0 rgba(0,0,0,0.07)",
           borderBottom: "1px solid #23234a",
@@ -355,7 +355,7 @@ const ResponsiveNavbar = () => {
               component="img"
               src="/image/cmf-preto.jpeg"
               alt="Closet Moda Fitness Logo"
-              sx={{ height: 144, width: "auto", mr: 1, display: "block" }}
+              sx={{ height: 64, width: "auto", mr: 1, display: "block" }}
             />
           </Box>
           <Box
