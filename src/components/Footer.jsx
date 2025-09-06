@@ -112,9 +112,10 @@ const Footer = () => {
                 src="/image/cmf-preto.jpeg"
                 alt="Closet Moda Fitness"
                 style={{
-                  maxWidth: '100px',
-                  height: 'auto',
+                  maxWidth: 'auto',
+                  maxHeight: '80px',
                   marginBottom: '6px',
+                  display: 'block',
                 }}
               />
               <Typography variant="body2" sx={{ mb: 2, maxWidth: '90%', color: '#B3B3B3' }}>
