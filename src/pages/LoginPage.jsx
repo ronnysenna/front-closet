@@ -12,7 +12,11 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  PersonAddOutlined,
+} from "@mui/icons-material";
 import { useId, useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -94,7 +98,7 @@ const LoginPage = () => {
             Login
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            Entre com sua conta para acessar a loja
+            Entre com sua conta ou crie uma nova para acessar a loja
           </Typography>
           {fromCart && (
             <Alert severity="info" sx={{ mt: 2 }}>
@@ -157,29 +161,75 @@ const LoginPage = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, py: 1.5 }}
+            color="primary"
+            sx={{ mt: 3, py: 1.5 }}
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} /> : "Entrar"}
           </Button>
-          <Grid container>
-            <Grid item xs>
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mt: 3,
+              mb: 3,
+              position: "relative",
+            }}
+          >
+            <Box
+              sx={{
+                flexGrow: 1,
+                borderBottom: "1px solid #e0e0e0",
+              }}
+            />
+            <Box
+              sx={{
+                px: 2,
+                color: "text.secondary",
+                typography: "body2",
+                fontWeight: 500,
+              }}
+            >
+              OU
+            </Box>
+            <Box
+              sx={{
+                flexGrow: 1,
+                borderBottom: "1px solid #e0e0e0",
+              }}
+            />
+          </Box>
+
+          {/* Botão dedicado para criar conta - mais visível */}
+          <Button
+            fullWidth
+            variant="outlined"
+            component={RouterLink}
+            to="/register"
+            state={fromCart ? { fromCart } : undefined}
+            startIcon={<PersonAddOutlined />}
+            sx={{
+              py: 1.5,
+              fontWeight: 500,
+              border: "2px solid",
+              "&:hover": {
+                border: "2px solid",
+                backgroundColor: "rgba(25, 118, 210, 0.08)",
+              },
+            }}
+          >
+            Criar uma nova conta
+          </Button>
+
+          <Grid container justifyContent="center">
+            <Grid item>
               <Link
                 component={RouterLink}
                 to="/forgot-password"
                 variant="body2"
               >
-                Esqueceu a senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                component={RouterLink}
-                to="/register"
-                state={fromCart ? { fromCart } : undefined}
-                variant="body2"
-              >
-                {"Não tem uma conta? Cadastre-se"}
+                Esqueceu sua senha?
               </Link>
             </Grid>
           </Grid>
