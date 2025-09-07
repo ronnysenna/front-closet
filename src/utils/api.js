@@ -176,22 +176,38 @@ export const searchProducts = async (query) => {
 // Funções de autenticação e usuário
 export const loginUser = async (email, password) => {
   try {
+    console.log(`Tentando login na URL: ${BASE_URL}/auth/login`);
+    console.log(`Credenciais: ${email}`);
+
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
+      credentials: "include", // Incluir cookies na requisição
     });
 
+    console.log(`Resposta da API: Status ${response.status}`);
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData.message || `HTTP error! Status: ${response.status}`
-      );
+      let errorMessage = `HTTP error! Status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+        console.error("Detalhes do erro:", errorData);
+      } catch (e) {
+        console.error("Não foi possível ler o corpo da resposta de erro");
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
+    console.log("Login bem-sucedido, dados recebidos:", {
+      ...data,
+      token: "***",
+    });
+
     // Armazena os tokens JWT no localStorage
     if (data.token) {
       localStorage.setItem("authToken", data.token);
@@ -236,6 +252,21 @@ export const getUserProfile = async () => {
   return fetchData("/auth/profile");
 };
 
+export const updateUserProfile = async (userData) => {
+  return fetchData("/auth/profile", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+};
+
+// Função para buscar estatísticas do dashboard
+export const getDashboardStats = async () => {
+  return fetchData("/dashboard/stats");
+};
+
 // Funções para pedidos e carrinho
 export const createOrder = async (orderData) => {
   return fetchData("/orders", {
@@ -251,8 +282,70 @@ export const getOrders = async () => {
   return fetchData("/orders");
 };
 
+export const getMyOrders = async () => {
+  return fetchData("/orders/my-orders");
+};
+
 export const getOrderById = async (orderId) => {
   return fetchData(`/orders/${orderId}`);
+};
+
+export const updateOrderStatus = async (orderId, statusData) => {
+  return fetchData(`/orders/${orderId}/status`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(statusData),
+  });
+};
+
+// Atualizar observações do pedido
+export const updateOrderNotes = async (orderId, notes) => {
+  return fetchData(`/orders/${orderId}/notes`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ notes }),
+  });
+};
+
+// Atualizar método de pagamento do pedido
+export const updateOrderPaymentMethod = async (orderId, paymentData) => {
+  return fetchData(`/orders/${orderId}/payment-method`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(paymentData),
+  });
+};
+
+// Atualizar número de rastreamento do pedido
+export const updateOrderTracking = async (orderId, trackingNumber) => {
+  return fetchData(`/orders/${orderId}/tracking`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ trackingNumber }),
+  });
+};
+
+// Buscar pedido pelo número
+export const getOrderByNumber = async (orderNumber) => {
+  return fetchData(`/orders/number/${orderNumber}`);
+};
+
+// Cancelar pedido
+export const cancelOrder = async (orderId) => {
+  return fetchData(`/orders/${orderId}/cancel`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 // Funções para produtos em destaque
@@ -304,8 +397,17 @@ export default {
   registerUser,
   logoutUser,
   getUserProfile,
+  updateUserProfile,
+  getDashboardStats,
   createOrder,
   getOrders,
+  getMyOrders,
   getOrderById,
+  updateOrderStatus,
+  updateOrderNotes,
+  updateOrderPaymentMethod,
+  updateOrderTracking,
+  getOrderByNumber,
+  cancelOrder,
   uploadProductImage,
 };

@@ -9,45 +9,50 @@ import {
   Paper,
   TextField,
   Typography,
-} from '@mui/material';
-import { useId, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+} from "@mui/material";
+import { useId, useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
   // IDs únicos para os elementos de formulário
   const emailId = useId();
   const passwordId = useId();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [formError, setFormError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState("");
   const { login, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
+    setFormError("");
 
     // Validação simples
     if (!email || !password) {
-      setFormError('Por favor, preencha todos os campos.');
+      setFormError("Por favor, preencha todos os campos.");
       return;
     }
 
     try {
       await login(email, password);
-      navigate('/'); // Redireciona para a página inicial após o login
+      navigate("/"); // Redireciona para a página inicial após o login
     } catch (err) {
-      // O erro global já é tratado no contexto de autenticação
-      console.error('Erro no login:', err);
+      // Apresentar o erro de forma mais amigável para o usuário
+      console.error("Erro no login:", err);
+      setFormError(
+        err.message === "Email ou senha incorretos"
+          ? "Email ou senha incorretos. Verifique suas credenciais e tente novamente."
+          : "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente mais tarde."
+      );
     }
   };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 8, mb: 8 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
-        <Box sx={{ mb: 3, textAlign: 'center' }}>
+        <Box sx={{ mb: 3, textAlign: "center" }}>
           <Typography component="h1" variant="h4" gutterBottom>
             Login
           </Typography>
@@ -94,17 +99,21 @@ const LoginPage = () => {
             sx={{ mt: 3, mb: 2, py: 1.5 }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : 'Entrar'}
+            {loading ? <CircularProgress size={24} /> : "Entrar"}
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link component={RouterLink} to="/forgot-password" variant="body2">
+              <Link
+                component={RouterLink}
+                to="/forgot-password"
+                variant="body2"
+              >
                 Esqueceu a senha?
               </Link>
             </Grid>
             <Grid item>
               <Link component={RouterLink} to="/register" variant="body2">
-                {'Não tem uma conta? Cadastre-se'}
+                {"Não tem uma conta? Cadastre-se"}
               </Link>
             </Grid>
           </Grid>

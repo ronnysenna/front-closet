@@ -7,19 +7,22 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Divider,
   Grid,
   List,
   Paper,
   Typography,
+  Alert,
 } from "@mui/material";
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import { useCart } from "../context/CartContext";
 import couponsData from "../data/coupons.json";
 import { formatCurrency } from "../utils/formatCurrency";
+import { createOrder } from "../utils/api";
 
 const CartPage = () => {
   const { cartItems, clearCart } = useCart();
@@ -28,6 +31,8 @@ const CartPage = () => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [couponError, setCouponError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   // Calcula total de atacado e varejo
   const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalRetail = cartItems.reduce(
@@ -99,6 +104,54 @@ const CartPage = () => {
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 
+  const handleFinishOrder = async () => {
+    if (cartItems.length === 0) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const orderItems = cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        name: item.name,
+        sku: item.sku,
+      }));
+      const orderData = {
+        total,
+        paymentMethod: "A combinar no WhatsApp",
+        shippingAddress: "A combinar no WhatsApp",
+        shippingMethod: "A combinar no WhatsApp",
+        shippingCost: 0,
+        items: orderItems,
+      };
+
+      console.log("Enviando pedido:", orderData);
+      const response = await createOrder(orderData);
+      console.log("Resposta do pedido:", response);
+
+      // Garantir que todos os dados necessários estão presentes antes de atualizar o estado
+      if (response && (response.orderId || response.id)) {
+        const orderInfo = {
+          ...response,
+          items: cartItems.map((item) => ({ ...item })), // Clonando os itens para evitar problemas de referência
+          total: total,
+        };
+        clearCart();
+        // Redirecionar para a página de sucesso do pedido em vez de armazenar no estado
+        navigate("/order-success", { state: { orderDetails: orderInfo } });
+      } else {
+        throw new Error("Resposta incompleta do servidor");
+      }
+    } catch (err) {
+      console.error("Erro ao finalizar pedido:", err);
+      setError("Não foi possível finalizar o pedido. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // A função handleSendWhatsApp foi movida para OrderSuccessPage.jsx
+
   if (cartItems.length === 0) {
     return (
       <Container maxWidth="sm" sx={{ textAlign: "center", py: 8 }}>
@@ -131,6 +184,9 @@ const CartPage = () => {
     );
   }
 
+  // Usamos navigate para redirecionar para a página de sucesso
+  const navigate = useNavigate();
+
   // Aplica desconto se houver cupom válido
   const discountedTotal = total - discountValue;
 
@@ -151,6 +207,33 @@ const CartPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
+      {error && (
+        <Box sx={{ mb: 3 }}>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 2,
+              bgcolor: "error.light",
+              color: "error.dark",
+              borderRadius: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant="body1">{error}</Typography>
+            <Button
+              variant="text"
+              color="error"
+              onClick={() => setError(null)}
+              sx={{ ml: 2 }}
+            >
+              Fechar
+            </Button>
+          </Paper>
+        </Box>
+      )}
+
       <Typography
         variant="h4"
         component="h1"
@@ -282,12 +365,16 @@ const CartPage = () => {
                 fullWidth
                 variant="contained"
                 color="success"
-                onClick={handleWhatsAppCheckout}
-                startIcon={<WhatsAppIcon />}
-                endIcon={<ShoppingCartCheckoutIcon />}
+                onClick={handleFinishOrder}
+                startIcon={<ShoppingCartCheckoutIcon />}
                 sx={{ py: 1.2, fontWeight: "bold" }}
+                disabled={loading}
               >
-                Finalizar via WhatsApp
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Finalizar Pedido"
+                )}
               </Button>
             </Grid>
           </Grid>

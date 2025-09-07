@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   loginUser as apiLoginUser,
   logoutUser as apiLogoutUser,
   getUserProfile,
-} from '../utils/api';
+  updateUserProfile,
+} from "../utils/api";
 
 // Criando o contexto de autenticação
 const AuthContext = createContext(null);
@@ -22,16 +23,16 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem("authToken");
         if (token) {
           const userData = await getUserProfile();
           setUser(userData);
         }
       } catch (err) {
-        console.error('Erro ao carregar usuário:', err);
+        console.error("Erro ao carregar usuário:", err);
         // Remove o token se ele for inválido
-        localStorage.removeItem('authToken');
-        setError('Sessão expirada. Por favor, faça login novamente.');
+        localStorage.removeItem("authToken");
+        setError("Sessão expirada. Por favor, faça login novamente.");
       } finally {
         setLoading(false);
       }
@@ -45,11 +46,16 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
+      console.log(`AuthContext: Tentando login com ${email}`);
       const data = await apiLoginUser(email, password);
+      console.log("AuthContext: Login bem-sucedido", data);
       setUser(data.user);
       return data;
     } catch (err) {
-      setError(err.message || 'Falha na autenticação.');
+      console.error("AuthContext: Erro no login:", err);
+      // Defina uma mensagem de erro mais clara para o usuário
+      const errorMsg = err.message || "Falha na autenticação.";
+      setError(errorMsg);
       throw err;
     } finally {
       setLoading(false);
@@ -66,7 +72,25 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user;
 
   // Verifica se o usuário é admin
-  const isAdmin = user?.role === 'ADMIN';
+  const isAdmin = user?.role === "ADMIN";
+
+  // Função para atualizar o perfil do usuário
+  const updateProfile = async (userData) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const updatedUser = await updateUserProfile(userData);
+      setUser(updatedUser.user);
+      return updatedUser;
+    } catch (err) {
+      console.error("Erro ao atualizar perfil:", err);
+      const errorMsg = err.message || "Falha ao atualizar perfil.";
+      setError(errorMsg);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Valor do contexto
   const authContextValue = {
@@ -75,11 +99,16 @@ export const AuthProvider = ({ children }) => {
     error,
     login,
     logout,
+    updateProfile,
     isAuthenticated,
     isAdmin,
   };
 
-  return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

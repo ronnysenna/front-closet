@@ -245,6 +245,31 @@ const ResponsiveNavbar = () => {
             </ListItem>
             <ListItem
               button
+              onClick={() => handleNavigation("/my-orders")}
+              sx={{
+                borderRadius: 2,
+                mb: 0.5,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  bgcolor: "rgba(255, 105, 35, 0.08)",
+                  transform: "translateX(5px)",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "#4caf50", minWidth: "40px" }}>
+                <ShoppingCartRoundedIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Meus Pedidos"
+                primaryTypographyProps={{
+                  fontWeight: 500,
+                  fontSize: "0.95rem",
+                  color: "#FFFFFF",
+                }}
+              />
+            </ListItem>
+            <ListItem
+              button
               onClick={handleLogout}
               sx={{
                 borderRadius: 2,

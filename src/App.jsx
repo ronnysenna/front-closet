@@ -1,38 +1,52 @@
 // Core imports
 
 // Material-UI components
-import { Box, CircularProgress, Container, Typography } from '@mui/material';
-import { lazy, Suspense } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Typography,
+  Alert,
+  Snackbar,
+} from "@mui/material";
+import { lazy, Suspense, useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 // Styles
-import './App.css';
-import './components/styles/FullWidthLayout.css';
+import "./App.css";
+import "./components/styles/FullWidthLayout.css";
 
 // Local components
-import Footer from './components/Footer';
-import Header from './components/Header';
-import { GuestRoute, ProtectedRoute } from './components/ProtectedRoute';
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { GuestRoute, ProtectedRoute } from "./components/ProtectedRoute";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy loading para melhorar a performance
-const HomePage = lazy(() => import('./pages/HomePage'));
-const CartPage = lazy(() => import('./pages/CartPage'));
-const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
-const CategoryPage = lazy(() => import('./pages/CategoryPage'));
-const FeedbackPage = lazy(() => import('./pages/FeedbackPage'));
-const LoginPage = lazy(() => import('./pages/LoginPage'));
-const RegisterPage = lazy(() => import('./pages/RegisterPage'));
-const ProfilePlaceholder = lazy(() => import('./pages/ProfilePlaceholder'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const FeedbackPage = lazy(() => import("./pages/FeedbackPage"));
+const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const ProfilePlaceholder = lazy(() => import("./pages/ProfilePlaceholder"));
+const MyOrdersPage = lazy(() => import("./pages/MyOrdersPage"));
+const OrderConfirmationPage = lazy(() =>
+  import("./pages/OrderConfirmationPage")
+);
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 // Componente de Loading
 const LoadingFallback = () => (
   <Box
     sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '70vh',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "70vh",
     }}
   >
     <CircularProgress color="primary" />
@@ -41,7 +55,11 @@ const LoadingFallback = () => (
 
 // Componentes de Erro
 const UnauthorizedPage = () => (
-  <Container maxWidth="md" sx={{ my: 6, textAlign: 'center' }} className="fade-in">
+  <Container
+    maxWidth="md"
+    sx={{ my: 6, textAlign: "center" }}
+    className="fade-in"
+  >
     <Typography variant="h3" color="error" gutterBottom>
       Acesso Negado
     </Typography>
@@ -52,13 +70,17 @@ const UnauthorizedPage = () => (
       component="img"
       src="/image/unauthorized.svg"
       alt="Acesso Negado"
-      sx={{ maxWidth: '300px', width: '100%', my: 3 }}
+      sx={{ maxWidth: "300px", width: "100%", my: 3 }}
     />
   </Container>
 );
 
 const NotFoundPage = () => (
-  <Container maxWidth="md" sx={{ my: 6, textAlign: 'center' }} className="fade-in">
+  <Container
+    maxWidth="md"
+    sx={{ my: 6, textAlign: "center" }}
+    className="fade-in"
+  >
     <Typography variant="h3" gutterBottom>
       Página não encontrada
     </Typography>
@@ -69,7 +91,7 @@ const NotFoundPage = () => (
       component="img"
       src="/image/not-found.svg"
       alt="Página não encontrada"
-      sx={{ maxWidth: '300px', width: '100%', my: 3 }}
+      sx={{ maxWidth: "300px", width: "100%", my: 3 }}
     />
   </Container>
 );
@@ -79,10 +101,10 @@ function App() {
     <Router>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          bgcolor: 'background.default',
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          bgcolor: "background.default",
         }}
       >
         <Header />
@@ -98,7 +120,30 @@ function App() {
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/cart" element={<CartPage />} />
+              <Route
+                path="/cart"
+                element={
+                  <ErrorBoundary>
+                    <CartPage />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path="/order-success"
+                element={
+                  <ErrorBoundary>
+                    <OrderSuccessPage />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/product/:id" element={<ProductDetailPage />} />
               <Route path="/categoria/:category" element={<CategoryPage />} />
               <Route path="/feedback" element={<FeedbackPage />} />
@@ -121,12 +166,28 @@ function App() {
                 }
               />
 
-              {/* Página de perfil protegida */}
+              {/* Páginas protegidas */}
               <Route
                 path="/profile"
                 element={
                   <ProtectedRoute>
                     <ProfilePlaceholder />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-orders"
+                element={
+                  <ProtectedRoute>
+                    <MyOrdersPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order-confirmation/:orderId"
+                element={
+                  <ProtectedRoute>
+                    <OrderConfirmationPage />
                   </ProtectedRoute>
                 }
               />
