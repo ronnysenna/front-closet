@@ -366,6 +366,12 @@ export const cancelOrder = async (orderId) => {
   });
 };
 
+// Funções para produtos já foram definidas anteriormente
+
+// As funções getCategories e searchProducts já estão definidas acima
+// export const getCategories = () => fetchData("/categories");
+// export const searchProducts = (query) => fetchData(`/products/search?q=${encodeURIComponent(query)}`);
+
 // Funções para produtos em destaque
 export const getFeaturedProducts = () => fetchData("/products/featured");
 

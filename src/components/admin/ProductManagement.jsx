@@ -1,11 +1,11 @@
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import ImageIcon from '@mui/icons-material/Image';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import ImageIcon from "@mui/icons-material/Image";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
 import {
   Box,
   Button,
@@ -32,10 +32,10 @@ import {
   TableRow,
   TextField,
   Typography,
-} from '@mui/material';
-import { styled } from '@mui/system';
-import PropTypes from 'prop-types';
-import { useEffect, useId, useRef, useState } from 'react';
+} from "@mui/material";
+import { styled } from "@mui/system";
+import PropTypes from "prop-types";
+import { useEffect, useId, useRef, useState } from "react";
 import {
   createProduct,
   deleteProduct,
@@ -43,11 +43,11 @@ import {
   getCategories,
   updateProduct,
   uploadProductImage,
-} from '../../utils/api';
-import { ASSETS_BASE_URL } from '../../config';
+} from "../../utils/api";
+import { ASSETS_BASE_URL } from "../../config";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  fontWeight: 'bold',
+  fontWeight: "bold",
   backgroundColor: theme.palette.primary.light,
   color: theme.palette.common.white,
 }));
@@ -124,16 +124,20 @@ const ProductManagement = ({ onSuccess }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({
-    name: '',
-    price: '',
-    stockQuantity: '',
-    description: '',
-    shortDescription: '',
-    mainImage: '',
-    categoryId: '',
+    name: "",
+    price: "",
+    stockQuantity: "",
+    description: "",
+    shortDescription: "",
+    mainImage: "",
+    categoryId: "",
     images: [],
+    sizes: [],
+    colors: [],
+    sizesText: "",
+    colorsText: "",
   });
-  
+
   // Estados para paginação
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25); // Valor padrão de 25 itens por página
@@ -143,10 +147,10 @@ const ProductManagement = ({ onSuccess }) => {
 
   // Estado para o gerenciamento de imagens
   const [openImagesDialog, setOpenImagesDialog] = useState(false);
-  const [newImageUrl, setNewImageUrl] = useState('');
-  const [newImageAlt, setNewImageAlt] = useState('');
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const [newImageAlt, setNewImageAlt] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadError, setUploadError] = useState('');
+  const [uploadError, setUploadError] = useState("");
   const [, setPreviewImage] = useState(null);
   const [lastUploadedImage, setLastUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
@@ -163,13 +167,13 @@ const ProductManagement = ({ onSuccess }) => {
 
         console.log("Produtos carregados:", productsData);
         console.log("Total de produtos:", productsData.length);
-        
+
         setProducts(productsData);
         setCategories(categoriesData);
         setError(null);
       } catch (err) {
-        console.error('Erro ao carregar dados:', err);
-        setError('Falha ao carregar os produtos. Por favor, tente novamente.');
+        console.error("Erro ao carregar dados:", err);
+        setError("Falha ao carregar os produtos. Por favor, tente novamente.");
       } finally {
         setLoading(false);
       }
@@ -177,37 +181,57 @@ const ProductManagement = ({ onSuccess }) => {
 
     fetchData();
   }, []);
-  
+
   // Log para debug da paginação
   useEffect(() => {
     console.log("Página atual:", page);
     console.log("Itens por página:", rowsPerPage);
     console.log("Total de produtos:", products.length);
-    console.log("Produtos exibidos:", rowsPerPage > 0 
-      ? Math.min(rowsPerPage, products.length - page * rowsPerPage) 
-      : products.length);
+    console.log(
+      "Produtos exibidos:",
+      rowsPerPage > 0
+        ? Math.min(rowsPerPage, products.length - page * rowsPerPage)
+        : products.length
+    );
   }, [page, rowsPerPage, products.length]);
 
   const handleOpenDialog = (product = null) => {
     if (product) {
       // Mapeia os nomes de campos para garantir consistência
+      const productSizes = product.sizes || [];
+      const productColors = product.colors || [];
+
       setCurrentProduct({
         ...product,
-        stockQuantity: product.stock_quantity || product.stockQuantity || '',
+        stockQuantity: product.stock_quantity || product.stockQuantity || "",
         categoryId:
-          product.categories && product.categories.length > 0 ? product.categories[0].id : '',
+          product.categories && product.categories.length > 0
+            ? product.categories[0].id
+            : "",
+        // Inicializa os campos sizes e colors (arrays ou objetos)
+        sizes: productSizes,
+        colors: productColors,
+        // Inicializa os campos de texto para edição fácil
+        sizesText: Array.isArray(productSizes) ? productSizes.join(", ") : "",
+        colorsText: Array.isArray(productColors)
+          ? productColors.join(", ")
+          : "",
       });
       setEditMode(true);
     } else {
       setCurrentProduct({
-        name: '',
-        price: '',
-        stockQuantity: '',
-        description: '',
-        shortDescription: '',
-        mainImage: '',
-        categoryId: '',
+        name: "",
+        price: "",
+        stockQuantity: "",
+        description: "",
+        shortDescription: "",
+        mainImage: "",
+        categoryId: "",
         images: [],
+        sizes: [],
+        colors: [],
+        sizesText: "",
+        colorsText: "",
       });
       setEditMode(false);
     }
@@ -226,6 +250,37 @@ const ProductManagement = ({ onSuccess }) => {
     });
   };
 
+  // Funções para gerenciar tamanhos e cores
+  const handleSizeChange = (e) => {
+    const sizesValue = e.target.value;
+
+    // Armazena o valor como uma string no state para manter a experiência de edição
+    setCurrentProduct({
+      ...currentProduct,
+      sizesText: sizesValue,
+      // Converte para array apenas quando for salvar
+      sizes: sizesValue
+        .split(",")
+        .map((size) => size.trim())
+        .filter((size) => size),
+    });
+  };
+
+  const handleColorChange = (e) => {
+    const colorsValue = e.target.value;
+
+    // Armazena o valor como uma string no state para manter a experiência de edição
+    setCurrentProduct({
+      ...currentProduct,
+      colorsText: colorsValue,
+      // Converte para array apenas quando for salvar
+      colors: colorsValue
+        .split(",")
+        .map((color) => color.trim())
+        .filter((color) => color),
+    });
+  };
+
   const handleSaveProduct = async () => {
     try {
       setLoading(true);
@@ -240,30 +295,38 @@ const ProductManagement = ({ onSuccess }) => {
           shortDescription: currentProduct.shortDescription,
           mainImage: currentProduct.mainImage,
           stockQuantity: parseInt(currentProduct.stockQuantity, 10) || 0,
-          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId, 10)] : [],
-          images: currentProduct.images, // Adicionado para incluir as imagens
+          categoryIds: currentProduct.categoryId
+            ? [parseInt(currentProduct.categoryId, 10)]
+            : [],
+          images: currentProduct.images,
+          sizes: currentProduct.sizes,
+          colors: currentProduct.colors,
         });
-        onSuccess('Produto atualizado com sucesso!');
+        onSuccess("Produto atualizado com sucesso!");
       } else {
         await createProduct({
           name: currentProduct.name,
           price: parseFloat(currentProduct.price),
           description: currentProduct.description,
-          shortDescription: `${currentProduct.description?.split('.')[0]}.`,
-          mainImage: currentProduct.mainImage || 'image/default.jpg',
+          shortDescription: `${currentProduct.description?.split(".")[0]}.`,
+          mainImage: currentProduct.mainImage || "image/default.jpg",
           stockQuantity: parseInt(currentProduct.stockQuantity, 10) || 0,
-          categoryIds: currentProduct.categoryId ? [parseInt(currentProduct.categoryId, 10)] : [],
-          images: currentProduct.images, // Adicionado para incluir as imagens
+          categoryIds: currentProduct.categoryId
+            ? [parseInt(currentProduct.categoryId, 10)]
+            : [],
+          images: currentProduct.images,
+          sizes: currentProduct.sizes,
+          colors: currentProduct.colors,
         });
-        onSuccess('Produto criado com sucesso!');
+        onSuccess("Produto criado com sucesso!");
       }
       // Recarregar a lista de produtos
       const productsData = await getAllProducts();
       setProducts(productsData);
       handleCloseDialog();
     } catch (err) {
-      console.error('Erro ao salvar produto:', err);
-      setError(err.message || 'Ocorreu um erro ao salvar o produto.');
+      console.error("Erro ao salvar produto:", err);
+      setError(err.message || "Ocorreu um erro ao salvar o produto.");
     } finally {
       setLoading(false);
     }
@@ -287,10 +350,10 @@ const ProductManagement = ({ onSuccess }) => {
 
   const handleCloseImagesDialog = () => {
     setOpenImagesDialog(false);
-    setNewImageUrl('');
-    setNewImageAlt('');
+    setNewImageUrl("");
+    setNewImageAlt("");
     setPreviewImage(null);
-    setUploadError('');
+    setUploadError("");
 
     // Atualizar a lista de produtos se houver novas imagens
     if (lastUploadedImage || currentProduct.images?.length > 0) {
@@ -299,7 +362,7 @@ const ProductManagement = ({ onSuccess }) => {
           setProducts(productsData);
         })
         .catch((error) => {
-          console.error('Erro ao atualizar lista de produtos:', error);
+          console.error("Erro ao atualizar lista de produtos:", error);
         });
     }
   };
@@ -308,14 +371,14 @@ const ProductManagement = ({ onSuccess }) => {
     try {
       setLoading(true);
       await deleteProduct(currentProduct.id);
-      onSuccess('Produto excluído com sucesso!');
+      onSuccess("Produto excluído com sucesso!");
       // Recarregar a lista de produtos
       const productsData = await getAllProducts();
       setProducts(productsData);
       handleCloseDeleteDialog();
     } catch (err) {
-      console.error('Erro ao excluir produto:', err);
-      setError(err.message || 'Ocorreu um erro ao excluir o produto.');
+      console.error("Erro ao excluir produto:", err);
+      setError(err.message || "Ocorreu um erro ao excluir o produto.");
     } finally {
       setLoading(false);
     }
@@ -330,11 +393,12 @@ const ProductManagement = ({ onSuccess }) => {
     console.log("Alterando para", newRowsPerPage, "itens por página");
     setRowsPerPage(newRowsPerPage);
     setPage(0);
-    
+
     // Log adicional para debug
     setTimeout(() => {
       console.log("rowsPerPage após atualização:", newRowsPerPage);
-      console.log("displayedProducts após atualização:", 
+      console.log(
+        "displayedProducts após atualização:",
         newRowsPerPage > 0
           ? products.slice(0, newRowsPerPage).length
           : products.length
@@ -344,7 +408,7 @@ const ProductManagement = ({ onSuccess }) => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -355,13 +419,14 @@ const ProductManagement = ({ onSuccess }) => {
   }
 
   // Calcular os produtos a serem exibidos na página atual
-  const displayedProducts = rowsPerPage > 0
-    ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    : products;
+  const displayedProducts =
+    rowsPerPage > 0
+      ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : products;
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <Box>
           <Typography variant="h6">Gerenciamento de Produtos</Typography>
           <Typography variant="body2" color="text.secondary">
@@ -394,15 +459,51 @@ const ProductManagement = ({ onSuccess }) => {
             {displayedProducts.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>{product.id}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>R$ {parseFloat(product.price).toFixed(2)}</TableCell>
-                <TableCell>{product.stock_quantity || product.stockQuantity || 'N/A'}</TableCell>
-                <TableCell>{product.category?.name || 'Sem categoria'}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleOpenDialog(product)}>
+                  {product.name}
+                  {product.sizes && product.sizes.length > 0 && (
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      color="text.secondary"
+                    >
+                      Tamanhos:{" "}
+                      {Array.isArray(product.sizes)
+                        ? product.sizes.join(", ")
+                        : ""}
+                    </Typography>
+                  )}
+                  {product.colors && product.colors.length > 0 && (
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      color="text.secondary"
+                    >
+                      Cores:{" "}
+                      {Array.isArray(product.colors)
+                        ? product.colors.join(", ")
+                        : ""}
+                    </Typography>
+                  )}
+                </TableCell>
+                <TableCell>R$ {parseFloat(product.price).toFixed(2)}</TableCell>
+                <TableCell>
+                  {product.stock_quantity || product.stockQuantity || "N/A"}
+                </TableCell>
+                <TableCell>
+                  {product.category?.name || "Sem categoria"}
+                </TableCell>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleOpenDialog(product)}
+                  >
                     <EditIcon />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleOpenDeleteDialog(product)}>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleOpenDeleteDialog(product)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -419,14 +520,20 @@ const ProductManagement = ({ onSuccess }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[7, 15, 25, 50, { label: 'Todos', value: -1 }]}
+                rowsPerPageOptions={[
+                  7,
+                  15,
+                  25,
+                  50,
+                  { label: "Todos", value: -1 },
+                ]}
                 colSpan={6}
                 count={products.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
                   inputProps: {
-                    'aria-label': 'linhas por página',
+                    "aria-label": "linhas por página",
                   },
                   native: true,
                 }}
@@ -434,7 +541,9 @@ const ProductManagement = ({ onSuccess }) => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
                 labelRowsPerPage="Itens por página:"
-                labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                labelDisplayedRows={({ from, to, count }) =>
+                  `${from}-${to} de ${count}`
+                }
               />
             </TableRow>
           </TableFooter>
@@ -442,8 +551,15 @@ const ProductManagement = ({ onSuccess }) => {
       </TableContainer>
 
       {/* Diálogo para criar/editar produto */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-        <DialogTitle>{editMode ? 'Editar Produto' : 'Novo Produto'}</DialogTitle>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>
+          {editMode ? "Editar Produto" : "Novo Produto"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
             Preencha os detalhes do produto abaixo:
@@ -507,6 +623,36 @@ const ProductManagement = ({ onSuccess }) => {
               />
             </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="sizes"
+                label="Tamanhos (separados por vírgula)"
+                fullWidth
+                value={currentProduct.sizesText}
+                onChange={handleSizeChange}
+                margin="dense"
+                variant="outlined"
+                placeholder="P, M, G, GG"
+                helperText="Digite os tamanhos separados por vírgula"
+                inputProps={{ spellCheck: false }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="colors"
+                label="Cores (separadas por vírgula)"
+                fullWidth
+                value={currentProduct.colorsText}
+                onChange={handleColorChange}
+                margin="dense"
+                variant="outlined"
+                placeholder="Azul, Vermelho, Preto"
+                helperText="Digite as cores separadas por vírgula"
+                inputProps={{ spellCheck: false }}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 name="description"
@@ -522,12 +668,12 @@ const ProductManagement = ({ onSuccess }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                 <TextField
                   name="mainImage"
                   label="URL da Imagem Principal"
                   fullWidth
-                  value={currentProduct.mainImage || ''}
+                  value={currentProduct.mainImage || ""}
                   onChange={handleInputChange}
                   margin="dense"
                   variant="outlined"
@@ -547,35 +693,46 @@ const ProductManagement = ({ onSuccess }) => {
             </Grid>
 
             {currentProduct.mainImage && (
-              <Grid item xs={12} sx={{ mt: 2, textAlign: 'center' }}>
+              <Grid item xs={12} sx={{ mt: 2, textAlign: "center" }}>
                 <Typography variant="subtitle2" gutterBottom>
                   Pré-visualização da imagem principal:
                 </Typography>
                 <Box
                   component="img"
                   src={
-                    currentProduct.mainImage.startsWith('http')
+                    currentProduct.mainImage.startsWith("http")
                       ? currentProduct.mainImage
-                      : `${ASSETS_BASE_URL}/${currentProduct.mainImage.startsWith('/') ? currentProduct.mainImage.substring(1) : currentProduct.mainImage}`
+                      : `${ASSETS_BASE_URL}/${
+                          currentProduct.mainImage.startsWith("/")
+                            ? currentProduct.mainImage.substring(1)
+                            : currentProduct.mainImage
+                        }`
                   }
                   alt={currentProduct.name}
                   sx={{
                     maxHeight: 200,
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
                     p: 1,
-                    backgroundColor: '#f9f9f9',
+                    backgroundColor: "#f9f9f9",
                   }}
                   onError={(e) => {
-                    console.log('Erro ao carregar imagem principal:', currentProduct.mainImage);
+                    console.log(
+                      "Erro ao carregar imagem principal:",
+                      currentProduct.mainImage
+                    );
                     e.target.onerror = null;
-                    e.target.src = '/image/placeholder.jpg';
+                    e.target.src = "/image/placeholder.jpg";
                   }}
                 />
-                <Typography variant="caption" color="text.secondary" display="block">
-                  {currentProduct.mainImage.split('/').pop()}
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="block"
+                >
+                  {currentProduct.mainImage.split("/").pop()}
                 </Typography>
               </Grid>
             )}
@@ -583,8 +740,12 @@ const ProductManagement = ({ onSuccess }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleSaveProduct} variant="contained" color="primary">
-            {editMode ? 'Atualizar Produto' : 'Criar Produto'}
+          <Button
+            onClick={handleSaveProduct}
+            variant="contained"
+            color="primary"
+          >
+            {editMode ? "Atualizar Produto" : "Criar Produto"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -594,46 +755,79 @@ const ProductManagement = ({ onSuccess }) => {
         <DialogTitle>Confirmar exclusão</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Tem certeza de que deseja excluir o produto "{currentProduct.name}"? Esta ação não pode
-            ser desfeita.
+            Tem certeza de que deseja excluir o produto "{currentProduct.name}"?
+            Esta ação não pode ser desfeita.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
-          <Button onClick={handleDeleteProduct} color="error" variant="contained">
+          <Button
+            onClick={handleDeleteProduct}
+            color="error"
+            variant="contained"
+          >
             Excluir
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Diálogo para gerenciar imagens do produto */}
-      <Dialog open={openImagesDialog} onClose={handleCloseImagesDialog} maxWidth="md" fullWidth>
+      <Dialog
+        open={openImagesDialog}
+        onClose={handleCloseImagesDialog}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>Gerenciar Imagens do Produto</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ mb: 2 }}>
             Adicione, remova ou defina a imagem principal do produto.
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
-            {(currentProduct.images && currentProduct.images.length > 0) ? (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
+            {currentProduct.images && currentProduct.images.length > 0 ? (
               currentProduct.images.map((img, idx) => (
-                <Box key={img.url || idx} sx={{ position: 'relative', width: 120, height: 120 }}>
+                <Box
+                  key={img.url || idx}
+                  sx={{ position: "relative", width: 120, height: 120 }}
+                >
                   <img
-                    src={img.url?.startsWith('http') ? img.url : `${ASSETS_BASE_URL}/${img.url}`}
+                    src={
+                      img.url?.startsWith("http")
+                        ? img.url
+                        : `${ASSETS_BASE_URL}/${img.url}`
+                    }
                     alt={img.alt || `Imagem ${idx + 1}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8, border: currentProduct.mainImage === img.url ? '2px solid #ff6923' : '1px solid #ccc' }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      border:
+                        currentProduct.mainImage === img.url
+                          ? "2px solid #ff6923"
+                          : "1px solid #ccc",
+                    }}
                   />
                   <IconButton
                     size="small"
                     color="error"
-                    sx={{ position: 'absolute', top: 2, right: 2, bgcolor: 'white', p: 0.5 }}
+                    sx={{
+                      position: "absolute",
+                      top: 2,
+                      right: 2,
+                      bgcolor: "white",
+                      p: 0.5,
+                    }}
                     onClick={() => {
                       setCurrentProduct({
                         ...currentProduct,
-                        images: currentProduct.images.filter((_, i) => i !== idx),
+                        images: currentProduct.images.filter(
+                          (_, i) => i !== idx
+                        ),
                       });
                       // Se remover a principal, limpa mainImage
                       if (currentProduct.mainImage === img.url) {
-                        setCurrentProduct(cp => ({ ...cp, mainImage: '' }));
+                        setCurrentProduct((cp) => ({ ...cp, mainImage: "" }));
                       }
                     }}
                   >
@@ -643,24 +837,50 @@ const ProductManagement = ({ onSuccess }) => {
                     <Button
                       size="small"
                       variant="outlined"
-                      sx={{ position: 'absolute', bottom: 4, left: 4, fontSize: 10, p: 0.5, minWidth: 0 }}
-                      onClick={() => setCurrentProduct(cp => ({ ...cp, mainImage: img.url }))}
+                      sx={{
+                        position: "absolute",
+                        bottom: 4,
+                        left: 4,
+                        fontSize: 10,
+                        p: 0.5,
+                        minWidth: 0,
+                      }}
+                      onClick={() =>
+                        setCurrentProduct((cp) => ({
+                          ...cp,
+                          mainImage: img.url,
+                        }))
+                      }
                     >
                       Definir Principal
                     </Button>
                   )}
                   {currentProduct.mainImage === img.url && (
-                    <Typography variant="caption" sx={{ position: 'absolute', bottom: 4, left: 4, bgcolor: '#ff6923', color: 'white', px: 1, borderRadius: 1, fontSize: 10 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        position: "absolute",
+                        bottom: 4,
+                        left: 4,
+                        bgcolor: "#ff6923",
+                        color: "white",
+                        px: 1,
+                        borderRadius: 1,
+                        fontSize: 10,
+                      }}
+                    >
                       Principal
                     </Typography>
                   )}
                 </Box>
               ))
             ) : (
-              <Typography variant="body2" color="text.secondary">Nenhuma imagem adicionada.</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Nenhuma imagem adicionada.
+              </Typography>
             )}
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
             <Button
               variant="contained"
               component="label"
@@ -676,19 +896,20 @@ const ProductManagement = ({ onSuccess }) => {
                   const file = e.target.files[0];
                   if (!file) return;
                   setIsUploading(true);
-                  setUploadError('');
+                  setUploadError("");
                   try {
                     const result = await uploadProductImage(file);
-                    const url = result?.url || result?.imageUrl || result?.path || '';
+                    const url =
+                      result?.url || result?.imageUrl || result?.path || "";
                     if (url) {
-                      setCurrentProduct(cp => ({
+                      setCurrentProduct((cp) => ({
                         ...cp,
                         images: [...(cp.images || []), { url, alt: file.name }],
                       }));
                       setLastUploadedImage(url);
                     }
                   } catch {
-                    setUploadError('Erro ao fazer upload da imagem.');
+                    setUploadError("Erro ao fazer upload da imagem.");
                   } finally {
                     setIsUploading(false);
                   }
@@ -696,12 +917,14 @@ const ProductManagement = ({ onSuccess }) => {
               />
             </Button>
             {isUploading && <CircularProgress size={24} />}
-            {uploadError && <Typography color="error">{uploadError}</Typography>}
+            {uploadError && (
+              <Typography color="error">{uploadError}</Typography>
+            )}
           </Box>
           <TextField
             label="URL da Imagem Manual"
             value={newImageUrl}
-            onChange={e => setNewImageUrl(e.target.value)}
+            onChange={(e) => setNewImageUrl(e.target.value)}
             size="small"
             sx={{ mr: 1, width: 300 }}
             placeholder="image/nome-da-imagem.jpg"
@@ -709,7 +932,7 @@ const ProductManagement = ({ onSuccess }) => {
           <TextField
             label="Descrição/Alt da Imagem"
             value={newImageAlt}
-            onChange={e => setNewImageAlt(e.target.value)}
+            onChange={(e) => setNewImageAlt(e.target.value)}
             size="small"
             sx={{ mr: 1, width: 200 }}
             placeholder="Ex: Foto lateral"
@@ -718,12 +941,15 @@ const ProductManagement = ({ onSuccess }) => {
             variant="outlined"
             onClick={() => {
               if (newImageUrl) {
-                setCurrentProduct(cp => ({
+                setCurrentProduct((cp) => ({
                   ...cp,
-                  images: [...(cp.images || []), { url: newImageUrl, alt: newImageAlt }],
+                  images: [
+                    ...(cp.images || []),
+                    { url: newImageUrl, alt: newImageAlt },
+                  ],
                 }));
-                setNewImageUrl('');
-                setNewImageAlt('');
+                setNewImageUrl("");
+                setNewImageAlt("");
               }
             }}
             disabled={!newImageUrl}
