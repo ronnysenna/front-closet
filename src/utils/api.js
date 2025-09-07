@@ -224,6 +224,8 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (userData) => {
   try {
+    console.log(`Tentando registrar usuário na URL: ${BASE_URL}/auth/register`);
+
     const response = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
       headers: {
@@ -232,11 +234,27 @@ export const registerUser = async (userData) => {
       body: JSON.stringify(userData),
     });
 
+    console.log(`Resposta da API de registro: Status ${response.status}`);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      let errorMessage = `HTTP error! Status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+        console.error("Detalhes do erro de registro:", errorData);
+      } catch (e) {
+        console.error("Não foi possível ler o corpo da resposta de erro");
+      }
+      throw new Error(errorMessage);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("Registro bem-sucedido, usuário criado:", {
+      ...data,
+      user: { ...data.user, password: "***" },
+    });
+
+    return data;
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
     throw error;

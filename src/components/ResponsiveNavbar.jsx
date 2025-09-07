@@ -558,6 +558,21 @@ const ResponsiveNavbar = () => {
                     <ListItemText>Meu Perfil</ListItemText>
                   </MenuItem>
 
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      navigate("/my-orders");
+                    }}
+                  >
+                    <ListItemIcon>
+                      <ShoppingCartRoundedIcon
+                        fontSize="small"
+                        sx={{ color: "#4caf50" }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText>Meus Pedidos</ListItemText>
+                  </MenuItem>
+
                   {isAdmin && (
                     <MenuItem
                       onClick={() => {

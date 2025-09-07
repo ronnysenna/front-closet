@@ -4,6 +4,8 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront"; // Ícone para ver produtos
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import LoginIcon from '@mui/icons-material/Login';
 import {
   Box,
   Button,
@@ -15,24 +17,37 @@ import {
   Paper,
   Typography,
   Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import couponsData from "../data/coupons.json";
 import { formatCurrency } from "../utils/formatCurrency";
 import { createOrder } from "../utils/api";
 
 const CartPage = () => {
   const { cartItems, clearCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const [showMinOrderWarning, setShowMinOrderWarning] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false); // Estado para controlar diálogo de autenticação
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [couponError, setCouponError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // IDs únicos para elementos de acessibilidade
+  const authDialogTitleId = useId();
+  const authDialogDescriptionId = useId();
+  
   // Calcula total de atacado e varejo
   const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalRetail = cartItems.reduce(
@@ -52,6 +67,9 @@ const CartPage = () => {
   const isWholesale = totalUnits >= 10;
   const total = isWholesale ? totalWholesale : totalRetail;
   const whatsappNumber = "5585991893149"; // IMPORTANTE: Coloque seu número
+
+  // Usamos navigate para redirecionar
+  const navigate = useNavigate();
 
   const getTotalUnits = () =>
     cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -106,6 +124,14 @@ const CartPage = () => {
 
   const handleFinishOrder = async () => {
     if (cartItems.length === 0) return;
+
+    // Verifica se o usuário está autenticado
+    if (!isAuthenticated) {
+      // Mostra diálogo de autenticação em vez de redirecionar diretamente
+      setShowAuthDialog(true);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -150,7 +176,29 @@ const CartPage = () => {
     }
   };
 
-  // A função handleSendWhatsApp foi movida para OrderSuccessPage.jsx
+  // Função para navegar para registro/login
+  const handleNavigateToAuth = (path) => {
+    setShowAuthDialog(false);
+    navigate(path, { state: { fromCart: true } });
+  };
+
+  // Aplica desconto se houver cupom válido
+  const discountedTotal = total - discountValue;
+
+  const handleApplyCoupon = () => {
+    const found = couponsData.find(
+      (c) => c.code.toUpperCase() === coupon.trim().toUpperCase()
+    );
+    if (found) {
+      setDiscountValue(found.discount);
+      setCouponApplied(true);
+      setCouponError("");
+    } else {
+      setCouponError("Cupom inválido ou expirado.");
+      setCouponApplied(false);
+      setDiscountValue(0);
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -183,27 +231,6 @@ const CartPage = () => {
       </Container>
     );
   }
-
-  // Usamos navigate para redirecionar para a página de sucesso
-  const navigate = useNavigate();
-
-  // Aplica desconto se houver cupom válido
-  const discountedTotal = total - discountValue;
-
-  const handleApplyCoupon = () => {
-    const found = couponsData.find(
-      (c) => c.code.toUpperCase() === coupon.trim().toUpperCase()
-    );
-    if (found) {
-      setDiscountValue(found.discount);
-      setCouponApplied(true);
-      setCouponError("");
-    } else {
-      setCouponError("Cupom inválido ou expirado.");
-      setCouponApplied(false);
-      setDiscountValue(0);
-    }
-  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -438,6 +465,61 @@ const CartPage = () => {
           </Paper>
         </Box>
       )}
+      
+      {/* Diálogo de autenticação para checkout */}
+      <Dialog
+        open={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        aria-labelledby={authDialogTitleId}
+        aria-describedby={authDialogDescriptionId}
+      >
+        <DialogTitle id={authDialogTitleId}>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Autenticação Necessária
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id={authDialogDescriptionId} sx={{ mb: 2 }}>
+            Para finalizar sua compra, você precisa estar logado na sua conta.
+            Escolha uma das opções abaixo:
+          </DialogContentText>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                startIcon={<LoginIcon />}
+                onClick={() => handleNavigateToAuth("/login")}
+                sx={{ py: 1.5, mb: 1 }}
+              >
+                Já tenho uma conta
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                startIcon={<PersonAddIcon />}
+                onClick={() => handleNavigateToAuth("/register")}
+                sx={{ py: 1.5 }}
+              >
+                Criar uma nova conta
+              </Button>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => setShowAuthDialog(false)}
+            color="inherit"
+            sx={{ fontWeight: "medium" }}
+          >
+            Continuar comprando
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
