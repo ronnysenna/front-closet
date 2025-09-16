@@ -1,16 +1,23 @@
-import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 
 const FeedbackPage = () => {
   const [form, setForm] = useState({
-    nome: '',
-    email: '',
-    celular: '',
-    mensagem: '',
+    nome: "",
+    email: "",
+    celular: "",
+    mensagem: "",
   });
   const [enviado, setEnviado] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,17 +26,20 @@ const FeedbackPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErro('');
+    setErro("");
     try {
-      const res = await fetch('https://n8n-fluxo-n8n.exzgdz.easypanel.host/webhook/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error('Erro ao enviar feedback');
+      const res = await fetch(
+        "https://n8n.ronnysenna.com.br/webhook/feedback",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
+      if (!res.ok) throw new Error("Erro ao enviar feedback");
       setEnviado(true);
     } catch (_err) {
-      setErro('Não foi possível enviar. Tente novamente.');
+      setErro("Não foi possível enviar. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -38,13 +48,24 @@ const FeedbackPage = () => {
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
-        <Typography variant="h4" color="primary" fontWeight={700} gutterBottom align="center">
+        <Typography
+          variant="h4"
+          color="primary"
+          fontWeight={700}
+          gutterBottom
+          align="center"
+        >
           Sua opinião é muito importante!
         </Typography>
-        <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 3 }}>
-          O feedback dos nossos clientes nos ajuda a melhorar cada vez mais. Por favor, preencha
-          seus dados e compartilhe sua experiência ou sugestão. Sua participação faz toda a
-          diferença!
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          align="center"
+          sx={{ mb: 3 }}
+        >
+          O feedback dos nossos clientes nos ajuda a melhorar cada vez mais. Por
+          favor, preencha seus dados e compartilhe sua experiência ou sugestão.
+          Sua participação faz toda a diferença!
         </Typography>
         {enviado ? (
           <Typography variant="h6" color="success.main" align="center">
@@ -54,7 +75,7 @@ const FeedbackPage = () => {
           <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <TextField
               label="Nome"
@@ -106,7 +127,7 @@ const FeedbackPage = () => {
               disabled={loading}
               sx={{ mt: 2 }}
             >
-              {loading ? 'Enviando...' : 'Enviar Feedback'}
+              {loading ? "Enviando..." : "Enviar Feedback"}
             </Button>
             {erro && (
               <Typography color="error" align="center">

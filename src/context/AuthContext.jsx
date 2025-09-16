@@ -100,6 +100,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateProfile,
+    // Permite atualizar o usuário localmente (útil para atualizar favoritos imediatamente)
+    setUser,
     isAuthenticated,
     isAdmin,
   };

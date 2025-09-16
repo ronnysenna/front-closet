@@ -408,6 +408,16 @@ export const uploadProductImage = async (file) => {
   }
 };
 
+// Favoritar/desfavoritar produto
+export const toggleFavoriteProduct = async (productId) => {
+  return fetchData(`/products/${productId}/favorite`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export default {
   getAllProducts,
   getProductById,
@@ -434,4 +444,5 @@ export default {
   getOrderByNumber,
   cancelOrder,
   uploadProductImage,
+  toggleFavoriteProduct,
 };

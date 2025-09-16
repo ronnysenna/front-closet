@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,12 +14,21 @@ import {
   Typography,
   Alert,
   Snackbar,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { getProductById, toggleFavoriteProduct } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
+import { ASSETS_BASE_URL } from "../config";
 
 // Este é um componente temporário para a página de perfil
 const ProfilePlaceholder = () => {
-  const { user, logout, updateProfile, loading } = useAuth();
+  const { user, logout, updateProfile, loading, setUser } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -34,6 +43,58 @@ const ProfilePlaceholder = () => {
     message: "",
     severity: "success",
   });
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(false);
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      if (user?.favorites && user.favorites.length > 0) {
+        setLoadingFavorites(true);
+        try {
+          const products = await Promise.all(
+            user.favorites.map((id) => getProductById(id))
+          );
+          setFavoriteProducts(products);
+        } catch (err) {
+          console.error("Erro ao buscar produtos favoritos:", err);
+          setFavoriteProducts([]);
+        } finally {
+          setLoadingFavorites(false);
+        }
+      } else {
+        setFavoriteProducts([]);
+      }
+    }
+    fetchFavorites();
+  }, [user]);
+
+  const resolveImageUrl = (imgPath) => {
+    if (!imgPath)
+      return "https://via.placeholder.com/400x400?text=Imagem+Indisponível";
+    if (imgPath.startsWith("http")) return imgPath;
+    // remove leading slash to avoid double // when joining
+    const cleaned = imgPath.startsWith("/") ? imgPath.substring(1) : imgPath;
+    return `${ASSETS_BASE_URL}/${cleaned}`;
+  };
+
+  const handleRemoveFavorite = async (productId) => {
+    try {
+      const response = await toggleFavoriteProduct(productId);
+      // Atualiza a lista local de cards
+      setFavoriteProducts((prev) => prev.filter((p) => p.id !== productId));
+      // Atualiza o contexto do usuário com a lista de favoritos retornada pelo backend
+      if (response && Array.isArray(response.favorites)) {
+        setUser((prev) => ({ ...(prev || {}), favorites: response.favorites }));
+      } else {
+        console.warn(
+          "toggleFavoriteProduct (remover) retornou resposta inesperada:",
+          response
+        );
+      }
+    } catch (err) {
+      console.error("Erro ao remover favorito:", err);
+    }
+  };
 
   // Abre o diálogo de edição e inicializa o formulário com os dados atuais
   const handleOpenDialog = () => {
@@ -233,6 +294,82 @@ const ProfilePlaceholder = () => {
             Sair da Conta
           </Button>
         </Box>
+
+        <Divider sx={{ my: 4 }} />
+
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Favoritos / Lista de Desejos
+        </Typography>
+        {loadingFavorites ? (
+          <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : favoriteProducts.length === 0 ? (
+          <Typography color="text.secondary" sx={{ mb: 2 }}>
+            Nenhum produto favorito ainda.
+          </Typography>
+        ) : (
+          <Grid container spacing={2}>
+            {favoriteProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    position: "relative",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="180"
+                    image={resolveImageUrl(
+                      product.main_image || product.images?.[0]?.url
+                    )}
+                    alt={product.name}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://via.placeholder.com/400x400?text=Imagem+Indisponível";
+                    }}
+                    sx={{ objectFit: "cover", cursor: "pointer" }}
+                    onClick={() =>
+                      (window.location.href = `/product/${product.id}`)
+                    }
+                  />
+                  <CardContent>
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight="bold"
+                      gutterBottom
+                    >
+                      {product.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {product.short_description}
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+                      {product.price
+                        ? `R$ ${Number(product.price).toFixed(2)}`
+                        : ""}
+                    </Typography>
+                  </CardContent>
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      bgcolor: "white",
+                    }}
+                    onClick={() => handleRemoveFavorite(product.id)}
+                    aria-label="Remover dos favoritos"
+                  >
+                    <FavoriteIcon color="error" />
+                  </IconButton>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Paper>
 
       {/* Diálogo de edição do perfil */}

@@ -3,6 +3,7 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import {
@@ -24,18 +25,59 @@ import {
   Typography,
   IconButton,
   Chip,
-  Fade,
   Zoom,
 } from "@mui/material";
-import { useId, useState } from "react";
+import { useId, useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { formatCurrency } from "../utils/formatCurrency";
 import { ASSETS_BASE_URL } from "../config";
+import { useAuth } from "../context/AuthContext";
+import { toggleFavoriteProduct } from "../utils/api";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const { user, setUser } = useAuth();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+
+  // Verifica se o produto está nos favoritos do usuário
+  // (Ajuste conforme o backend retornar favoritos no perfil)
+  useEffect(() => {
+    if (user?.favorites) {
+      setIsFavorite(user.favorites.includes(product.id));
+    } else {
+      setIsFavorite(false);
+    }
+  }, [user, product.id]);
+
+  const handleToggleFavorite = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setFavoriteLoading(true);
+    try {
+      // Chama API para alternar favorito
+      const response = await toggleFavoriteProduct(product.id);
+      // Atualiza o usuário localmente com a lista de favoritos retornada pelo backend
+      if (response && Array.isArray(response.favorites)) {
+        setUser((prev) => ({ ...(prev || {}), favorites: response.favorites }));
+        setIsFavorite(response.favorites.includes(product.id));
+      } else {
+        console.warn(
+          "toggleFavoriteProduct retornou resposta inesperada:",
+          response
+        );
+      }
+    } catch (err) {
+      console.error("Erro ao alternar favorito:", err);
+      // opcional: mostrar uma notificação para o usuário
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
 
   // Gerar IDs únicos para os componentes
   const sizeSelectId = useId();
@@ -93,6 +135,29 @@ const ProductCard = ({ product }) => {
   const hasRetailPrice =
     product.retailPrice &&
     parseFloat(product.retailPrice) > parseFloat(product.price);
+
+  // Função para obter o status do estoque
+  const getStockStatus = () => {
+    if (isOutOfStock) return null; // Não mostra mensagem pois já tem o chip ESGOTADO
+    if (stockQuantity <= 5) {
+      return {
+        message: `Últimas ${stockQuantity} unidades`,
+        color: "warning.main",
+      };
+    }
+    if (stockQuantity <= 10) {
+      return {
+        message: `${stockQuantity} unidades em estoque`,
+        color: "info.main",
+      };
+    }
+    return {
+      message: "Produto em estoque",
+      color: "success.main",
+    };
+  };
+
+  const stockStatus = getStockStatus();
 
   return (
     <>
@@ -196,7 +261,9 @@ const ProductCard = ({ product }) => {
           </IconButton>
 
           <IconButton
-            aria-label="Adicionar aos favoritos"
+            aria-label={
+              isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"
+            }
             sx={{
               bgcolor: "rgba(255,255,255,0.9)",
               ":hover": { bgcolor: "white", transform: "scale(1.1)" },
@@ -204,8 +271,14 @@ const ProductCard = ({ product }) => {
               transition: "transform 0.2s",
             }}
             size="small"
+            onClick={handleToggleFavorite}
+            disabled={favoriteLoading}
           >
-            <FavoriteBorderIcon fontSize="small" color="error" />
+            {isFavorite ? (
+              <FavoriteIcon fontSize="small" color="error" />
+            ) : (
+              <FavoriteBorderIcon fontSize="small" color="disabled" />
+            )}
           </IconButton>
         </Box>
 
@@ -338,7 +411,11 @@ const ProductCard = ({ product }) => {
                   gap: 1,
                 }}
               >
-                <Typography variant="h5" color="primary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="h5"
+                  color="primary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {formatCurrency
                     ? formatCurrency(parseFloat(product.price))
                     : `R$ ${product.price}`}
@@ -361,54 +438,20 @@ const ProductCard = ({ product }) => {
               </Box>
 
               {/* Indicador de estoque */}
-              {(() => {
-                const stock = product.stock_quantity ?? product.stockQuantity ?? 0;
-                if (stock === 0) {
-                  return null; // Não mostra nada pois já temos o chip de ESGOTADO
-                } else if (stock <= 5) {
-                  return (
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "warning.main",
-                        fontWeight: "medium",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.5,
-                      }}
-                    >
-                      Últimas {stock} unidades
-                    </Typography>
-                  );
-                } else if (stock <= 10) {
-                  return (
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "info.main",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.5,
-                      }}
-                    >
-                      {stock} unidades em estoque
-                    </Typography>
-                  );
-                }
-                return (
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: "success.main",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 0.5,
-                    }}
-                  >
-                    Produto em estoque
-                  </Typography>
-                );
-              })()}
+              {stockStatus && (
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: stockStatus.color,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                  }}
+                >
+                  <CheckCircleIcon fontSize="small" />
+                  {stockStatus.message}
+                </Typography>
+              )}
             </Box>
           </Box>
         </CardContent>

@@ -3,9 +3,8 @@
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import StorefrontIcon from "@mui/icons-material/Storefront"; // Ícone para ver produtos
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import LoginIcon from '@mui/icons-material/Login';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import LoginIcon from "@mui/icons-material/Login";
 import {
   Box,
   Button,
@@ -16,14 +15,13 @@ import {
   List,
   Paper,
   Typography,
-  Alert,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useState, useEffect, useId } from "react";
+import { useState, useId } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import { useCart } from "../context/CartContext";
@@ -35,7 +33,6 @@ import { createOrder } from "../utils/api";
 const CartPage = () => {
   const { cartItems, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
-  const [showMinOrderWarning, setShowMinOrderWarning] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false); // Estado para controlar diálogo de autenticação
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
@@ -43,13 +40,12 @@ const CartPage = () => {
   const [couponError, setCouponError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // IDs únicos para elementos de acessibilidade
   const authDialogTitleId = useId();
   const authDialogDescriptionId = useId();
-  
-  // Calcula total de atacado e varejo
-  const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Calcula total de varejo
   const totalRetail = cartItems.reduce(
     (sum, item) =>
       sum +
@@ -59,68 +55,11 @@ const CartPage = () => {
         item.quantity,
     0
   );
-  const totalWholesale = cartItems.reduce(
-    (sum, item) => sum + parseFloat(item.price) * item.quantity,
-    0
-  );
-  // O total exibido depende da quantidade
-  const isWholesale = totalUnits >= 10;
-  const total = isWholesale ? totalWholesale : totalRetail;
-  const whatsappNumber = "5585991893149"; // IMPORTANTE: Coloque seu número
+  // O total exibido depende apenas do varejo agora
+  const total = totalRetail;
 
   // Usamos navigate para redirecionar
   const navigate = useNavigate();
-
-  const getTotalUnits = () =>
-    cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const handleWhatsAppCheckout = () => {
-    if (cartItems.length === 0) return;
-    if (getTotalUnits() < 10) {
-      setShowMinOrderWarning(true);
-      return;
-    }
-    sendWhatsAppOrder();
-  };
-
-  const sendWhatsAppOrder = () => {
-    let message =
-      "Olá Closet Moda Fitness! Gostaria de fazer o pedido dos seguintes itens:\n\n";
-    cartItems.forEach((item) => {
-      message += `*${item.name}*\n`;
-      message += `  Cor: ${item.selectedColor}, Tamanho: ${item.selectedSize}\n`;
-      message += `  Qtd: ${item.quantity} x ${
-        isWholesale
-          ? formatCurrency(parseFloat(item.price))
-          : formatCurrency(
-              item.retailPrice
-                ? parseFloat(item.retailPrice)
-                : parseFloat(item.price)
-            )
-      }\n`;
-      message += `  Subtotal: ${
-        isWholesale
-          ? formatCurrency(parseFloat(item.price) * item.quantity)
-          : formatCurrency(
-              (item.retailPrice
-                ? parseFloat(item.retailPrice)
-                : parseFloat(item.price)) * item.quantity
-            )
-      }\n\n`;
-    });
-    message += `*Total do Pedido: ${
-      formatCurrency ? formatCurrency(total) : `R$ ${total.toFixed(2)}`
-    }*`;
-    message += `\nTipo de cobrança: ${
-      isWholesale ? "Atacado" : "Varejo"
-    } (Pedido com ${totalUnits} peça${totalUnits > 1 ? "s" : ""})`;
-    if (couponApplied && coupon) {
-      message += `\nCupom aplicado: ${coupon.trim().toUpperCase()}`;
-    }
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-  };
 
   const handleFinishOrder = async () => {
     if (cartItems.length === 0) return;
@@ -350,28 +289,6 @@ const CartPage = () => {
           </Grid>
           <Grid
             container
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ mb: 1 }}
-          >
-            <Grid item>
-              <Typography variant="body2" color="text.secondary">
-                <b>Varejo:</b> {formatCurrency(totalRetail)} | <b>Atacado:</b>{" "}
-                {formatCurrency(totalWholesale)}
-              </Typography>
-              <Typography
-                variant="body2"
-                color={isWholesale ? "success.main" : "primary.main"}
-                sx={{ mt: 0.5 }}
-              >
-                {isWholesale
-                  ? "Cobrança no valor de atacado (10 peças ou mais)"
-                  : "Cobrança no valor de varejo (menos de 10 peças)"}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid
-            container
             spacing={2}
             justifyContent={{ xs: "center", sm: "flex-end" }}
           >
@@ -408,64 +325,6 @@ const CartPage = () => {
         </Box>
       </Paper>
 
-      {/* Modal/Aviso para pedidos abaixo de 10 peças */}
-      {showMinOrderWarning && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            bgcolor: "rgba(0,0,0,0.4)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Paper
-            elevation={6}
-            sx={{ p: 4, maxWidth: 350, textAlign: "center" }}
-          >
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Atenção!
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              Pedidos abaixo de <b>10 peças</b> serão cobrados no valor de{" "}
-              <b>varejo</b>.
-            </Typography>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={6}>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="success"
-                  onClick={() => {
-                    setShowMinOrderWarning(false);
-                    sendWhatsAppOrder();
-                  }}
-                  sx={{ py: 1.2, fontWeight: "bold" }}
-                >
-                  Finalizar Pedido
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setShowMinOrderWarning(false)}
-                  sx={{ py: 1.2, fontWeight: "bold" }}
-                >
-                  Continuar Comprando
-                </Button>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Box>
-      )}
-      
       {/* Diálogo de autenticação para checkout */}
       <Dialog
         open={showAuthDialog}
@@ -511,7 +370,7 @@ const CartPage = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button 
+          <Button
             onClick={() => setShowAuthDialog(false)}
             color="inherit"
             sx={{ fontWeight: "medium" }}
