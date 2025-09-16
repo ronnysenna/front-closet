@@ -26,10 +26,6 @@ const ProductList = ({ products }) => {
           fontSize: { xs: '2rem', md: '2.5rem' },
         }}
       >
-        <span style={{ color: '#e91e63', fontWeight: 700, fontSize: 'inherit' }}>
-          Nossos Produtos
-        </span>
-        <br />
       </Typography>
       <Grid
         container

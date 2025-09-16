@@ -5,6 +5,7 @@ import ProductList from "../components/ProductList";
 import ProductSearchBar from "../components/ProductSearchBar";
 import ShippingInfo from "../components/ShippingInfo";
 import CategoryGrid from "../components/CategoryGrid";
+import HighlightBanner from "../components/HighlightBanner";
 import { getAllProducts } from "../utils/api";
 
 const HomePage = () => {
@@ -42,10 +43,18 @@ const HomePage = () => {
 
   return (
     <div>
+      <HighlightBanner
+        images={[
+          "https://cdn.sistemawbuy.com.br/arquivos/6b197a12ddff92df0235fe4d68048bf2/vitrine/tamanhos-desktop-68c4a400922f4.png",
+           "https://zanotti.com.br/blog/wp-content/uploads/2021/07/capa-moda-esportiva-2.jpg",
+           "https://difitlifestyle.com/wp-content/uploads/2019/08/shutterstock_517707289.jpg",
+        ]}
+        interval={5000}
+      />
       {/* Pode adicionar um Hero Banner aqui se desejar */}
       <section className="bg-pink-50 py-12 text-center">
         <div className="container-app mx-auto px-4">
-          <h1 className="text-4xl font-bold text-brand-pink mb-4">
+          <h1 className="text-4xl font-bold text-brand-pink mb-4" style={{ color: "#ff6923" }}> 
             Bem-vinda à Closet Moda Fitness!
           </h1>
           <p className="text-lg text-gray-700">

@@ -351,20 +351,32 @@ const ResponsiveNavbar = () => {
         position="sticky"
         className="full-width-container"
         sx={{
-          bgcolor: "#000", // Mesma cor do Footer
+          bgcolor: "#000",
           color: "#fff",
-          boxShadow: "0 2px 12px 0 rgba(0,0,0,0.07)",
-          borderBottom: "1px solid #23234a",
+          boxShadow: "none", // remove sombra
+          borderBottom: "none", // remove borda
           width: "100vw",
           padding: 0,
           margin: 0,
           left: 0,
           right: 0,
           zIndex: 1200,
+          mb: 0,
         }}
         elevation={0}
       >
-        <Toolbar className="content-container" sx={{ py: 0.5, width: "100%" }}>
+        <Toolbar
+          className="content-container"
+          sx={{
+            py: 0,
+            width: "100%",
+            minHeight: 0,
+            mb: 0,
+            mt: 0,
+            px: 0,
+            border: 0,
+          }}
+        >
           <Box
             component={RouterLink}
             to="/"
