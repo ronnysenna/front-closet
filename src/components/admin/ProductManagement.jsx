@@ -460,35 +460,94 @@ const ProductManagement = ({ onSuccess }) => {
               <TableRow key={product.id}>
                 <TableCell>{product.id}</TableCell>
                 <TableCell>
-                  {product.name}
-                  {product.sizes && product.sizes.length > 0 && (
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      color="text.secondary"
-                    >
-                      Tamanhos:{" "}
-                      {Array.isArray(product.sizes)
-                        ? product.sizes.join(", ")
-                        : ""}
-                    </Typography>
-                  )}
-                  {product.colors && product.colors.length > 0 && (
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      color="text.secondary"
-                    >
-                      Cores:{" "}
-                      {Array.isArray(product.colors)
-                        ? product.colors.join(", ")
-                        : ""}
-                    </Typography>
-                  )}
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: "medium", mb: 0.5 }}
+                  >
+                    {product.name}
+                  </Typography>
+                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    {product.sizes && product.sizes.length > 0 && (
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                      >
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          Tam:
+                        </Typography>
+                        <Typography variant="caption" color="primary.main">
+                          {Array.isArray(product.sizes)
+                            ? product.sizes.join(" • ")
+                            : ""}
+                        </Typography>
+                      </Box>
+                    )}
+                    {product.colors && product.colors.length > 0 && (
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                      >
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          Cores:
+                        </Typography>
+                        <Typography variant="caption" color="primary.main">
+                          {Array.isArray(product.colors)
+                            ? product.colors.join(" • ")
+                            : ""}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
                 </TableCell>
                 <TableCell>R$ {parseFloat(product.price).toFixed(2)}</TableCell>
                 <TableCell>
-                  {product.stock_quantity || product.stockQuantity || "N/A"}
+                  {(() => {
+                    const stock =
+                      product.stock_quantity ?? product.stockQuantity ?? 0;
+                    if (stock === 0) {
+                      return (
+                        <Typography
+                          color="error"
+                          variant="caption"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          ESGOTADO
+                        </Typography>
+                      );
+                    } else if (stock <= 5) {
+                      return (
+                        <Typography
+                          color="warning.main"
+                          variant="caption"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          BAIXO ({stock})
+                        </Typography>
+                      );
+                    } else if (stock <= 10) {
+                      return (
+                        <Typography
+                          color="info.main"
+                          variant="caption"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          {stock} unidades
+                        </Typography>
+                      );
+                    } else {
+                      return (
+                        <Typography color="success.main" variant="caption">
+                          {stock} unidades
+                        </Typography>
+                      );
+                    }
+                  })()}
                 </TableCell>
                 <TableCell>
                   {product.categories && product.categories.length > 0
