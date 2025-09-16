@@ -378,7 +378,7 @@ const ResponsiveNavbar = () => {
           >
             <Box
               component="img"
-              src="/image/cmf-preto.jpeg"
+              src="/image/Logo_F-Preto-transparent.png"
               alt="Closet Moda Fitness Logo"
               sx={{ height: 64, width: "auto", mr: 1, display: "block" }}
             />

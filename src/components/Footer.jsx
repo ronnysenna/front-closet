@@ -156,8 +156,8 @@ const Footer = () => {
               }}
             >
               <img
-                src="/image/cmf-preto.jpeg"
-                alt="Closet Moda Fitness"
+                src="/image/Logo_F-Preto-transparent.png"
+                alt="Closet Moda Fitness Logo"
                 style={{
                   maxWidth: "auto",
                   maxHeight: "120px", // Aumentei o tamanho da logo

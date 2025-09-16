@@ -491,7 +491,9 @@ const ProductManagement = ({ onSuccess }) => {
                   {product.stock_quantity || product.stockQuantity || "N/A"}
                 </TableCell>
                 <TableCell>
-                  {product.category?.name || "Sem categoria"}
+                  {product.categories && product.categories.length > 0
+                    ? product.categories.map((cat) => cat.name).join(", ")
+                    : "Sem categoria"}
                 </TableCell>
                 <TableCell>
                   <IconButton

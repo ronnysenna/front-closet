@@ -1,24 +1,39 @@
 // filepath: /Users/ronnysenna/Projetos/Loja/front/src/components/ShippingInfo.jsx
-import {
-  Box,
-  Typography,
-  Container,
-  Grid,
-  Paper,
-  useTheme,
-} from "@mui/material";
-import { ASSETS_BASE_URL } from "../config";
+import { Box, Typography, Container, Grid, Paper } from "@mui/material";
 import { useId } from "react";
 
-// Imagens dos ícones das transportadoras
-const jadlogIcon = `${ASSETS_BASE_URL}/image/jadlogg.png`;
-const sedexIcon = `${ASSETS_BASE_URL}/image/sedex.png`;
-const pacIcon = `${ASSETS_BASE_URL}/image/pac.png`;
-const loggiIcon = `${ASSETS_BASE_URL}/image/loggii.png`;
-const whatsappIcon = `${ASSETS_BASE_URL}/image/whatsapp (1).png`;
+// Função utilitária para garantir o caminho correto das imagens
+const getImagePath = (filename) => `/image/${filename}`;
+
+// Transportadoras
+const carriers = [
+  {
+    id: "jadlog",
+    icon: getImagePath("jadlogg.png"),
+    name: "Jadlog",
+    description: "Entrega expressa",
+  },
+  {
+    id: "sedex",
+    icon: getImagePath("sedex.png"),
+    name: "Sedex",
+    description: "Entrega rápida",
+  },
+  {
+    id: "pac",
+    icon: getImagePath("pac.png"),
+    name: "PAC",
+    description: "Entrega econômica",
+  },
+  {
+    id: "loggi",
+    icon: getImagePath("loggii.png"),
+    name: "Loggi",
+    description: "Entrega local",
+  },
+];
 
 const ShippingInfo = () => {
-  const theme = useTheme();
   const sectionId = useId();
 
   return (
@@ -89,12 +104,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={getImagePath("clock.png")}
                   alt="Relógio"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 32, height: 32, objectFit: "contain" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -131,12 +143,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={getImagePath("globe.png")}
                   alt="Globo"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 32, height: 32, objectFit: "contain" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -172,12 +181,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={getImagePath("check.png")}
                   alt="Verificado"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 32, height: 32, objectFit: "contain" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -194,47 +200,17 @@ const ShippingInfo = () => {
         <Box sx={{ bgcolor: "white", p: 4, width: "100%" }}>
           <Typography
             variant="h6"
-            sx={{
-              fontWeight: 600,
-              mb: 3,
-              textAlign: "center",
-            }}
+            sx={{ fontWeight: 600, mb: 3, textAlign: "center" }}
           >
             Trabalhamos com as melhores transportadoras
           </Typography>
-
           <Grid
             container
             spacing={2}
             justifyContent="center"
             sx={{ maxWidth: 700, mx: "auto" }}
           >
-            {[
-              {
-                id: "jadlog",
-                icon: jadlogIcon,
-                name: "Jadlog",
-                description: "Entrega expressa",
-              },
-              {
-                id: "sedex",
-                icon: sedexIcon,
-                name: "Sedex",
-                description: "Entrega rápida",
-              },
-              {
-                id: "pac",
-                icon: pacIcon,
-                name: "PAC",
-                description: "Entrega econômica",
-              },
-              {
-                id: "loggi",
-                icon: loggiIcon,
-                name: "Loggi",
-                description: "Entrega local",
-              },
-            ].map((carrier) => (
+            {carriers.map((carrier) => (
               <Grid item xs={6} sm={3} key={carrier.id}>
                 <Paper
                   elevation={0}
@@ -263,9 +239,8 @@ const ShippingInfo = () => {
                       src={carrier.icon}
                       alt={carrier.name}
                       style={{
-                        height: "auto",
-                        maxHeight: 40,
-                        maxWidth: "100%",
+                        height: 40,
+                        width: "auto",
                         objectFit: "contain",
                       }}
                     />
@@ -312,11 +287,15 @@ const ShippingInfo = () => {
               }}
             >
               Confira o prazo de entrega com seu vendedor no WhatsApp
-              <Box
-                component="img"
-                src={whatsappIcon}
+              <img
+                src={getImagePath("whatsapp (1).png")}
                 alt="WhatsApp"
-                sx={{ width: 24, height: 24, ml: 1 }}
+                style={{
+                  width: 24,
+                  height: 24,
+                  marginLeft: 8,
+                  objectFit: "contain",
+                }}
               />
             </Typography>
           </Box>

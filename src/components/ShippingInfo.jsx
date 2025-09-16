@@ -298,16 +298,24 @@ const ShippingInfo = () => {
             >
               Confira o prazo de entrega com seu vendedor no WhatsApp
               <Box
-                component="img"
-                src="/image/whatsapp (1).png"
-                alt="WhatsApp"
-                sx={{ width: 24, height: 24, ml: 1 }}
-                onError={(e) => {
-                  console.error("Erro ao carregar imagem do WhatsApp");
-                  e.target.onerror = null;
-                  e.target.src = "/image/not-found.svg";
-                }}
-              />
+                component="a"
+                href="https://wa.me/5585991893149"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ ml: 1, display: "flex", alignItems: "center" }}
+              >
+                <Box
+                  component="img"
+                  src="/image/whatsapp.png"
+                  alt="WhatsApp"
+                  sx={{ width: 24, height: 24 }}
+                  onError={(e) => {
+                    console.error("Erro ao carregar imagem do WhatsApp");
+                    e.target.onerror = null;
+                    e.target.src = "/image/not-found.svg";
+                  }}
+                />
+              </Box>
             </Typography>
           </Box>
         </Box>
