@@ -45,9 +45,9 @@ const HomePage = () => {
     <div>
       <HighlightBanner
         images={[
-          "https://cdn.sistemawbuy.com.br/arquivos/6b197a12ddff92df0235fe4d68048bf2/vitrine/tamanhos-desktop-68c4a400922f4.png",
-           "https://zanotti.com.br/blog/wp-content/uploads/2021/07/capa-moda-esportiva-2.jpg",
-           "https://difitlifestyle.com/wp-content/uploads/2019/08/shutterstock_517707289.jpg",
+          "/image/capa1.png",
+          "/image/capa2.png",
+          "/image/capa4.png",
         ]}
         interval={5000}
       />

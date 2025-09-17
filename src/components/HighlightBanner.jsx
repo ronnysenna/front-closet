@@ -21,7 +21,7 @@ const HighlightBanner = ({
       sx={{
         width: "100%",
         maxWidth: "100vw",
-        minHeight: { xs: 360, md: 500 }, // altura maior
+        minHeight: { xs: 160, md: 750 }, // altura maior
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -40,8 +40,8 @@ const HighlightBanner = ({
         alt="Destaque"
         sx={{
           width: "100%",
-          height: { xs: 360, md: 500 }, 
-          objectFit: "cover",
+          height: { xs: 160, md: 750 }, 
+          objectFit: "cover", // ajuste para conter a imagem
           borderRadius: 0, // sem borda arredondada
           transition: "opacity 0.5s",
         }}
