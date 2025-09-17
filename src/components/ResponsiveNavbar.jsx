@@ -225,7 +225,7 @@ const ResponsiveNavbar = () => {
             {/* Redes Sociais - Desktop */}
             <Box sx={{ display: "flex", gap: 1, mr: 2 }}>
               <IconButton
-                href="https://www.instagram.com/closettmodafitness_/?igsh=MTB1b3c5NWRlYm1kZA%3D%3D#"
+                href="https://www.instagram.com/accounts/login/?next=%2Fclosettmodafitness_%2F&source=omni_redirect"
                 target="_blank"
                 sx={{
                   color: "white",
@@ -542,7 +542,7 @@ const ResponsiveNavbar = () => {
           {/* Redes Sociais - Mobile */}
           <Box sx={{ p: 2, display: "flex", justifyContent: "center", gap: 2 }}>
             <IconButton
-              href="https://www.instagram.com/closettmodafitness_/?igsh=MTB1b3c5NWRlYm1kZA%3D%3D#"
+              href="https://www.instagram.com/accounts/login/?next=%2Fclosettmodafitness_%2F&source=omni_redirect"
               target="_blank"
               sx={{ color: "#E4405F" }}
             >
