@@ -49,7 +49,7 @@ const HomePage = () => {
           "/image/capa2.png",
           "/image/capa4.png",
         ]}
-        interval={5000}
+        interval={10000}
       />
       {/* Pode adicionar um Hero Banner aqui se desejar */}
       <section className="bg-pink-50 py-12 text-center">

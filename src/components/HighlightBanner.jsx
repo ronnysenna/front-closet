@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const HighlightBanner = ({
   images = [],
 
-  interval = 5000, // tempo em ms para trocar imagem
+  interval = 10000, // tempo em ms para trocar imagem
 }) => {
   const [current, setCurrent] = useState(0);
 
