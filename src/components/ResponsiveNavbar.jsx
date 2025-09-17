@@ -375,13 +375,17 @@ const ResponsiveNavbar = () => {
             mt: 0,
             px: 0,
             border: 0,
+            display: "flex",
+            flexDirection: { xs: "row-reverse", md: "row" }, // mobile: carrinho à direita, menu à esquerda
+            justifyContent: { xs: "space-between", md: "initial" },
+            alignItems: "center",
           }}
         >
           <Box
             component={RouterLink}
             to="/"
             sx={{
-              display: "flex",
+              display: { xs: "none", md: "flex" }, // só aparece no desktop
               alignItems: "center",
               textDecoration: "none",
               mr: 2,
@@ -611,7 +615,7 @@ const ResponsiveNavbar = () => {
             )}
           </Box>
 
-          {/* Ícone do Carrinho */}
+          {/* Carrinho - mobile à direita */}
           <IconButton
             color="primary"
             aria-label="Abrir carrinho"
@@ -627,6 +631,7 @@ const ResponsiveNavbar = () => {
               },
               width: 42,
               height: 42,
+              order: { xs: 2, md: 0 }, // mobile: carrinho à direita
             }}
           >
             <Badge
@@ -646,11 +651,11 @@ const ResponsiveNavbar = () => {
             </Badge>
           </IconButton>
 
-          {/* Ícone do Menu Hamburguer para Mobile */}
+          {/* Menu Hamburguer - mobile à esquerda */}
           <IconButton
             color="primary"
             aria-label="Abrir menu"
-            edge="end" // Para alinhar à direita no mobile, antes do carrinho
+            edge="start"
             onClick={handleDrawerToggle}
             sx={{
               display: { md: "none" },
@@ -662,6 +667,7 @@ const ResponsiveNavbar = () => {
               },
               width: 42,
               height: 42,
+              order: { xs: 1, md: 0 }, // mobile: menu à esquerda
             }}
           >
             <MenuOpenRoundedIcon fontSize="small" />

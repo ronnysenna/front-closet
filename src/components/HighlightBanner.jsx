@@ -21,16 +21,16 @@ const HighlightBanner = ({
       sx={{
         width: "100%",
         maxWidth: "100vw",
-        minHeight: { xs: 160, md: 750 }, // altura maior
+        minHeight: { xs: 190, md: 750 }, // altura menor no mobile
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        borderRadius: 0, // sem borda arredondada
+        borderRadius: 0,
         boxShadow: 3,
-        mb: { xs: 3, md: 4 },
-        mt: -3, // sem espaço no topo
-        pt: 0, // sem padding top
+        mb: { xs: 2, md: 4 }, // menos margem no mobile
+        mt: -3,
+        pt: 0,
         background: "linear-gradient(90deg, #FF6B3C 0%, #FFB347 100%)",
       }}
     >
@@ -40,10 +40,11 @@ const HighlightBanner = ({
         alt="Destaque"
         sx={{
           width: "100%",
-          height: { xs: 160, md: 750 }, 
-          objectFit: "cover", // ajuste para conter a imagem
-          borderRadius: 0, // sem borda arredondada
+          height: { xs: 190, md: 750 }, // altura menor no mobile, desktop mantido
+          objectFit: "cover", // imagem sempre visível e centralizada
+          borderRadius: 0,
           transition: "opacity 0.5s",
+          background: "#fff", // opcional: fundo branco para imagens menores
         }}
       />
     </Box>
