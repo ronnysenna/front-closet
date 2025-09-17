@@ -5,30 +5,36 @@ import {
   Container,
   Grid,
   Paper,
-  useTheme,
-  useMediaQuery,
+  useId,
+  Link,
 } from "@mui/material";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { ASSETS_BASE_URL } from "../config";
-import { useId } from "react";
 
 // Imagens dos ícones das transportadoras
 const jadlogIcon = `${ASSETS_BASE_URL}/image/jadlogg.png`;
 const sedexIcon = `${ASSETS_BASE_URL}/image/sedex.png`;
 const pacIcon = `${ASSETS_BASE_URL}/image/pac.png`;
 const loggiIcon = `${ASSETS_BASE_URL}/image/loggii.png`;
-const whatsappIcon = `${ASSETS_BASE_URL}/image/whatsapp (1).png`;
 
 const ShippingInfo = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const sectionId = useId();
+  const whatsappNumber = "5585991893149"; // Substitua pelo número correto
+
+  const handleWhatsAppClick = () => {
+    window.open(`https://wa.me/${whatsappNumber}`, "_blank");
+  };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }} id={sectionId}>
+    <Container
+      maxWidth="lg"
+      sx={{ mt: { xs: 4, md: 8 }, mb: { xs: 4, md: 8 } }}
+      id={sectionId}
+    >
       <Paper
         elevation={1}
         sx={{
-          borderRadius: 3,
+          borderRadius: { xs: 2, md: 3 },
           overflow: "hidden",
           bgcolor: "#FBF9F6",
           width: "100%",
@@ -37,7 +43,13 @@ const ShippingInfo = () => {
         }}
       >
         {/* Título e descrição */}
-        <Box sx={{ textAlign: "center", py: 4, px: 2 }}>
+        <Box
+          sx={{
+            textAlign: "center",
+            py: { xs: 3, md: 4 },
+            px: { xs: 2, md: 2 },
+          }}
+        >
           <Typography
             variant="h5"
             component="h2"
@@ -91,12 +103,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={jadlogIcon}
                   alt="Relógio"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 30, height: "auto" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -133,12 +142,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={jadlogIcon}
                   alt="Globo"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 30, height: "auto" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -174,12 +180,9 @@ const ShippingInfo = () => {
                 }}
               >
                 <img
-                  src={`${ASSETS_BASE_URL}/image/jadlogg.png`}
+                  src={jadlogIcon}
                   alt="Verificado"
-                  style={{
-                    width: 30,
-                    height: "auto",
-                  }}
+                  style={{ width: 30, height: "auto" }}
                 />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -193,14 +196,10 @@ const ShippingInfo = () => {
         </Grid>
 
         {/* Transportadoras */}
-        <Box sx={{ bgcolor: "white", p: 4 }}>
+        <Box sx={{ bgcolor: "white", p: { xs: 2, md: 4 } }}>
           <Typography
             variant="h6"
-            sx={{
-              fontWeight: 600,
-              mb: 3,
-              textAlign: "center",
-            }}
+            sx={{ fontWeight: 600, mb: 3, textAlign: "center" }}
           >
             Trabalhamos com as melhores transportadoras
           </Typography>
@@ -286,18 +285,24 @@ const ShippingInfo = () => {
           {/* Informação de frete e WhatsApp */}
           <Box
             sx={{
-              mt: 4,
-              p: 3,
-              borderLeft: "4px solid #FF6B3C",
+              mt: { xs: 3, md: 4 },
+              p: { xs: 2, md: 3 },
+              borderLeft: { xs: "none", md: "4px solid #FF6B3C" },
+              borderTop: { xs: "4px solid #FF6B3C", md: "none" },
               bgcolor: "background.paper",
               maxWidth: 700,
               mx: "auto",
+              borderRadius: { xs: 2, md: 0 },
             }}
           >
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ mb: 1, textAlign: "center" }}
+              sx={{
+                mb: { xs: 2, md: 1 },
+                textAlign: "center",
+                fontSize: { xs: "0.875rem", md: "1rem" },
+              }}
             >
               O valor do frete é calculado com base no CEP, peso e dimensões do
               produto.
@@ -307,19 +312,57 @@ const ShippingInfo = () => {
               sx={{
                 color: "#FF6B3C",
                 fontWeight: 600,
-                mt: 2,
+                mt: { xs: 1, md: 2 },
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexWrap: { xs: "wrap", md: "nowrap" },
+                gap: { xs: 2, md: 1 },
+                textAlign: "center",
               }}
             >
-              Confira o prazo de entrega com seu vendedor no WhatsApp
+              {/* Desktop: Texto + Ícone */}
               <Box
-                component="img"
-                src={whatsappIcon}
-                alt="WhatsApp"
-                sx={{ width: 24, height: 24, ml: 1 }}
-              />
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <span>
+                  Confira o prazo de entrega com seu vendedor no WhatsApp
+                </span>
+                <WhatsAppIcon
+                  sx={{
+                    color: "#25D366",
+                    fontSize: 24,
+                    transition: "transform 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.1)",
+                      cursor: "pointer",
+                    },
+                  }}
+                  onClick={handleWhatsAppClick}
+                />
+              </Box>
+
+              {/* Mobile: Apenas texto clicável */}
+              <Box sx={{ display: { xs: "block", md: "none" }, width: "100%" }}>
+                <Link
+                  onClick={handleWhatsAppClick}
+                  sx={{
+                    color: "#25D366",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  Confira o prazo de entrega no WhatsApp
+                </Link>
+              </Box>
             </Typography>
           </Box>
         </Box>

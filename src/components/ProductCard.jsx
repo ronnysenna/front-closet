@@ -6,6 +6,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import {
   Box,
   Button,
@@ -25,11 +27,12 @@ import {
   Typography,
   IconButton,
   Chip,
-  Zoom,
+  Zoom as MuiZoom,
 } from "@mui/material";
-import { useId, useState, useEffect } from "react";
+import { useId, useState, useEffect, useRef } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import "./ProductCard.css";
 import { formatCurrency } from "../utils/formatCurrency";
 import { ASSETS_BASE_URL } from "../config";
 import { useAuth } from "../context/AuthContext";
@@ -41,6 +44,17 @@ const ProductCard = ({ product }) => {
   const { user, setUser } = useAuth();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [currentImage, setCurrentImage] = useState(product.main_image);
+
+  // Lista de imagens do produto (principal + outras)
+  const productImages = [
+    product.main_image,
+    ...(product.additional_images || []).slice(0, 3),
+  ].filter(Boolean);
+
+  const handleImageChange = (newImage) => {
+    setCurrentImage(newImage);
+  };
 
   // Verifica se o produto está nos favoritos do usuário
   // (Ajuste conforme o backend retornar favoritos no perfil)
@@ -283,33 +297,77 @@ const ProductCard = ({ product }) => {
         </Box>
 
         {/* Imagem do produto */}
-        <Box sx={{ position: "relative", overflow: "hidden" }}>
-          <CardMedia
-            component="img"
-            height="220"
-            image={
-              product.main_image?.startsWith("http")
-                ? product.main_image
-                : product.main_image
-                ? `${ASSETS_BASE_URL}/${
-                    product.main_image.startsWith("/")
-                      ? product.main_image.substring(1)
-                      : product.main_image
-                  }`
-                : "https://via.placeholder.com/400x400?text=Imagem+Indisponível"
-            }
-            alt={product.name}
-            onError={(e) => {
-              e.target.src =
-                "https://via.placeholder.com/400x400?text=Imagem+Indisponível";
-            }}
-            sx={{
-              objectFit: "cover",
-              width: "100%",
-              transition: "transform 0.5s ease",
-              transform: hover ? "scale(1.05)" : "scale(1)",
-            }}
-          />
+        <Box
+          className="product-image-container"
+          sx={{ position: "relative", overflow: "hidden" }}
+        >
+          <Zoom>
+            <CardMedia
+              component="img"
+              height="220"
+              className="product-image"
+              image={
+                currentImage?.startsWith("http")
+                  ? currentImage
+                  : currentImage
+                  ? `${ASSETS_BASE_URL}/${
+                      currentImage.startsWith("/")
+                        ? currentImage.substring(1)
+                        : currentImage
+                    }`
+                  : "https://via.placeholder.com/400x400?text=Imagem+Indisponível"
+              }
+              alt={product.name}
+              onError={(e) => {
+                e.target.src =
+                  "https://via.placeholder.com/400x400?text=Imagem+Indisponível";
+              }}
+              sx={{
+                objectFit: "cover",
+                width: "100%",
+                cursor: "zoom-in",
+              }}
+            />
+          </Zoom>
+
+          {/* Miniaturas */}
+          {productImages.length > 1 && (
+            <Box className="thumbnails-container">
+              {productImages.map((img, index) => (
+                <Box
+                  key={`${product.id}-thumb-${index}`}
+                  component="img"
+                  src={
+                    img?.startsWith("http")
+                      ? img
+                      : img
+                      ? `${ASSETS_BASE_URL}/${
+                          img.startsWith("/") ? img.substring(1) : img
+                        }`
+                      : "https://via.placeholder.com/400x400?text=Imagem+Indisponível"
+                  }
+                  alt={`${product.name} - imagem ${index + 1}`}
+                  className={`thumbnail ${
+                    currentImage === img ? "active" : ""
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageChange(img);
+                  }}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/400x400?text=Imagem+Indisponível";
+                  }}
+                  sx={{
+                    filter: currentImage === img ? "none" : "brightness(0.9)",
+                    "&:hover": {
+                      filter: "none",
+                    },
+                  }}
+                />
+              ))}
+            </Box>
+          )}
         </Box>
 
         {/* Conteúdo do produto */}
@@ -516,7 +574,7 @@ const ProductCard = ({ product }) => {
       <Dialog
         open={openDialog}
         onClose={handleContinueShopping}
-        TransitionComponent={Zoom}
+        TransitionComponent={MuiZoom}
         sx={{
           "& .MuiPaper-root": {
             borderRadius: 3,
@@ -599,7 +657,7 @@ const ProductCard = ({ product }) => {
       <Dialog
         open={openOutOfStockDialog}
         onClose={() => setOpenOutOfStockDialog(false)}
-        TransitionComponent={Zoom}
+        TransitionComponent={MuiZoom}
         sx={{
           "& .MuiPaper-root": {
             borderRadius: 3,

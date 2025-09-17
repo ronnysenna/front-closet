@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import "./styles/NavbarStyles.css";
 import "./styles/FullWidthLayout.css";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -7,12 +7,11 @@ import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuOpenRoundedIcon from "@mui/icons-material/MenuOpenRounded";
-import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import logoImage from "/image/Logo_F-Preto-transparent.png";
 import {
   AppBar,
   Badge,
@@ -23,39 +22,30 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   Toolbar,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import CategoryGrid from "./CategoryGrid";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const ResponsiveNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const { getCartItemCount } = useCart();
   const { isAuthenticated, logout, isAdmin } = useAuth();
   const itemCount = getCartItemCount();
   const navigate = useNavigate();
-  const theme = useTheme();
-  const location = useLocation();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md")); // 'md' é um bom breakpoint para alternar
   const open = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
 
-  const isActivePath = (path) => {
-    return (
-      location.pathname === path ||
-      (path !== "/" && location.pathname.startsWith(path))
-    );
-  };
-
-  // Efeito para animar o badge do carrinho quando o número de itens muda
   useEffect(() => {
     const badgeElement = document.querySelector(".MuiBadge-badge");
     if (badgeElement && itemCount > 0) {
@@ -70,13 +60,6 @@ const ResponsiveNavbar = () => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const handleNavigation = (path) => {
-    navigate(path);
-    if (isMobile) {
-      setMobileOpen(false);
-    }
   };
 
   const handleMenu = (event) => {
@@ -98,7 +81,13 @@ const ResponsiveNavbar = () => {
     handleClose();
   };
 
-  // Removemos as categorias da navbar principal
+  const handleCategoriesOpen = (event) => {
+    setCategoriesAnchor(event.currentTarget);
+  };
+
+  const handleCategoriesClose = () => {
+    setCategoriesAnchor(null);
+  };
 
   const navItems = [
     {
@@ -108,607 +97,475 @@ const ResponsiveNavbar = () => {
     },
     {
       text: "Feedback",
-      icon: <FavoriteRoundedIcon sx={{ color: "#e91e63" }} />, // Rosa vibrante
+      icon: <FavoriteRoundedIcon sx={{ color: "#e91e63" }} />,
       path: "/feedback",
     },
   ];
 
-  const socialLinks = [
-    {
-      icon: <InstagramIcon sx={{ color: "#E1306C", fontSize: 28 }} />,
-      url: "https://www.instagram.com/closettmodafitness_?igsh=MTB1b3c5NWRlYm1kZA==",
-    },
-    {
-      icon: <FacebookIcon sx={{ color: "#1877F3", fontSize: 28 }} />,
-      url: "https://facebook.com/closettmodafitness",
-    },
-    {
-      icon: <WhatsAppIcon sx={{ color: "#25D366", fontSize: 28 }} />,
-      url: "https://wa.me/5585991893149",
-    },
-  ];
-
-  const drawer = (
-    <Box
-      sx={{
-        textAlign: "center",
-        width: 280,
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        bgcolor: "#000",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          p: 2,
-          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-          bgcolor: "rgba(255, 105, 35, 0.1)",
-        }}
-      >
-        <Typography
-          variant="h5"
-          component={RouterLink}
-          to="/"
-          onClick={() => setMobileOpen(false)}
-          sx={{
-            py: 1.5,
-            color: "#FFFFFF",
-            fontWeight: 700,
-            letterSpacing: ".1rem",
-            textDecoration: "none",
-            "&:hover": {
-              color: "primary.light",
-            },
-          }}
-        >
-          Closet Moda Fitness
-        </Typography>
-      </Box>
-      <List
-        sx={{
-          flex: 1,
-          pt: 2,
-          px: 1.5,
-        }}
-      >
-        {navItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => handleNavigation(item.path)}
-            sx={{
-              borderRadius: 2,
-              mb: 0.5,
-              transition: "all 0.2s ease",
-              bgcolor: isActivePath(item.path)
-                ? "rgba(255, 105, 35, 0.08)"
-                : "transparent",
-              "&:hover": {
-                bgcolor: "rgba(255, 105, 35, 0.08)",
-                transform: "translateX(5px)",
-              },
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                color: isActivePath(item.path) ? "#ff6923" : "#B3B3B3",
-                minWidth: "40px",
-                transition: "color 0.2s",
-              }}
-            >
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText
-              primary={item.text}
-              primaryTypographyProps={{
-                fontWeight: 500,
-                fontSize: "0.95rem",
-                color: "#FFFFFF",
-              }}
-            />
-          </ListItem>
-        ))}
-
-        <Divider sx={{ my: 2, bgcolor: "rgba(255, 255, 255, 0.1)" }} />
-
-        {/* Opções de autenticação no menu móvel */}
-        {isAuthenticated ? (
-          <>
-            <ListItem
-              button
-              onClick={handleProfile}
-              sx={{
-                borderRadius: 2,
-                mb: 0.5,
-                transition: "all 0.2s ease",
-                "&:hover": {
-                  bgcolor: "rgba(255, 105, 35, 0.08)",
-                  transform: "translateX(5px)",
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: "#1976d2", minWidth: "40px" }}>
-                <PersonRoundedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Meu Perfil"
-                primaryTypographyProps={{
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#FFFFFF",
-                }}
-              />
-            </ListItem>
-            <ListItem
-              button
-              onClick={() => handleNavigation("/my-orders")}
-              sx={{
-                borderRadius: 2,
-                mb: 0.5,
-                transition: "all 0.2s ease",
-                "&:hover": {
-                  bgcolor: "rgba(255, 105, 35, 0.08)",
-                  transform: "translateX(5px)",
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: "#4caf50", minWidth: "40px" }}>
-                <ShoppingCartRoundedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Meus Pedidos"
-                primaryTypographyProps={{
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#FFFFFF",
-                }}
-              />
-            </ListItem>
-            <ListItem
-              button
-              onClick={handleLogout}
-              sx={{
-                borderRadius: 2,
-                mb: 0.5,
-                transition: "all 0.2s ease",
-                "&:hover": {
-                  bgcolor: "rgba(255, 105, 35, 0.08)",
-                  transform: "translateX(5px)",
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: "#e53935", minWidth: "40px" }}>
-                <LogoutRoundedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Sair"
-                primaryTypographyProps={{
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#FFFFFF",
-                }}
-              />
-            </ListItem>
-          </>
-        ) : (
-          <ListItem
-            button
-            onClick={() => handleNavigation("/login")}
-            sx={{
-              borderRadius: 2,
-              mb: 0.5,
-              transition: "all 0.2s ease",
-              "&:hover": {
-                bgcolor: "rgba(255, 105, 35, 0.08)",
-                transform: "translateX(5px)",
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: "#1976d2", minWidth: "40px" }}>
-              <LoginRoundedIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Login"
-              primaryTypographyProps={{
-                fontWeight: 500,
-                fontSize: "0.95rem",
-                color: "#FFFFFF",
-              }}
-            />
-          </ListItem>
-        )}
-      </List>
-      <Box sx={{ p: 2, borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            navigate("/cart");
-            setMobileOpen(false);
-          }}
-          startIcon={<ShoppingCartRoundedIcon sx={{ color: "#43a047" }} />}
-          sx={{
-            borderRadius: 2,
-            py: 1.2,
-            fontWeight: 600,
-            boxShadow: "0 4px 10px rgba(255, 105, 35, 0.25)",
-          }}
-        >
-          Carrinho {itemCount > 0 ? `(${itemCount})` : ""}
-        </Button>
-      </Box>
-    </Box>
-  );
-
   return (
-    <>
+    <Box sx={{ display: "flex" }}>
       <AppBar
-        position="sticky"
-        className="full-width-container"
+        position="fixed"
         sx={{
-          bgcolor: "#000",
-          color: "#fff",
-          boxShadow: "none", // remove sombra
-          borderBottom: "none", // remove borda
-          width: "100vw",
-          padding: 0,
-          margin: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1200,
-          mb: 0,
+          backgroundColor: "black",
+          color: "white",
         }}
-        elevation={0}
       >
-        <Toolbar
-          className="content-container"
-          sx={{
-            py: 0,
-            width: "100%",
-            minHeight: 0,
-            mb: 0,
-            mt: 0,
-            px: 0,
-            border: 0,
-            display: "flex",
-            flexDirection: { xs: "row-reverse", md: "row" }, // mobile: carrinho à direita, menu à esquerda
-            justifyContent: { xs: "space-between", md: "initial" },
-            alignItems: "center",
-          }}
-        >
-          <Box
-            component={RouterLink}
-            to="/"
-            sx={{
-              display: { xs: "none", md: "flex" }, // só aparece no desktop
-              alignItems: "center",
-              textDecoration: "none",
-              mr: 2,
-              flexGrow: { xs: 1, md: 0 },
-            }}
-          >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* Seção Esquerda */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {/* Menu Mobile */}
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { md: "none" } }}
+            >
+              <MenuOpenRoundedIcon />
+            </IconButton>
+
+            {/* Logo - Desktop Only */}
             <Box
-              component="img"
-              src="/image/Logo_F-Preto-transparent.png"
-              alt="Closet Moda Fitness Logo"
-              sx={{ height: 64, width: "auto", mr: 1, display: "block" }}
-            />
-          </Box>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              justifyContent: "center",
-            }}
-          >
-            {navItems.map((item) => (
-              <Button
-                key={item.text}
-                onClick={() => handleNavigation(item.path)}
+              component={RouterLink}
+              to="/"
+              sx={{
+                display: { xs: "none", md: "flex" },
+                alignItems: "center",
+                mr: 3,
+                ml: { xs: 1, md: 8 },
+                p: 2,
+                textDecoration: "none",
+              }}
+            >
+              <img
+                src={logoImage}
+                alt="Logo"
+                style={{
+                  height: "60px",
+                  width: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+
+            {/* Menu Desktop */}
+            <Box
+              sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
+            >
+              <IconButton
+                component={RouterLink}
+                to="/"
                 sx={{
-                  my: 2,
-                  color: isActivePath(item.path) ? "#ff6923" : "#fff",
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  px: 2.5,
-                  py: 1,
-                  mx: 1,
-                  background: isActivePath(item.path)
-                    ? "rgba(255, 105, 35, 0.10)"
-                    : "transparent",
-                  boxShadow: isActivePath(item.path)
-                    ? "0 2px 8px rgba(255, 105, 35, 0.10)"
-                    : "none",
-                  transition: "all 0.2s",
+                  color: "white",
+                  mr: 2,
+                  "&:hover": { color: "#ff6923" },
+                }}
+              >
+                <HomeRoundedIcon />
+              </IconButton>
+
+              <Button
+                onClick={handleCategoriesOpen}
+                endIcon={<KeyboardArrowDownIcon />}
+                sx={{
+                  color: "white",
+                  ml: 1,
                   "&:hover": {
-                    background: "rgba(255, 105, 35, 0.18)",
                     color: "#ff6923",
-                    transform: "translateY(-2px) scale(1.04)",
-                    boxShadow: "0 4px 16px rgba(255, 105, 35, 0.15)",
                   },
                 }}
-                startIcon={item.icon}
               >
-                {item.text}
+                Categorias
               </Button>
-            ))}
+
+              <Button
+                component={RouterLink}
+                to="/feedback"
+                startIcon={<FavoriteRoundedIcon />}
+                sx={{
+                  color: "white",
+                  ml: 1,
+                  "&:hover": {
+                    color: "#ff6923",
+                  },
+                }}
+              >
+                Feedback
+              </Button>
+            </Box>
           </Box>
+
+          {/* Seção Central */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Categorias - Mobile */}
+          <Button
+            onClick={handleCategoriesOpen}
+            endIcon={<KeyboardArrowDownIcon />}
+            sx={{
+              display: { xs: "flex", md: "none" },
+              color: "white",
+              "&:hover": {
+                bgcolor: "rgba(255, 255, 255, 0.1)",
+              },
+            }}
+          >
+            Categorias
+          </Button>
+
+          {/* Seção Direita - Apenas Desktop */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
               alignItems: "center",
-              gap: 1.5,
-              ml: 2,
+              gap: 1,
             }}
           >
-            {socialLinks.map((social) => (
+            {/* Redes Sociais - Desktop */}
+            <Box sx={{ display: "flex", gap: 1, mr: 2 }}>
               <IconButton
-                key={social.url}
-                href={social.url}
+                href="https://www.instagram.com/closettmodafitness_/?igsh=MTB1b3c5NWRlYm1kZA%3D%3D#"
                 target="_blank"
-                rel="noopener"
                 sx={{
-                  bgcolor: "transparent",
-                  color: "#fff",
-                  "&:hover": { bgcolor: "#23234a" },
+                  color: "white",
+                  "&:hover": { color: "#E4405F" },
                 }}
               >
-                {social.icon}
+                <InstagramIcon />
               </IconButton>
-            ))}
-          </Box>
-          <Box
-            sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
-          >
-            {!isAuthenticated ? (
-              <Button
-                variant="outlined"
-                color="primary"
-                component={RouterLink}
-                to="/login"
-                className="button-elevation"
-                startIcon={<LoginRoundedIcon />}
+              <IconButton
+                href="https://facebook.com"
+                target="_blank"
                 sx={{
-                  ml: 1,
-                  borderRadius: 2,
-                  px: 2.5,
-                  py: 1,
-                  border: "1.5px solid",
-                  fontWeight: 600,
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 105, 35, 0.08)",
-                    borderColor: "primary.main",
-                    transform: "translateY(-3px)",
-                    boxShadow: "0 4px 8px rgba(255, 105, 35, 0.15)",
-                  },
-                  transition: "all 0.2s ease",
+                  color: "white",
+                  "&:hover": { color: "#1877F2" },
                 }}
               >
-                Login
-              </Button>
-            ) : (
+                <FacebookIcon />
+              </IconButton>
+              <IconButton
+                href="https://wa.me/5585991893149"
+                target="_blank"
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "#25D366" },
+                }}
+              >
+                <WhatsAppIcon />
+              </IconButton>
+            </Box>
+
+            {/* Carrinho e Menu Usuário - Desktop */}
+            <IconButton
+              component={RouterLink}
+              to="/cart"
+              sx={{ color: "white" }}
+            >
+              <Badge badgeContent={itemCount} color="error">
+                <ShoppingCartRoundedIcon />
+              </Badge>
+            </IconButton>
+
+            {isAuthenticated ? (
               <>
-                <IconButton
-                  onClick={handleMenu}
-                  size="large"
-                  aria-label="conta do usuário"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="primary"
-                  sx={{
-                    ml: 1,
-                    border: "1.5px solid",
-                    borderColor: "primary.main",
-                    borderRadius: "50%",
-                    p: 1,
-                    width: 42,
-                    height: 42,
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 105, 35, 0.08)",
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 4px 8px rgba(255, 105, 35, 0.15)",
-                    },
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  <PersonRoundedIcon fontSize="small" />
+                <IconButton onClick={handleMenu} sx={{ color: "white" }}>
+                  <PersonRoundedIcon />
                 </IconButton>
                 <Menu
                   id={menuId}
                   anchorEl={anchorEl}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      borderRadius: 2,
-                      boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
-                      mt: 1.5,
-                      border: "1px solid rgba(229, 231, 235, 0.8)",
-                      overflow: "visible",
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: -6,
-                        right: 14,
-                        width: 12,
-                        height: 12,
-                        bgcolor: "background.paper",
-                        transform: "rotate(45deg)",
-                        borderTop: "1px solid rgba(229, 231, 235, 0.8)",
-                        borderLeft: "1px solid rgba(229, 231, 235, 0.8)",
-                        zIndex: 0,
-                      },
-                    },
-                    "& .MuiMenuItem-root": {
-                      borderRadius: 1,
-                      mx: 0.5,
-                      my: 0.25,
-                      px: 1.5,
-                      transition: "all 0.1s ease",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 105, 35, 0.08)",
-                      },
-                    },
-                  }}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
                   open={open}
                   onClose={handleClose}
-                  transitionDuration={200}
+                  PaperProps={{
+                    sx: {
+                      bgcolor: "black",
+                      color: "white",
+                      mt: 1,
+                    },
+                  }}
                 >
-                  <MenuItem onClick={handleProfile}>
-                    <ListItemIcon>
-                      <PersonRoundedIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Meu Perfil</ListItemText>
-                  </MenuItem>
-
                   <MenuItem
-                    onClick={() => {
-                      handleClose();
-                      navigate("/my-orders");
+                    onClick={handleProfile}
+                    sx={{
+                      "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
                     }}
                   >
-                    <ListItemIcon>
-                      <ShoppingCartRoundedIcon
-                        fontSize="small"
-                        sx={{ color: "#4caf50" }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText>Meus Pedidos</ListItemText>
+                    Perfil
                   </MenuItem>
-
                   {isAdmin && (
                     <MenuItem
                       onClick={() => {
                         handleClose();
                         navigate("/admin");
                       }}
+                      sx={{
+                        "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
+                      }}
                     >
-                      <ListItemIcon>
-                        <CategoryRoundedIcon fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText>Painel Admin</ListItemText>
+                      Painel Admin
                     </MenuItem>
                   )}
-
-                  <Divider />
-                  <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                      <LogoutRoundedIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Sair</ListItemText>
+                  <MenuItem
+                    onClick={handleLogout}
+                    sx={{
+                      "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
+                    }}
+                  >
+                    Sair
                   </MenuItem>
                 </Menu>
               </>
+            ) : (
+              <Button
+                component={RouterLink}
+                to="/login"
+                startIcon={<LoginRoundedIcon />}
+                sx={{
+                  color: "white",
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+              >
+                Entrar
+              </Button>
+            )}
+          </Box>
+        </Toolbar>
+
+        {/* Menu de Categorias - Desktop */}
+        <Menu
+          anchorEl={categoriesAnchor}
+          open={Boolean(categoriesAnchor)}
+          onClose={handleCategoriesClose}
+          PaperProps={{
+            sx: {
+              mt: 1,
+              bgcolor: "black",
+              color: "white",
+              width: 280,
+              maxHeight: "70vh",
+              overflowY: "auto",
+              "& .MuiListItem-root": {
+                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              },
+              "& .MuiListItemIcon-root": {
+                color: "white",
+              },
+              "& .MuiListItemButton-root:hover": {
+                bgcolor: "rgba(255, 255, 255, 0.1)",
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "left", vertical: "top" }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+        >
+          <CategoryGrid onCategoryClick={handleCategoriesClose} />
+        </Menu>
+      </AppBar>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        anchor="left"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        PaperProps={{
+          sx: {
+            width: 280,
+            bgcolor: "black",
+            color: "white",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            width: 280,
+            pt: 2,
+            color: "white",
+          }}
+          role="presentation"
+        >
+          {/* Logo Section */}
+          <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
+            <img
+              src={logoImage}
+              alt="Logo"
+              style={{
+                height: "40px",
+                width: "auto",
+                objectFit: "contain",
+              }}
+            />
+          </Box>
+
+          <Divider sx={{ bgcolor: "rgba(255, 255, 255, 0.12)" }} />
+
+          {/* Profile Section */}
+          <Box sx={{ p: 2 }}>
+            {isAuthenticated ? (
+              <>
+                <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 2 }}>
+                  Olá, {isAdmin ? "Admin" : "Usuário"}
+                </Typography>
+                <Button
+                  component={RouterLink}
+                  to="/profile"
+                  fullWidth
+                  sx={{
+                    color: "white",
+                    justifyContent: "flex-start",
+                    mb: 1,
+                    "&:hover": {
+                      bgcolor: "rgba(255, 255, 255, 0.1)",
+                    },
+                  }}
+                  startIcon={<PersonRoundedIcon />}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Perfil
+                </Button>
+                {isAdmin && (
+                  <Button
+                    component={RouterLink}
+                    to="/admin"
+                    fullWidth
+                    sx={{
+                      color: "#ff6923",
+                      justifyContent: "flex-start",
+                      mb: 1,
+                      "&:hover": {
+                        bgcolor: "rgba(255, 105, 35, 0.1)",
+                      },
+                    }}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Painel Admin
+                  </Button>
+                )}
+                <Button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileOpen(false);
+                  }}
+                  fullWidth
+                  sx={{
+                    color: "white",
+                    justifyContent: "flex-start",
+                    "&:hover": {
+                      bgcolor: "rgba(255, 255, 255, 0.1)",
+                    },
+                  }}
+                  startIcon={<LoginRoundedIcon />}
+                >
+                  Sair
+                </Button>
+              </>
+            ) : (
+              <Button
+                component={RouterLink}
+                to="/login"
+                startIcon={<LoginRoundedIcon />}
+                fullWidth
+                sx={{
+                  color: "white",
+                  borderColor: "white",
+                  "&:hover": {
+                    borderColor: "#ff6923",
+                    color: "#ff6923",
+                  },
+                }}
+                variant="outlined"
+                onClick={() => setMobileOpen(false)}
+              >
+                Entrar
+              </Button>
             )}
           </Box>
 
-          {/* Carrinho - mobile à direita */}
-          <IconButton
-            color="primary"
-            aria-label="Abrir carrinho"
-            onClick={() => navigate("/cart")}
-            className="button-elevation"
-            sx={{
-              ml: { xs: 0, md: 1 },
-              bgcolor: "rgba(255, 105, 35, 0.08)",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                bgcolor: "rgba(255, 105, 35, 0.16)",
-                transform: "translateY(-2px)",
-              },
-              width: 42,
-              height: 42,
-              order: { xs: 2, md: 0 }, // mobile: carrinho à direita
-            }}
-          >
-            <Badge
-              badgeContent={itemCount}
-              color="secondary"
+          <Divider sx={{ bgcolor: "rgba(255, 255, 255, 0.12)" }} />
+
+          {/* Carrinho */}
+          <Box sx={{ p: 2 }}>
+            <Button
+              component={RouterLink}
+              to="/cart"
+              startIcon={
+                <Badge badgeContent={itemCount} color="error">
+                  <ShoppingCartRoundedIcon />
+                </Badge>
+              }
+              fullWidth
               sx={{
-                "& .MuiBadge-badge": {
-                  fontWeight: "bold",
-                  minWidth: 18,
-                  height: 18,
-                  padding: "0 4px",
-                  fontSize: 10,
+                color: "white",
+                "&:hover": {
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
                 },
               }}
+              onClick={() => setMobileOpen(false)}
             >
-              <ShoppingCartRoundedIcon fontSize="small" />
-            </Badge>
-          </IconButton>
+              Carrinho
+            </Button>
+          </Box>
 
-          {/* Menu Hamburguer - mobile à esquerda */}
-          <IconButton
-            color="primary"
-            aria-label="Abrir menu"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{
-              display: { md: "none" },
-              ml: 1,
-              bgcolor: "rgba(255, 105, 35, 0.08)",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                bgcolor: "rgba(255, 105, 35, 0.16)",
-              },
-              width: 42,
-              height: 42,
-              order: { xs: 1, md: 0 }, // mobile: menu à esquerda
-            }}
-          >
-            <MenuOpenRoundedIcon fontSize="small" />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+          <Divider sx={{ bgcolor: "rgba(255, 255, 255, 0.12)" }} />
 
-      {/* Drawer para Mobile */}
-      <Box component="nav">
-        <Drawer
-          variant="temporary"
-          anchor="right" // Abre da direita
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Melhor performance de abertura em mobile.
-          }}
-          sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: 280,
-              borderTopLeftRadius: 16,
-              borderBottomLeftRadius: 16,
-              boxShadow: "-8px 0px 20px rgba(0, 0, 0, 0.1)",
-              border: "none",
-            },
-            "& .MuiBackdrop-root": {
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              backdropFilter: "blur(2px)",
-            },
-          }}
-          transitionDuration={{
-            enter: 400,
-            exit: 300,
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-    </>
+          {/* Navigation Items */}
+          <List>
+            {navItems.map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{
+                  "&:hover": {
+                    bgcolor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+              >
+                <ListItemButton
+                  onClick={() => {
+                    navigate(item.path);
+                    setMobileOpen(false);
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+
+          {/* Redes Sociais - Mobile */}
+          <Box sx={{ p: 2, display: "flex", justifyContent: "center", gap: 2 }}>
+            <IconButton
+              href="https://www.instagram.com/closettmodafitness_/?igsh=MTB1b3c5NWRlYm1kZA%3D%3D#"
+              target="_blank"
+              sx={{ color: "#E4405F" }}
+            >
+              <InstagramIcon />
+            </IconButton>
+            <IconButton
+              href="https://facebook.com"
+              target="_blank"
+              sx={{ color: "#1877F2" }}
+            >
+              <FacebookIcon />
+            </IconButton>
+            <IconButton
+              href="https://wa.me/5585991893149"
+              target="_blank"
+              sx={{ color: "#25D366" }}
+            >
+              <WhatsAppIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </Drawer>
+    </Box>
   );
 };
 

@@ -1,20 +1,16 @@
 import {
   Alert,
   Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
   CircularProgress,
-  Container,
-  Grid,
+  List,
+  ListItemButton,
   Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getCategories } from '../utils/api';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCategories } from "../utils/api";
 
-const CategoryGrid = () => {
+const CategoryGrid = ({ onCategoryClick, isMobile }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,8 +23,8 @@ const CategoryGrid = () => {
         const data = await getCategories();
         setCategories(data);
       } catch (err) {
-        console.error('Erro ao carregar categorias:', err);
-        setError('Não foi possível carregar as categorias. Por favor, tente novamente mais tarde.');
+        console.error("Erro ao carregar categorias:", err);
+        setError("Não foi possível carregar as categorias.");
       } finally {
         setLoading(false);
       }
@@ -39,89 +35,67 @@ const CategoryGrid = () => {
 
   const handleCategoryClick = (slug) => {
     navigate(`/categoria/${slug}`);
+    if (onCategoryClick) {
+      onCategoryClick();
+    }
   };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-        <CircularProgress />
+      <Box sx={{ display: "flex", justifyContent: "center", py: 1 }}>
+        <CircularProgress size={24} />
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Box sx={{ py: 2 }}>
-        <Alert severity="error">{error}</Alert>
+      <Box sx={{ py: 1 }}>
+        <Alert severity="error" sx={{ fontSize: "0.875rem" }}>
+          {error}
+        </Alert>
       </Box>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4, mt: 2 }}>
-      <Typography
-        variant="h4"
-        component="h2"
-        gutterBottom
-        align="center"
-        sx={{
-          mb: 4,
-          fontWeight: 'bold',
-          color: 'primary.main',
-        }}
-      >
-        Categorias
-      </Typography>
-
-      <Grid container spacing={3} justifyContent="center">
-        {categories.map((category) => (
-          <Grid item xs={6} sm={4} md={3} key={category.id}>
-            <Card
-              elevation={2}
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
-                },
-              }}
-            >
-              <CardActionArea
-                onClick={() => handleCategoryClick(category.slug)}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                {category.image && (
-                  <CardMedia
-                    component="img"
-                    height="160"
-                    image={category.image}
-                    alt={category.name}
-                    sx={{ objectFit: 'cover' }}
-                  />
-                )}
-                <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-                  <Typography variant="h6" component="div">
-                    {category.name}
-                  </Typography>
-                  {category.productCount > 0 && (
-                    <Typography variant="body2" color="text.secondary">
-                      {category.productCount} produtos
-                    </Typography>
-                  )}
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <List
+      sx={{
+        width: "100%",
+        p: 0,
+        bgcolor: "black",
+        "& .MuiListItemButton-root": {
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+          py: 1.5,
+          "&:last-child": {
+            borderBottom: "none",
+          },
+          "&:hover": {
+            bgcolor: "rgba(255, 255, 255, 0.1)",
+          },
+        },
+      }}
+    >
+      {categories.map((category) => (
+        <ListItemButton
+          key={category.id}
+          onClick={() => handleCategoryClick(category.slug)}
+          sx={{
+            px: isMobile ? 2 : 1.5,
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: "0.9rem",
+              fontWeight: 400,
+            }}
+          >
+            {category.name}
+          </Typography>
+        </ListItemButton>
+      ))}
+    </List>
   );
 };
 
